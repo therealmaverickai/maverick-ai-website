@@ -83,7 +83,6 @@ export default function ImprenditoriPage() {
     clientType={pageData.clientType}
     challenges={pageData.challenges}
     solutions={pageData.solutions}
-    benefits={pageData.benefits}
     cta={pageData.cta}
   />
 }
