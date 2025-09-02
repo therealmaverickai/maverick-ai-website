@@ -50,6 +50,14 @@ const assessmentSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
+    // Check if we're in build mode without proper environment
+    if (!process.env.OPENAI_API_KEY && process.env.NODE_ENV === 'production') {
+      return NextResponse.json({
+        success: false,
+        error: 'Service temporarily unavailable'
+      }, { status: 503 })
+    }
+
     // Parse request body
     const body = await request.json()
     console.log('Received assessment data:', JSON.stringify(body, null, 2))

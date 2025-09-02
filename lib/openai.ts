@@ -1,12 +1,21 @@
 import OpenAI from 'openai'
 
 function getOpenAIClient() {
-  if (!process.env.OPENAI_API_KEY) {
-    throw new Error('OpenAI API key not configured')
+  const apiKey = process.env.OPENAI_API_KEY
+  
+  if (!apiKey) {
+    // During build time, we don't need the actual client
+    if (process.env.NODE_ENV === 'production' && !process.env.VERCEL) {
+      throw new Error('OpenAI API key not configured')
+    }
+    // Return a dummy client during build to avoid errors
+    return new OpenAI({
+      apiKey: 'dummy-key-for-build',
+    })
   }
   
   return new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
+    apiKey,
   })
 }
 
