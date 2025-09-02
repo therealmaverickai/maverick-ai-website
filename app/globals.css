@@ -1,0 +1,228 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gray-900 hover:bg-gray-800 text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 shadow-sm hover:shadow-lg hover:-translate-y-0.5 border-0 relative overflow-hidden;
+  }
+  
+  .btn-primary::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full hover:translate-x-full transition-transform duration-700;
+  }
+  
+  .btn-secondary {
+    @apply border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 hover:shadow-md hover:-translate-y-0.5 font-medium py-3 px-6 rounded-lg transition-all duration-300 bg-white;
+  }
+  
+  .btn-danger {
+    @apply bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl;
+  }
+  
+  .btn-warning {
+    @apply bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl;
+  }
+  
+  .card {
+    @apply bg-white rounded-xl shadow-sm hover:shadow-xl border border-gray-100 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02];
+  }
+  
+  .section-padding {
+    @apply py-12 px-4 sm:py-16 sm:px-6 lg:px-12;
+  }
+  
+  .container-width {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Mobile-specific improvements */
+  @media (max-width: 640px) {
+    .btn-primary, .btn-secondary {
+      @apply w-full justify-center text-base;
+    }
+    
+    .card {
+      @apply hover:transform-none hover:shadow-lg;
+    }
+
+    /* Better mobile typography */
+    h1 { @apply text-2xl leading-tight; }
+    h2 { @apply text-xl; }
+    h3 { @apply text-lg; }
+    
+    /* Improve mobile spacing */
+    .section-padding {
+      @apply py-8 px-4;
+    }
+    
+    /* Mobile-friendly forms */
+    input, select, textarea {
+      @apply text-base; /* Prevent zoom on iOS */
+    }
+  }
+
+  /* Small mobile devices */
+  @media (max-width: 375px) {
+    .container-width {
+      @apply px-3;
+    }
+    
+    .section-padding {
+      @apply py-6 px-3;
+    }
+    
+    .btn-primary, .btn-secondary {
+      @apply text-sm px-4 py-2;
+    }
+  }
+
+  /* Smooth scrolling for anchor links */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Custom focus styles for accessibility */
+  button:focus-visible, 
+  input:focus-visible, 
+  textarea:focus-visible, 
+  select:focus-visible {
+    @apply ring-2 ring-accent-500 ring-offset-2 outline-none;
+  }
+
+  /* Micro-interactions inspired by DataPizza */
+  .hover-lift {
+    @apply transition-transform duration-300 hover:-translate-y-1;
+  }
+  
+  .hover-scale {
+    @apply transition-transform duration-200 hover:scale-105;
+  }
+  
+  .fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+  
+  .stagger-animation {
+    animation-delay: calc(var(--stagger) * 0.1s);
+  }
+
+  /* Gradient text effect */
+  .gradient-text {
+    @apply bg-gradient-to-r from-accent-500 via-blue-600 to-purple-600 bg-clip-text text-transparent;
+  }
+
+  /* Subtle pulse animation for important elements */
+  .pulse-soft {
+    animation: pulseSoft 2s ease-in-out infinite;
+  }
+
+  @keyframes pulseSoft {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Cool hover effects */
+  .icon-hover {
+    @apply transition-all duration-300 group-hover:scale-110 group-hover:rotate-6;
+  }
+  
+  .text-hover {
+    @apply transition-all duration-300 group-hover:text-blue-600;
+  }
+  
+  .bg-hover {
+    @apply transition-all duration-300 group-hover:bg-blue-100;
+  }
+  
+  .shimmer-effect {
+    @apply relative overflow-hidden;
+  }
+  
+  .shimmer-effect::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000;
+  }
+  
+  .floating-animation {
+    animation: floating 3s ease-in-out infinite;
+  }
+  
+  @keyframes floating {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-10px) rotate(1deg); }
+    66% { transform: translateY(-5px) rotate(-1deg); }
+  }
+  
+  .magnetic-effect {
+    @apply transition-transform duration-200 ease-out;
+  }
+  
+  .magnetic-effect:hover {
+    transform: translate(var(--mouse-x, 0), var(--mouse-y, 0)) scale(1.05);
+  }
+
+  /* Custom cursor and particle effects */
+  .animate-spin-slow {
+    animation: spin-slow 3s linear infinite;
+  }
+
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* Tech particle effects */
+  .tech-particle {
+    animation: techParticle 1s ease-out forwards;
+  }
+
+  @keyframes techParticle {
+    0% { 
+      opacity: 1; 
+      transform: translate(-50%, -50%) scale(1);
+    }
+    100% { 
+      opacity: 0; 
+      transform: translate(-50%, -50%) scale(0.5) translateY(-20px);
+    }
+  }
+
+  /* Hide cursor only in hero section on desktop */
+  @media (min-width: 768px) {
+    .cursor-none {
+      cursor: none;
+    }
+  }
+
+  /* Ensure cursor effects are visible */
+  .custom-cursor {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  /* Better tech particle animation */
+  .tech-particle {
+    will-change: transform, opacity;
+  }
+}

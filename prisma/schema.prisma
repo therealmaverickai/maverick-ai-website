@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Assessment {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Contact Info
+  name     String
+  email    String
+  role     String
+  company  String
+  website  String?
+
+  // Assessment Questions
+  aiVisionClarity         Int
+  visionFormalized        String
+  aiStrategicImportance   String
+  competitiveAdvantage    Int
+  investmentPlans         String
+  currentProjects         String
+  aiAreas                 String? // JSON array as string
+  pilotProjects           String
+  employeeUsage           Int
+  managementUsage         Int
+  mainChallenges          String? // JSON array as string
+  partnerships            String
+  dataReadiness           String
+  internalSkills          String
+  trainingInitiatives     String
+  decisionMakerAwareness  String
+  dedicatedTeam           String
+  aiPolicies              String
+  aiMetrics               String
+
+  // Custom prompt (optional)
+  customPrompt            String?
+
+  // Assessment Results
+  assessmentScore         Int
+  assessmentCluster       String
+  assessmentDetails       String? // JSON as string
+  
+  // AI Generated Summary
+  aiSummary               String?
+
+  @@map("assessments")
+}
