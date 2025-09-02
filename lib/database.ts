@@ -45,7 +45,11 @@ interface AssessmentData {
   assessment: {
     score: number
     cluster: string
-    details: any
+    details: {
+      totalScore: number
+      maxPossibleScore: number
+      normalizedScore: number
+    }
   }
   
   aiSummary?: string

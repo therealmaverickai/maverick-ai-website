@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         success: false,
         error: 'Dati non validi',
-        details: validationResult.error.issues
+        details: validationResult.error.errors
       }, { status: 400 })
     }
 
