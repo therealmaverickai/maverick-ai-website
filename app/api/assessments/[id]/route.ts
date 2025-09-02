@@ -3,10 +3,11 @@ import { getAssessment } from '@/lib/database'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const result = await getAssessment(params.id)
+    const { id } = await params
+    const result = await getAssessment(id)
 
     if (!result.success) {
       return NextResponse.json({

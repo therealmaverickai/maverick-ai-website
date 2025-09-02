@@ -54,11 +54,11 @@ export async function POST(request: NextRequest) {
     const validationResult = assessmentSchema.safeParse(body)
     if (!validationResult.success) {
       console.error('Validation failed:')
-      console.error('Errors:', validationResult.error.errors)
+      console.error('Errors:', validationResult.error.issues)
       console.error('Raw error:', validationResult.error)
       
       // Check for specific validation errors
-      const emailError = validationResult.error.errors?.find(e => e.path?.includes('email'))
+      const emailError = validationResult.error.issues?.find(e => e.path?.includes('email'))
       const errorMessage = emailError ? 
         'Per favore inserisci un indirizzo email valido' : 
         'Alcuni campi non sono stati compilati correttamente'
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         success: false,
         error: errorMessage,
-        details: validationResult.error.errors
+        details: validationResult.error.issues
       }, { status: 400 })
     }
 

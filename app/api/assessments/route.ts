@@ -94,23 +94,23 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({
         success: true,
         assessments: result.data,
-        count: result.data.length
+        count: result.data?.length || 0
       })
     }
 
     // Format the data for better readability
-    const formattedAssessments = result.data.map(formatAssessmentData)
+    const formattedAssessments = result.data?.map(formatAssessmentData) || []
 
     return NextResponse.json({
       success: true,
       summary: {
-        totalAssessments: result.data.length,
-        companies: [...new Set(result.data.map(a => a.company))].length,
-        averageScore: Math.round(result.data.reduce((acc, a) => acc + a.assessmentScore, 0) / result.data.length) || 0,
-        clusters: result.data.reduce((acc, a) => {
+        totalAssessments: result.data?.length || 0,
+        companies: Array.from(new Set(result.data?.map(a => a.company) || [])).length,
+        averageScore: result.data?.length ? Math.round(result.data.reduce((acc, a) => acc + a.assessmentScore, 0) / result.data.length) : 0,
+        clusters: result.data?.reduce((acc, a) => {
           acc[a.assessmentCluster] = (acc[a.assessmentCluster] || 0) + 1
           return acc
-        }, {} as Record<string, number>)
+        }, {} as Record<string, number>) || {}
       },
       assessments: formattedAssessments
     })
