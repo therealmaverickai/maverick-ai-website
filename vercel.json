@@ -1,4 +1,5 @@
 {
+  "name": "maverick-ai-website",
   "framework": "nextjs",
   "buildCommand": "prisma generate && next build",
   "installCommand": "npm ci",

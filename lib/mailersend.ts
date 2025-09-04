@@ -12,10 +12,27 @@ export interface ContactFormData {
 // Initialize MailerSend client
 function getMailerSendClient() {
   const apiKey = process.env.MAILERSEND_API_TOKEN
+  console.log('MailerSend: Environment variables check:')
+  console.log('- MAILERSEND_API_TOKEN exists:', !!apiKey)
+  console.log('- MAILERSEND_FROM_EMAIL:', process.env.MAILERSEND_FROM_EMAIL)
+  console.log('- API Token format check:', apiKey ? (apiKey.startsWith('mlsn.') ? 'Valid format' : 'Invalid format - should start with mlsn.') : 'No token')
+  
   if (!apiKey) {
     throw new Error('MAILERSEND_API_TOKEN is required')
   }
-  return new MailerSend({ apiKey })
+  
+  if (!apiKey.startsWith('mlsn.')) {
+    console.warn('MailerSend: API token might be invalid - should start with "mlsn."')
+  }
+  
+  try {
+    const client = new MailerSend({ apiKey })
+    console.log('MailerSend: Client created successfully')
+    return client
+  } catch (error) {
+    console.error('MailerSend: Failed to create client:', error)
+    throw error
+  }
 }
 
 export async function sendContactEmailWithMailerSend(data: ContactFormData): Promise<{ success: boolean; messageId?: string; error?: string }> {
@@ -23,6 +40,7 @@ export async function sendContactEmailWithMailerSend(data: ContactFormData): Pro
     console.log('MailerSend: Starting contact email send process')
     console.log('MailerSend: API Token exists:', !!process.env.MAILERSEND_API_TOKEN)
     console.log('MailerSend: From email:', process.env.MAILERSEND_FROM_EMAIL)
+    console.log('MailerSend: API Token value:', process.env.MAILERSEND_API_TOKEN ? `${process.env.MAILERSEND_API_TOKEN.substring(0, 10)}...` : 'undefined')
     
     const mailerSend = getMailerSendClient()
     console.log('MailerSend: Client initialized successfully')
@@ -138,33 +156,71 @@ Data: ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })}
     const replyTo = new Recipient(data.email, data.name)
 
     // Create email parameters
+    console.log('MailerSend: Creating email params...')
+    console.log('MailerSend: Sender:', sentFrom)
+    console.log('MailerSend: Recipients:', recipients)
+    console.log('MailerSend: Reply-to:', replyTo)
+    
     const emailParams = new EmailParams()
       .setFrom(sentFrom)
       .setTo(recipients)
-      .setReplyTo(replyTo)
+      .setReplyTo([replyTo])  // MailerSend expects array for reply-to
       .setSubject(`🚀 Nuova richiesta di contatto da ${data.name}`)
       .setHtml(htmlContent)
       .setText(textContent)
+      
+    console.log('MailerSend: Email params created successfully')
 
     // Send the email
     console.log('MailerSend: Attempting to send email...')
+    console.log('MailerSend: Email params before sending:', JSON.stringify({
+      from: emailParams.from,
+      to: emailParams.to,
+      replyTo: emailParams.reply_to,
+      subject: emailParams.subject
+    }, null, 2))
+    
     const response = await mailerSend.email.send(emailParams)
     console.log('MailerSend: Email sent successfully')
     console.log('MailerSend: Response status:', response.status)
+    console.log('MailerSend: Response body:', response.body)
     console.log('MailerSend: Message ID:', response.body?.messageId)
     
     return {
       success: true,
       messageId: response.body?.messageId || 'sent'
     }
-  } catch (error) {
-    console.error('MailerSend error:', error)
+  } catch (error: any) {
+    console.error('MailerSend error occurred:', error)
     console.error('MailerSend error type:', typeof error)
     console.error('MailerSend error message:', error instanceof Error ? error.message : 'Unknown error')
+    
+    // Check for specific MailerSend API errors
+    if (error.response) {
+      console.error('MailerSend API response error:', error.response.status)
+      console.error('MailerSend API response data:', error.response.data)
+      console.error('MailerSend API response headers:', error.response.headers)
+    } else if (error.request) {
+      console.error('MailerSend API request error (no response):', error.request)
+    }
+    
     console.error('MailerSend error full object:', JSON.stringify(error, null, 2))
+    
+    // Provide specific error messages for common issues
+    let errorMessage = 'Unknown error'
+    if (error.response?.status === 401) {
+      errorMessage = 'Invalid MailerSend API token'
+    } else if (error.response?.status === 422) {
+      errorMessage = 'MailerSend validation error - check email format and domain verification'
+    } else if (error.response?.status === 429) {
+      errorMessage = 'MailerSend rate limit exceeded'
+    } else if (error instanceof Error) {
+      errorMessage = error.message
+    }
+    
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error'
+      error: errorMessage
     }
   }
 }
@@ -246,6 +302,42 @@ export async function sendConfirmationEmailWithMailerSend(data: ContactFormData)
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error'
+    }
+  }
+}
+
+// Test function to validate MailerSend configuration
+export async function testMailerSendConfiguration(): Promise<{ success: boolean; error?: string }> {
+  try {
+    console.log('MailerSend: Testing configuration...')
+    const client = getMailerSendClient()
+    console.log('MailerSend: Client initialized successfully for test')
+    
+    // Test with a simple email setup (don't send, just validate)
+    const sentFrom = new Sender(
+      process.env.MAILERSEND_FROM_EMAIL || 'info@maverickai.it',
+      'Maverick AI Test'
+    )
+    
+    const recipients = [
+      new Recipient('test@example.com', 'Test User')
+    ]
+    
+    const emailParams = new EmailParams()
+      .setFrom(sentFrom)
+      .setTo(recipients)
+      .setSubject('Configuration Test')
+      .setHtml('<p>This is a test email</p>')
+    
+    console.log('MailerSend: Email params created successfully for test')
+    console.log('MailerSend: Configuration appears valid')
+    
+    return { success: true }
+  } catch (error: any) {
+    console.error('MailerSend: Configuration test failed:', error)
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : 'Configuration test failed'
     }
   }
 }
