@@ -353,6 +353,11 @@ export async function sendAssessmentResultsWithMailerSend(assessmentData: any): 
         </div>
         
         <div class="content">
+          ${isTrialAccount ? `
+          <div style="background: #fef3c7; border: 1px solid #f59e0b; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+            <strong>🧪 MODALITÀ TEST:</strong> Questo è un test dell'automazione email. In produzione, questa email sarebbe stata inviata direttamente a <strong>${assessmentData.email}</strong>.
+          </div>
+          ` : ''}
           <h2>Ciao ${assessmentData.name},</h2>
           <p>Grazie per aver completato il nostro AI Readiness Assessment per <strong>${assessmentData.company}</strong>. Ecco i tuoi risultati dettagliati:</p>
           
@@ -461,15 +466,25 @@ Web: www.maverickai.it
     const fromEmail = process.env.MAILERSEND_FROM_EMAIL || 'federico.thiella@maverickai.it'
     const sentFrom = new Sender(fromEmail, 'Maverick AI Assessment')
 
+    // For trial accounts, send to administrator email with user info in subject/content
+    // In production, this will be changed to send to the actual user
+    const isTrialAccount = true // Set to false when upgrading from trial
     const recipients = [
-      new Recipient(assessmentData.email, assessmentData.name)
+      new Recipient(
+        isTrialAccount ? (process.env.MAILERSEND_ADMIN_EMAIL || 'federico.thiella@maverickai.it') : assessmentData.email,
+        isTrialAccount ? 'Maverick AI Admin' : assessmentData.name
+      )
     ]
 
     // Build email parameters step by step
     const mailParams = new EmailParams()
     mailParams.setFrom(sentFrom)
     mailParams.setTo(recipients)
-    mailParams.setSubject(`🤖 I tuoi risultati AI Readiness Assessment - ${assessmentData.company}`)
+    mailParams.setSubject(
+      isTrialAccount 
+        ? `🧪 [TEST] AI Assessment Results for ${assessmentData.name} (${assessmentData.company})` 
+        : `🤖 I tuoi risultati AI Readiness Assessment - ${assessmentData.company}`
+    )
     mailParams.setHtml(htmlContent)
     mailParams.setText(textContent)
       
