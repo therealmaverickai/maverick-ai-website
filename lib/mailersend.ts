@@ -316,6 +316,220 @@ export async function sendConfirmationEmailWithMailerSend(data: ContactFormData)
   }
 }
 
+export async function sendAssessmentResultsWithMailerSend(assessmentData: any): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  try {
+    console.log('MailerSend: Starting assessment results email send process')
+    console.log('MailerSend: Sending to:', assessmentData.email)
+    console.log('MailerSend: Company:', assessmentData.company)
+    
+    const mailerSendClient = getMailerSendClient()
+    console.log('MailerSend: Client initialized successfully for assessment')
+
+    // HTML content for assessment results email
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .header { background: linear-gradient(135deg, #0F172A, #1E293B); color: white; padding: 30px; text-align: center; }
+          .content { padding: 30px; background: #f9f9f9; }
+          .results { background: white; border-radius: 10px; padding: 20px; margin: 20px 0; border-left: 5px solid #3B82F6; }
+          .score { font-size: 48px; font-weight: bold; color: #3B82F6; text-align: center; margin: 20px 0; }
+          .cluster { font-size: 24px; font-weight: bold; color: #0F172A; text-align: center; margin-bottom: 20px; }
+          .section { margin-bottom: 25px; }
+          .question { font-weight: bold; color: #0F172A; margin-bottom: 5px; }
+          .answer { color: #666; margin-bottom: 15px; padding-left: 20px; }
+          .footer { background: #0F172A; color: white; padding: 20px; text-align: center; }
+          .ai-summary { background: #f0f9ff; border-left: 4px solid #3B82F6; padding: 20px; margin: 30px 0; border-radius: 8px; }
+          .cta-box { background: #3B82F6; color: white; padding: 20px; border-radius: 10px; text-align: center; margin: 30px 0; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>🤖 AI Readiness Assessment - I tuoi Risultati</h1>
+          <p>Maverick AI</p>
+        </div>
+        
+        <div class="content">
+          <h2>Ciao ${assessmentData.name},</h2>
+          <p>Grazie per aver completato il nostro AI Readiness Assessment per <strong>${assessmentData.company}</strong>. Ecco i tuoi risultati dettagliati:</p>
+          
+          <div class="results">
+            <div class="score">${assessmentData.assessment.score}%</div>
+            <div class="cluster">${assessmentData.assessment.cluster}</div>
+            <p style="text-align: center; color: #666;">
+              Il livello di preparazione AI di <strong>${assessmentData.company}</strong> si classifica come "<strong>${assessmentData.assessment.cluster}</strong>"
+            </p>
+          </div>
+
+          <div class="ai-summary">
+            <h3 style="color: #1e40af; margin-bottom: 15px; font-size: 18px;">
+              🤖 Executive Summary AI-Generated
+            </h3>
+            <div style="color: #374151; line-height: 1.6;">
+              ${assessmentData.aiSummary ? assessmentData.aiSummary.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') : 'Analisi in elaborazione...'}
+            </div>
+            <p style="text-align: right; font-size: 12px; color: #6b7280; margin-top: 15px;">
+              <em>Analisi generata da Maverick AI</em>
+            </p>
+          </div>
+
+          <h3>📊 Riepilogo Assessment</h3>
+          
+          <div class="section">
+            <h4>👤 Informazioni Aziendali</h4>
+            <div class="question">Nome:</div>
+            <div class="answer">${assessmentData.name}</div>
+            <div class="question">Ruolo:</div>
+            <div class="answer">${assessmentData.role}</div>
+            <div class="question">Società:</div>
+            <div class="answer">${assessmentData.company}</div>
+            ${assessmentData.website ? `<div class="question">Sito web:</div><div class="answer">${assessmentData.website}</div>` : ''}
+          </div>
+
+          <div class="section">
+            <h4>🎯 Risultati Chiave</h4>
+            <div class="question">Punteggio Complessivo:</div>
+            <div class="answer"><strong>${assessmentData.assessment.score}% - ${assessmentData.assessment.cluster}</strong></div>
+            <div class="question">Chiarezza visione AI:</div>
+            <div class="answer">${assessmentData.aiVisionClarity || 'N/A'}/5</div>
+            <div class="question">Vantaggio competitivo AI:</div>
+            <div class="answer">${assessmentData.competitiveAdvantage || 'N/A'}/5</div>
+            <div class="question">Utilizzo corrente AI (dipendenti):</div>
+            <div class="answer">${assessmentData.employeeUsage || 'N/A'}/5</div>
+            <div class="question">Utilizzo corrente AI (management):</div>
+            <div class="answer">${assessmentData.managementUsage || 'N/A'}/5</div>
+          </div>
+          
+          <div class="cta-box">
+            <h3>🚀 Prossimi Passi</h3>
+            <p>Basandoci sui tuoi risultati, possiamo aiutarti a sviluppare una roadmap personalizzata per accelerare la trasformazione AI di <strong>${assessmentData.company}</strong>.</p>
+            <p style="margin-top: 20px;">
+              <strong>Vuoi saperne di più?</strong><br>
+              Contattaci per una consulenza personalizzata gratuita!
+            </p>
+            <p style="margin-top: 15px;">
+              📧 <strong>info@maverickai.it</strong> | 🌐 <strong>www.maverickai.it</strong>
+            </p>
+          </div>
+        </div>
+        
+        <div class="footer">
+          <p>Maverick AI - Partner strategici per la trasformazione digitale</p>
+          <p>Questo report è stato generato automaticamente dal nostro AI Assessment Tool.</p>
+        </div>
+      </body>
+      </html>
+    `
+
+    // Text content for the email
+    const textContent = `
+AI Readiness Assessment - Risultati per ${assessmentData.company}
+
+Ciao ${assessmentData.name},
+
+Grazie per aver completato il nostro AI Readiness Assessment. Ecco un riepilogo dei tuoi risultati:
+
+PUNTEGGIO COMPLESSIVO: ${assessmentData.assessment.score}% - ${assessmentData.assessment.cluster}
+
+EXECUTIVE SUMMARY:
+${assessmentData.aiSummary || 'Analisi in elaborazione...'}
+
+INFORMAZIONI AZIENDALI:
+- Nome: ${assessmentData.name}
+- Ruolo: ${assessmentData.role}
+- Società: ${assessmentData.company}
+${assessmentData.website ? `- Sito web: ${assessmentData.website}` : ''}
+
+RISULTATI CHIAVE:
+- Chiarezza visione AI: ${assessmentData.aiVisionClarity || 'N/A'}/5
+- Vantaggio competitivo AI: ${assessmentData.competitiveAdvantage || 'N/A'}/5
+- Utilizzo AI dipendenti: ${assessmentData.employeeUsage || 'N/A'}/5
+- Utilizzo AI management: ${assessmentData.managementUsage || 'N/A'}/5
+
+PROSSIMI PASSI:
+Contattaci per una consulenza personalizzata gratuita e sviluppare insieme una roadmap AI su misura per ${assessmentData.company}.
+
+Maverick AI
+Email: info@maverickai.it
+Web: www.maverickai.it
+    `
+
+    // Configure sender and recipient
+    const fromEmail = process.env.MAILERSEND_FROM_EMAIL || 'federico.thiella@maverickai.it'
+    const sentFrom = new Sender(fromEmail, 'Maverick AI Assessment')
+
+    const recipients = [
+      new Recipient(assessmentData.email, assessmentData.name)
+    ]
+
+    // Build email parameters step by step
+    const mailParams = new EmailParams()
+    mailParams.setFrom(sentFrom)
+    mailParams.setTo(recipients)
+    mailParams.setSubject(`🤖 I tuoi risultati AI Readiness Assessment - ${assessmentData.company}`)
+    mailParams.setHtml(htmlContent)
+    mailParams.setText(textContent)
+      
+    console.log('MailerSend: Assessment email params built successfully')
+
+    // Send the email
+    console.log('MailerSend: Attempting to send assessment results email...')
+    
+    const emailResponse = await mailerSendClient.email.send(mailParams)
+    console.log('MailerSend: Assessment email sent successfully')
+    console.log('MailerSend: Response:', emailResponse)
+    console.log('MailerSend: Message ID:', emailResponse.body?.messageId)
+    
+    return {
+      success: true,
+      messageId: emailResponse.body?.messageId || 'sent'
+    }
+  } catch (error: any) {
+    console.error('MailerSend assessment email error occurred:', error)
+    console.error('MailerSend error type:', typeof error)
+    console.error('MailerSend error message:', error instanceof Error ? error.message : 'Unknown error')
+    
+    // Check for specific MailerSend API errors
+    if (error.response) {
+      console.error('MailerSend API response error:', error.response.status)
+      console.error('MailerSend API response data:', error.response.data)
+      console.error('MailerSend API response headers:', error.response.headers)
+    } else if (error.request) {
+      console.error('MailerSend API request error (no response):', error.request)
+    }
+    
+    console.error('MailerSend error full object:', JSON.stringify(error, null, 2))
+    
+    // Provide specific error messages for common issues
+    let errorMessage = 'Unknown error'
+    if (error.statusCode === 401) {
+      errorMessage = 'Invalid MailerSend API token'
+    } else if (error.statusCode === 422) {
+      if (error.body?.message?.includes('Trial accounts')) {
+        errorMessage = 'MailerSend trial account limitation - emails can only be sent to administrator email'
+      } else if (error.body?.message?.includes('domain must be verified')) {
+        errorMessage = 'MailerSend domain verification required - please verify your sending domain'
+      } else {
+        errorMessage = 'MailerSend validation error - ' + (error.body?.message || 'check configuration')
+      }
+    } else if (error.statusCode === 429) {
+      errorMessage = 'MailerSend rate limit exceeded'
+    } else if (error instanceof Error) {
+      errorMessage = error.message
+    } else if (error.body?.message) {
+      errorMessage = error.body.message
+    }
+    
+    return {
+      success: false,
+      error: errorMessage
+    }
+  }
+}
+
 // Test function to validate MailerSend configuration
 export async function testMailerSendConfiguration(): Promise<{ success: boolean; error?: string }> {
   try {

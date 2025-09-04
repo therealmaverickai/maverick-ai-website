@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sendContactEmail } from '@/lib/email'
+import { sendAssessmentResultsWithMailerSend } from '@/lib/mailersend'
 import { generateAISummary } from '@/lib/openai'
 import { saveAssessment } from '@/lib/database'
 import { z } from 'zod'
@@ -303,31 +304,31 @@ Contatta il nostro team per una consultazione gratuita dove approfondiremo i ris
       </html>
     `
 
-    // Send detailed assessment email (temporarily disabled due to email service issues)
-    console.log('Email sending temporarily disabled - would send to:', data.email)
+    // Send detailed assessment results email using MailerSend
+    console.log('Sending assessment results email to:', data.email)
     
-    /*
-    const emailResult = await sendContactEmail({
-      name: data.name,
-      email: data.email,
-      company: data.company,
-      message: `AI Readiness Assessment completato - Score: ${data.assessment.score}% (${data.assessment.cluster})`,
-      services: ['AI Readiness Assessment']
-    })
+    try {
+      const emailResult = await sendAssessmentResultsWithMailerSend({
+        ...data,
+        aiSummary
+      })
 
-    if (!emailResult.success) {
-      console.error('Failed to send assessment email:', emailResult.error)
-      return NextResponse.json({
-        success: false,
-        error: 'Errore nell\'invio dell\'email. Riprova più tardi.'
-      }, { status: 500 })
+      if (!emailResult.success) {
+        console.error('Failed to send assessment results email:', emailResult.error)
+        // Don't fail the entire request if email fails - user still gets results on screen
+        console.log('Email failed but assessment completed successfully')
+      } else {
+        console.log('Assessment results email sent successfully:', emailResult.messageId)
+      }
+    } catch (emailError) {
+      console.error('Error sending assessment email:', emailError)
+      // Continue with success response even if email fails
     }
-    */
 
     // Return success response with AI summary
     return NextResponse.json({
       success: true,
-      message: 'Assessment completato con successo! Controlla la tua email per il report dettagliato.',
+      message: 'Assessment completato con successo! Tra poco riceverai un email con il report dettagliato.',
       assessment: {
         ...data.assessment,
         aiSummary
