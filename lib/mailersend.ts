@@ -39,7 +39,8 @@ export async function sendContactEmailWithMailerSend(data: ContactFormData): Pro
   try {
     console.log('MailerSend: Starting fresh email send process')
     console.log('MailerSend: API Token exists:', !!process.env.MAILERSEND_API_TOKEN)
-    console.log('MailerSend: From email:', process.env.MAILERSEND_FROM_EMAIL)
+    console.log('MailerSend: From email env var:', process.env.MAILERSEND_FROM_EMAIL)
+    console.log('MailerSend: Using from email:', process.env.MAILERSEND_FROM_EMAIL || 'fedethl@gmail.com')
     console.log('MailerSend: API Token value:', process.env.MAILERSEND_API_TOKEN ? `${process.env.MAILERSEND_API_TOKEN.substring(0, 10)}...` : 'undefined')
     
     const mailerSendClient = getMailerSendClient()
@@ -142,11 +143,10 @@ ${data.message}
 Data: ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })}
     `
 
-    // Configure sender and recipient
-    const sentFrom = new Sender(
-      process.env.MAILERSEND_FROM_EMAIL || 'info@maverickai.it',
-      'Maverick AI Website'
-    )
+    // Configure sender - for trial accounts, use verified email
+    // Trial accounts can only send from verified domains/emails
+    const fromEmail = process.env.MAILERSEND_FROM_EMAIL || 'fedethl@gmail.com'
+    const sentFrom = new Sender(fromEmail, 'Maverick AI Website')
 
     // For trial accounts, MailerSend requires sending to administrator email
     // Change this to the email you used to register your MailerSend account
