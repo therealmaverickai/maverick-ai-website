@@ -164,7 +164,7 @@ Data: ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })}
     const emailParams = new EmailParams()
       .setFrom(sentFrom)
       .setTo(recipients)
-      .setReplyTo([replyTo])  // MailerSend expects array for reply-to
+      .setReplyTo(replyTo)  // MailerSend expects single Recipient object
       .setSubject(`🚀 Nuova richiesta di contatto da ${data.name}`)
       .setHtml(htmlContent)
       .setText(textContent)
