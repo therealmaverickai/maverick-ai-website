@@ -143,9 +143,9 @@ ${data.message}
 Data: ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })}
     `
 
-    // Configure sender - for trial accounts, use verified email
-    // Trial accounts can only send from verified domains/emails
-    const fromEmail = process.env.MAILERSEND_FROM_EMAIL || 'fedethl@gmail.com'
+    // Configure sender - use verified domain email
+    // Since maverickai.it domain is verified, use federico.thiella@maverickai.it
+    const fromEmail = process.env.MAILERSEND_FROM_EMAIL || 'federico.thiella@maverickai.it'
     const sentFrom = new Sender(fromEmail, 'Maverick AI Website')
 
     // For trial accounts, MailerSend requires sending to administrator email
