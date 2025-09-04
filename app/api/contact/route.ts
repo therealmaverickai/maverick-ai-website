@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sendContactEmail, sendConfirmationEmail, ContactFormData } from '@/lib/email'
+import { sendContactEmailWithMailerSend, sendConfirmationEmailWithMailerSend } from '@/lib/mailersend'
 import { z } from 'zod'
 
 // Validation schema for contact form
@@ -33,23 +34,35 @@ export async function POST(request: NextRequest) {
     const clientIP = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
     console.log(`Contact form submission from IP: ${clientIP}`)
 
-    // Send email to info@maverickai.it
-    const emailResult = await sendContactEmail(data)
+    // Send email to info@maverickai.it using MailerSend
+    console.log('Attempting to send contact email via MailerSend')
+    const emailResult = await sendContactEmailWithMailerSend(data)
     
     if (!emailResult.success) {
-      console.error('Failed to send contact email:', emailResult.error)
-      return NextResponse.json({
-        success: false,
-        error: 'Errore nell\'invio dell\'email. Riprova più tardi.'
-      }, { status: 500 })
+      console.error('Failed to send contact email via MailerSend:', emailResult.error)
+      // Fallback to Nodemailer if MailerSend fails
+      console.log('Falling back to Nodemailer')
+      const fallbackResult = await sendContactEmail(data)
+      if (!fallbackResult.success) {
+        return NextResponse.json({
+          success: false,
+          error: 'Errore nell\'invio dell\'email. Riprova più tardi.'
+        }, { status: 500 })
+      }
     }
 
     // Send confirmation email to user (optional - don't fail if this fails)
     try {
-      await sendConfirmationEmail(data)
+      console.log('Attempting to send confirmation email via MailerSend')
+      await sendConfirmationEmailWithMailerSend(data)
     } catch (confirmationError) {
-      console.warn('Failed to send confirmation email:', confirmationError)
-      // Continue anyway - main email was sent successfully
+      console.warn('Failed to send confirmation email via MailerSend:', confirmationError)
+      // Try fallback
+      try {
+        await sendConfirmationEmail(data)
+      } catch (fallbackError) {
+        console.warn('Fallback confirmation email also failed:', fallbackError)
+      }
     }
 
     // Return success response
