@@ -141,6 +141,11 @@ export default function HeroSection() {
       </div>
 
       <div className="container-width relative z-0">
+        {process.env.NODE_ENV === 'development' && (
+          <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-2 rounded-lg mb-4 text-center">
+            🚧 Development Environment - Testing New Features
+          </div>
+        )}
         <div className="text-center max-w-4xl mx-auto">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-8 leading-tight text-gray-900 px-4">
             Diamo forma al <br className="hidden sm:block" />
