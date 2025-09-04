@@ -1,12 +1,21 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const cursorRef = useRef<HTMLDivElement>(null)
   const particlesRef = useRef<HTMLDivElement[]>([])
+  const [isPreview, setIsPreview] = useState(false)
+
+  useEffect(() => {
+    // Check if this is a preview environment
+    if (typeof window !== 'undefined') {
+      const hostname = window.location.hostname
+      setIsPreview(hostname.includes('git-') || hostname.includes('preview') || hostname.includes('vercel.app'))
+    }
+  }, [])
 
   useEffect(() => {
     const section = sectionRef.current
@@ -141,7 +150,7 @@ export default function HeroSection() {
       </div>
 
       <div className="container-width relative z-0">
-        {(process.env.NODE_ENV === 'development' || process.env.VERCEL_ENV === 'preview') && (
+        {isPreview && (
           <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-2 rounded-lg mb-4 text-center">
             🚧 Preview Environment - Testing New Features
           </div>
