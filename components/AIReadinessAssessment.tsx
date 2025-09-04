@@ -292,8 +292,9 @@ export default function AIReadinessAssessment() {
         }),
       })
 
+      const apiResult = await response.json()
+      
       if (response.ok) {
-        const apiResult = await response.json()
         if (apiResult.success && apiResult.assessment) {
           setResults(apiResult.assessment)
           
@@ -302,6 +303,14 @@ export default function AIReadinessAssessment() {
         } else {
           setResults(assessment)
         }
+        nextStep()
+      } else {
+        // Handle validation errors
+        console.error('Assessment submission failed:', apiResult)
+        alert(`Errore nell'invio: ${apiResult.error || 'Si è verificato un errore'}`)
+        
+        // Still show local results as fallback
+        setResults(assessment)
         nextStep()
       }
     } catch (error) {
