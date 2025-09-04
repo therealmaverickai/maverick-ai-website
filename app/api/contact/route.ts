@@ -15,12 +15,17 @@ const contactSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('Contact API: Request received')
+    
     // Parse request body
     const body = await request.json()
+    console.log('Contact API: Request body:', JSON.stringify(body, null, 2))
     
     // Validate data
     const validationResult = contactSchema.safeParse(body)
+    console.log('Contact API: Validation result:', validationResult.success)
     if (!validationResult.success) {
+      console.log('Contact API: Validation failed:', validationResult.error.errors)
       return NextResponse.json({
         success: false,
         error: 'Dati non validi',
