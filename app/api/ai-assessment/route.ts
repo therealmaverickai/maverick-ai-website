@@ -80,6 +80,24 @@ export async function POST(request: NextRequest) {
 
     const data = validationResult.data
 
+    // Cast data to ensure compatibility with OpenAI interface
+    const openaiData = {
+      ...data,
+      visionFormalized: data.visionFormalized || 'no',
+      aiStrategicImportance: data.aiStrategicImportance || 'no',
+      investmentPlans: data.investmentPlans || 'no',
+      currentProjects: data.currentProjects || '0',
+      pilotProjects: data.pilotProjects || 'no',
+      partnerships: data.partnerships || 'no',
+      dataReadiness: data.dataReadiness || 'no',
+      internalSkills: data.internalSkills || 'no',
+      trainingInitiatives: data.trainingInitiatives || 'no',
+      decisionMakerAwareness: data.decisionMakerAwareness || 'no',
+      dedicatedTeam: data.dedicatedTeam || 'no',
+      aiPolicies: data.aiPolicies || 'no',
+      aiMetrics: data.aiMetrics || 'no'
+    } as any
+
     // Generate AI-powered executive summary
     console.log('Generating AI summary for', data.company)
     let aiSummary = ''
@@ -129,24 +147,6 @@ Contatta il nostro team per una consultazione gratuita dove approfondiremo i ris
     
     // Try OpenAI API first, fallback to custom analysis
     try {
-      // Cast data to ensure compatibility with OpenAI interface
-      const openaiData = {
-        ...data,
-        visionFormalized: data.visionFormalized || 'no',
-        aiStrategicImportance: data.aiStrategicImportance || 'no',
-        investmentPlans: data.investmentPlans || 'no',
-        currentProjects: data.currentProjects || '0',
-        pilotProjects: data.pilotProjects || 'no',
-        partnerships: data.partnerships || 'no',
-        dataReadiness: data.dataReadiness || 'no',
-        internalSkills: data.internalSkills || 'no',
-        trainingInitiatives: data.trainingInitiatives || 'no',
-        decisionMakerAwareness: data.decisionMakerAwareness || 'no',
-        dedicatedTeam: data.dedicatedTeam || 'no',
-        aiPolicies: data.aiPolicies || 'no',
-        aiMetrics: data.aiMetrics || 'no'
-      } as any
-      
       aiSummary = await generateAISummary(openaiData, data.customPrompt)
       console.log('AI Summary generated via OpenAI:', aiSummary.substring(0, 100) + '...')
     } catch (error: any) {
@@ -162,7 +162,7 @@ Contatta il nostro team per una consultazione gratuita dove approfondiremo i ris
 
     // Save assessment to database
     console.log('Saving assessment to database for', data.company)
-    const saveResult = await saveAssessment(data, aiSummary)
+    const saveResult = await saveAssessment(openaiData, aiSummary)
     if (!saveResult.success) {
       console.error('Failed to save assessment:', saveResult.error)
     } else {
