@@ -162,12 +162,12 @@ Data: ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })}
     console.log('MailerSend: Reply-to:', replyTo)
     
     const emailParams = new EmailParams()
-      .setFrom(sentFrom)
-      .setTo(recipients)
-      .setReplyTo(replyTo)
-      .setSubject(`🚀 Nuova richiesta di contatto da ${data.name}`)
-      .setHtml(htmlContent)
-      .setText(textContent)
+    emailParams.setFrom(sentFrom)
+    emailParams.setTo(recipients)
+    emailParams.setReplyTo(replyTo)
+    emailParams.setSubject(`🚀 Nuova richiesta di contatto da ${data.name}`)
+    emailParams.setHtml(htmlContent)
+    emailParams.setText(textContent)
       
     console.log('MailerSend: Email params created successfully')
 
