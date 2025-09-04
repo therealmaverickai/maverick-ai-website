@@ -9,7 +9,7 @@ const contactSchema = z.object({
   email: z.string().email('Email non valida'),
   company: z.string().max(100, 'Nome azienda troppo lungo').optional(),
   phone: z.string().max(20, 'Numero di telefono troppo lungo').optional(),
-  message: z.string().min(10, 'Messaggio deve essere di almeno 10 caratteri').max(2000, 'Messaggio troppo lungo'),
+  message: z.string().min(5, 'Messaggio deve essere di almeno 5 caratteri').max(2000, 'Messaggio troppo lungo'),
   services: z.array(z.string()).optional(),
 })
 
