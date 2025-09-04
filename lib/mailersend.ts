@@ -322,6 +322,10 @@ export async function sendAssessmentResultsWithMailerSend(assessmentData: any): 
     console.log('MailerSend: Sending to:', assessmentData.email)
     console.log('MailerSend: Company:', assessmentData.company)
     
+    // For trial accounts, send to administrator email with user info in subject/content
+    // In production, this will be changed to send to the actual user
+    const isTrialAccount = true // Set to false when upgrading from trial
+    
     const mailerSendClient = getMailerSendClient()
     console.log('MailerSend: Client initialized successfully for assessment')
 
@@ -466,9 +470,6 @@ Web: www.maverickai.it
     const fromEmail = process.env.MAILERSEND_FROM_EMAIL || 'federico.thiella@maverickai.it'
     const sentFrom = new Sender(fromEmail, 'Maverick AI Assessment')
 
-    // For trial accounts, send to administrator email with user info in subject/content
-    // In production, this will be changed to send to the actual user
-    const isTrialAccount = true // Set to false when upgrading from trial
     const recipients = [
       new Recipient(
         isTrialAccount ? (process.env.MAILERSEND_ADMIN_EMAIL || 'federico.thiella@maverickai.it') : assessmentData.email,
