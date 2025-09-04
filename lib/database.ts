@@ -57,6 +57,10 @@ interface AssessmentData {
 
 export async function saveAssessment(data: AssessmentData, aiSummary: string) {
   try {
+    console.log('Attempting to save assessment for:', data.company)
+    console.log('Database URL exists:', !!process.env.DATABASE_URL)
+    console.log('Assessment data keys:', Object.keys(data))
+    
     const assessment = await prisma.assessment.create({
       data: {
         // Contact Info
@@ -102,9 +106,12 @@ export async function saveAssessment(data: AssessmentData, aiSummary: string) {
     
     console.log('Assessment saved with ID:', assessment.id)
     return { success: true, id: assessment.id }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error saving assessment:', error)
-    return { success: false, error: 'Failed to save assessment' }
+    console.error('Error code:', error?.code)
+    console.error('Error message:', error?.message)
+    console.error('Full error:', JSON.stringify(error, null, 2))
+    return { success: false, error: `Failed to save assessment: ${error?.message || error}` }
   }
 }
 
