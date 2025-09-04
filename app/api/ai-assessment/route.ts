@@ -50,13 +50,9 @@ const assessmentSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
-    // Check if we're in build mode without proper environment
-    if (!process.env.OPENAI_API_KEY && process.env.NODE_ENV === 'production') {
-      return NextResponse.json({
-        success: false,
-        error: 'Service temporarily unavailable'
-      }, { status: 503 })
-    }
+    console.log('Processing AI assessment request')
+    console.log('Environment check - NODE_ENV:', process.env.NODE_ENV)
+    console.log('Environment check - OPENAI_API_KEY exists:', !!process.env.OPENAI_API_KEY)
 
     // Parse request body
     const body = await request.json()
