@@ -182,8 +182,7 @@ Data: ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })}
     
     const response = await mailerSend.email.send(emailParams)
     console.log('MailerSend: Email sent successfully')
-    console.log('MailerSend: Response status:', response.status)
-    console.log('MailerSend: Response body:', response.body)
+    console.log('MailerSend: Response:', response)
     console.log('MailerSend: Message ID:', response.body?.messageId)
     
     return {
