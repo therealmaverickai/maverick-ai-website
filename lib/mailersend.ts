@@ -148,8 +148,10 @@ Data: ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })}
       'Maverick AI Website'
     )
 
+    // For trial accounts, MailerSend requires sending to administrator email
+    // Change this to the email you used to register your MailerSend account
     const recipients = [
-      new Recipient('info@maverickai.it', 'Maverick AI')
+      new Recipient(process.env.MAILERSEND_ADMIN_EMAIL || 'federico.thiella@maverickai.it', 'Maverick AI Admin')
     ]
 
     // Create reply-to for user's email
@@ -208,14 +210,22 @@ Data: ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })}
     
     // Provide specific error messages for common issues
     let errorMessage = 'Unknown error'
-    if (error.response?.status === 401) {
+    if (error.statusCode === 401) {
       errorMessage = 'Invalid MailerSend API token'
-    } else if (error.response?.status === 422) {
-      errorMessage = 'MailerSend validation error - check email format and domain verification'
-    } else if (error.response?.status === 429) {
+    } else if (error.statusCode === 422) {
+      if (error.body?.message?.includes('Trial accounts')) {
+        errorMessage = 'MailerSend trial account limitation - emails can only be sent to administrator email'
+      } else if (error.body?.message?.includes('domain must be verified')) {
+        errorMessage = 'MailerSend domain verification required - please verify your sending domain'
+      } else {
+        errorMessage = 'MailerSend validation error - ' + (error.body?.message || 'check configuration')
+      }
+    } else if (error.statusCode === 429) {
       errorMessage = 'MailerSend rate limit exceeded'
     } else if (error instanceof Error) {
       errorMessage = error.message
+    } else if (error.body?.message) {
+      errorMessage = error.body.message
     }
     
     return {
