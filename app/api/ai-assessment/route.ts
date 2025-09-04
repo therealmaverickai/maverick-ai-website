@@ -129,7 +129,25 @@ Contatta il nostro team per una consultazione gratuita dove approfondiremo i ris
     
     // Try OpenAI API first, fallback to custom analysis
     try {
-      aiSummary = await generateAISummary(data, data.customPrompt)
+      // Cast data to ensure compatibility with OpenAI interface
+      const openaiData = {
+        ...data,
+        visionFormalized: data.visionFormalized || 'no',
+        aiStrategicImportance: data.aiStrategicImportance || 'no',
+        investmentPlans: data.investmentPlans || 'no',
+        currentProjects: data.currentProjects || '0',
+        pilotProjects: data.pilotProjects || 'no',
+        partnerships: data.partnerships || 'no',
+        dataReadiness: data.dataReadiness || 'no',
+        internalSkills: data.internalSkills || 'no',
+        trainingInitiatives: data.trainingInitiatives || 'no',
+        decisionMakerAwareness: data.decisionMakerAwareness || 'no',
+        dedicatedTeam: data.dedicatedTeam || 'no',
+        aiPolicies: data.aiPolicies || 'no',
+        aiMetrics: data.aiMetrics || 'no'
+      } as any
+      
+      aiSummary = await generateAISummary(openaiData, data.customPrompt)
       console.log('AI Summary generated via OpenAI:', aiSummary.substring(0, 100) + '...')
     } catch (error: any) {
       console.error('OpenAI API error:', error)

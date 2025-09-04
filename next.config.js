@@ -4,9 +4,7 @@ const nextConfig = {
   outputFileTracingRoot: __dirname,
   
   // Optimize for Vercel deployment
-  experimental: {
-    serverComponentsExternalPackages: ['prisma', '@prisma/client']
-  }
+  serverExternalPackages: ['prisma', '@prisma/client']
 }
 
 module.exports = nextConfig
