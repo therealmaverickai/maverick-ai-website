@@ -129,11 +129,14 @@ Data: ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })}
       new Recipient('info@maverickai.it', 'Maverick AI')
     ]
 
+    // Create reply-to for user's email
+    const replyTo = new Recipient(data.email, data.name)
+
     // Create email parameters
     const emailParams = new EmailParams()
       .setFrom(sentFrom)
       .setTo(recipients)
-      .setReplyTo(data.email)
+      .setReplyTo([replyTo])
       .setSubject(`🚀 Nuova richiesta di contatto da ${data.name}`)
       .setHtml(htmlContent)
       .setText(textContent)
