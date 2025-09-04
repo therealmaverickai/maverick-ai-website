@@ -37,12 +37,12 @@ function getMailerSendClient() {
 
 export async function sendContactEmailWithMailerSend(data: ContactFormData): Promise<{ success: boolean; messageId?: string; error?: string }> {
   try {
-    console.log('MailerSend: Starting contact email send process')
+    console.log('MailerSend: Starting fresh email send process')
     console.log('MailerSend: API Token exists:', !!process.env.MAILERSEND_API_TOKEN)
     console.log('MailerSend: From email:', process.env.MAILERSEND_FROM_EMAIL)
     console.log('MailerSend: API Token value:', process.env.MAILERSEND_API_TOKEN ? `${process.env.MAILERSEND_API_TOKEN.substring(0, 10)}...` : 'undefined')
     
-    const mailerSend = getMailerSendClient()
+    const mailerSendClient = getMailerSendClient()
     console.log('MailerSend: Client initialized successfully')
 
     // HTML content for the email
@@ -161,33 +161,34 @@ Data: ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })}
     console.log('MailerSend: Recipients:', recipients)
     console.log('MailerSend: Reply-to:', replyTo)
     
-    const emailParams = new EmailParams()
-    emailParams.setFrom(sentFrom)
-    emailParams.setTo(recipients)
-    emailParams.setReplyTo(replyTo)
-    emailParams.setSubject(`🚀 Nuova richiesta di contatto da ${data.name}`)
-    emailParams.setHtml(htmlContent)
-    emailParams.setText(textContent)
+    // Build email parameters step by step
+    const mailParams = new EmailParams()
+    mailParams.setFrom(sentFrom)
+    mailParams.setTo(recipients) 
+    mailParams.setReplyTo(replyTo)
+    mailParams.setSubject(`🚀 Nuova richiesta di contatto da ${data.name}`)
+    mailParams.setHtml(htmlContent)
+    mailParams.setText(textContent)
       
-    console.log('MailerSend: Email params created successfully')
+    console.log('MailerSend: Email params built successfully')
 
     // Send the email
     console.log('MailerSend: Attempting to send email...')
     console.log('MailerSend: Email params before sending:', JSON.stringify({
-      from: emailParams.from,
-      to: emailParams.to,
-      replyTo: emailParams.reply_to,
-      subject: emailParams.subject
+      from: mailParams.from,
+      to: mailParams.to,
+      replyTo: mailParams.reply_to,
+      subject: mailParams.subject
     }, null, 2))
     
-    const response = await mailerSend.email.send(emailParams)
+    const emailResponse = await mailerSendClient.email.send(mailParams)
     console.log('MailerSend: Email sent successfully')
-    console.log('MailerSend: Response:', response)
-    console.log('MailerSend: Message ID:', response.body?.messageId)
+    console.log('MailerSend: Response:', emailResponse)
+    console.log('MailerSend: Message ID:', emailResponse.body?.messageId)
     
     return {
       success: true,
-      messageId: response.body?.messageId || 'sent'
+      messageId: emailResponse.body?.messageId || 'sent'
     }
   } catch (error: any) {
     console.error('MailerSend error occurred:', error)
