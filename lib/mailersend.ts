@@ -20,7 +20,12 @@ function getMailerSendClient() {
 
 export async function sendContactEmailWithMailerSend(data: ContactFormData): Promise<{ success: boolean; messageId?: string; error?: string }> {
   try {
+    console.log('MailerSend: Starting contact email send process')
+    console.log('MailerSend: API Token exists:', !!process.env.MAILERSEND_API_TOKEN)
+    console.log('MailerSend: From email:', process.env.MAILERSEND_FROM_EMAIL)
+    
     const mailerSend = getMailerSendClient()
+    console.log('MailerSend: Client initialized successfully')
 
     // HTML content for the email
     const htmlContent = `
@@ -142,7 +147,11 @@ Data: ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })}
       .setText(textContent)
 
     // Send the email
+    console.log('MailerSend: Attempting to send email...')
     const response = await mailerSend.email.send(emailParams)
+    console.log('MailerSend: Email sent successfully')
+    console.log('MailerSend: Response status:', response.status)
+    console.log('MailerSend: Message ID:', response.body?.messageId)
     
     return {
       success: true,
@@ -150,6 +159,9 @@ Data: ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })}
     }
   } catch (error) {
     console.error('MailerSend error:', error)
+    console.error('MailerSend error type:', typeof error)
+    console.error('MailerSend error message:', error instanceof Error ? error.message : 'Unknown error')
+    console.error('MailerSend error full object:', JSON.stringify(error, null, 2))
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error'
