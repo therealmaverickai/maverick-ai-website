@@ -1,6 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // App directory is stable in Next.js 13+ so no need for experimental flag
+  // Disable output file tracing warning
+  outputFileTracingRoot: __dirname,
+  
+  // Optimize for Vercel deployment
+  experimental: {
+    serverComponentsExternalPackages: ['prisma', '@prisma/client']
+  }
 }
 
 module.exports = nextConfig

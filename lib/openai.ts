@@ -1,21 +1,12 @@
 import OpenAI from 'openai'
 
 function getOpenAIClient() {
-  const apiKey = process.env.OPENAI_API_KEY
-  
-  if (!apiKey) {
-    // During build time, we don't need the actual client
-    if (process.env.NODE_ENV === 'production' && !process.env.VERCEL) {
-      throw new Error('OpenAI API key not configured')
-    }
-    // Return a dummy client during build to avoid errors
-    return new OpenAI({
-      apiKey: 'dummy-key-for-build',
-    })
+  if (!process.env.OPENAI_API_KEY) {
+    throw new Error('OpenAI API key not configured')
   }
   
   return new OpenAI({
-    apiKey,
+    apiKey: process.env.OPENAI_API_KEY,
   })
 }
 
@@ -91,7 +82,7 @@ Scrivi un executive summary in italiano di massimo 200 parole che includa:
 1. **Situazione Attuale**: Una valutazione concisa dello stato corrente di maturità AI dell'azienda
 2. **Punti di Forza**: 2-3 aree in cui l'azienda eccelle o mostra potenziale
 3. **Aree di Miglioramento**: 2-3 priorità strategiche per accelerare l'adozione AI
-4. **Raccomandazione Strategica**: Una raccomandazione specifica e actionable per i prossimi passi. Consiglia di rivolgersi a Maverick AI per ricevere supporto specialistico
+4. **Raccomandazione Strategica**: Una raccomandazione specifica e actionable per i prossimi passi. 
 
 Il tono deve essere:
 - Professionale e consulenziale come se fossi un consulente super esperto
