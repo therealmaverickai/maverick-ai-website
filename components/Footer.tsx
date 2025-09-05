@@ -1,10 +1,35 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
+import { useRouter } from 'next/navigation'
 import CookieSettings from './CookieSettings'
 
 export default function Footer() {
   const [showCookieSettings, setShowCookieSettings] = useState(false)
+  const [clickCount, setClickCount] = useState(0)
+  const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const router = useRouter()
+
+  const handleSecretClick = () => {
+    setClickCount(prev => prev + 1)
+    
+    // Reset counter after 5 seconds of inactivity
+    if (clickTimeoutRef.current) {
+      clearTimeout(clickTimeoutRef.current)
+    }
+    clickTimeoutRef.current = setTimeout(() => {
+      setClickCount(0)
+    }, 5000)
+
+    // Navigate to admin if 10 clicks reached
+    if (clickCount + 1 >= 10) {
+      setClickCount(0)
+      if (clickTimeoutRef.current) {
+        clearTimeout(clickTimeoutRef.current)
+      }
+      router.push('/admin')
+    }
+  }
   return (
     <footer className="bg-navy-900 text-white py-12 border-t border-navy-700">
       <div className="container-width">
@@ -67,7 +92,13 @@ export default function Footer() {
         <div className="border-t border-navy-700 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <div className="text-gray-400 text-sm mb-4 md:mb-0">
             <div className="mb-2">
-              © 2025 Maverick AI. Tutti i diritti riservati.
+              © 2025 <span 
+                onClick={handleSecretClick}
+                className="cursor-default select-none"
+                style={{ userSelect: 'none' }}
+              >
+                Maverick AI
+              </span>. Tutti i diritti riservati.
             </div>
             <div className="text-xs text-gray-500">
               Maverick s.r.l. - Viale Lunigiana 23, 20125, Milano<br/>

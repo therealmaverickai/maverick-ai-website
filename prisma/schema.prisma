@@ -145,3 +145,69 @@ model AIInteraction {
 
   @@map("ai_interactions")
 }
+
+// RAG System Models for Document-based Knowledge Retrieval
+model Document {
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Document metadata
+  filename        String
+  contentType     String   @map("content_type")
+  fileSize        Int      @map("file_size")
+  uploadPath      String?  @map("upload_path") // Supabase Storage path
+  
+  // Document content
+  title           String?
+  content         String   @db.Text
+  summary         String?  @db.Text
+  
+  // Processing status
+  processingStatus String  @default("pending") @map("processing_status") // pending, processing, completed, failed
+  chunkCount      Int      @default(0) @map("chunk_count")
+  
+  // Company/context association
+  companyContext  String[] @map("company_context") // Array of companies this doc applies to
+  documentType    String   @default("general") @map("document_type") // general, company_specific, industry, case_study, technical
+  tags            String[] @default([])
+  
+  // Metadata
+  createdBy       String?  @map("created_by") // User who uploaded
+  language        String   @default("it")
+
+  // Relationships
+  chunks          DocumentChunk[]
+
+  @@map("documents")
+}
+
+model DocumentChunk {
+  id            String   @id @default(cuid())
+  documentId    String   @map("document_id")
+  createdAt     DateTime @default(now())
+  
+  // Chunk content
+  content       String   @db.Text
+  chunkIndex    Int      @map("chunk_index")
+  tokenCount    Int?     @map("token_count")
+  
+  // Note: Vector embeddings are handled directly in Supabase with pgvector
+  // The embedding field is not included in Prisma schema as it uses custom vector type
+  
+  // Chunk metadata
+  metadata      Json     @default("{}")
+  pageNumber    Int?     @map("page_number")
+  sectionTitle  String?  @map("section_title")
+  chunkType     String   @default("content") @map("chunk_type") // content, heading, summary, key_point
+  
+  // Context information
+  keywords      String[] @default([])
+  entities      String[] @default([]) // Extracted named entities
+
+  // Relationships
+  document      Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@unique([documentId, chunkIndex])
+  @@map("document_chunks")
+}

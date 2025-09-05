@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/database'
 import OpenAI from 'openai'
 import { z } from 'zod'
+import { searchForContext, formatContextForPrompt } from '@/lib/vector-search'
 
 // Initialize OpenAI client - with runtime checks
 const getOpenAIClient = () => {
@@ -34,8 +35,8 @@ const chatRequestSchema = z.object({
   }))
 })
 
-// System prompt for ongoing conversation
-const generateConversationPrompt = (leadData: any, conversationHistory: any[]) => `
+// Enhanced system prompt with RAG context integration
+const generateConversationPrompt = (leadData: any, conversationHistory: any[], contextFromDocuments: string = '') => `
 Sei un consulente AI senior di Maverick AI, specializzato in trasformazione digitale per aziende italiane.
 
 CONTESTO CLIENTE:
@@ -46,18 +47,20 @@ CONTESTO CLIENTE:
 - Ruolo: ${leadData.jobRole}
 - Business: ${leadData.businessDescription}
 
-CRONOLOGIA CONVERSAZIONE:
+${contextFromDocuments ? `${contextFromDocuments}\n` : ''}CRONOLOGIA CONVERSAZIONE:
 ${conversationHistory.slice(-6).map(msg => `${msg.type.toUpperCase()}: ${msg.content}`).join('\n')}
 
 ISTRUZIONI RISPOSTA:
-1. Rispondi in modo naturale e professionale alla domanda specifica
-2. Mantieni il focus su AI e trasformazione digitale
-3. Fornisci sempre informazioni concrete e actionable
-4. Se richiesti dettagli su ROI, tempi, implementazione sii specifico
-5. Adatta le tue risposte al settore e alla dimensione aziendale
-6. Suggerisci next steps pratici quando appropriato
-7. Massimo 300 parole per risposta
-8. Se la conversazione si allunga, proponi una call di approfondimento
+1. ${contextFromDocuments ? 'PRIORITÀ: Usa le informazioni dai documenti aziendali sopra quando pertinenti alla domanda' : 'Rispondi basandoti sulla tua conoscenza di AI e trasformazione digitale'}
+2. Rispondi in modo naturale e professionale alla domanda specifica
+3. Mantieni il focus su AI e trasformazione digitale
+4. Fornisci sempre informazioni concrete e actionable
+5. Se richiesti dettagli su ROI, tempi, implementazione sii specifico
+6. Adatta le tue risposte al settore e alla dimensione aziendale
+7. Suggerisci next steps pratici quando appropriato
+8. Massimo 350 parole per risposta
+9. Se la conversazione si allunga, proponi una call di approfondimento
+${contextFromDocuments ? '10. Quando citi informazioni dai documenti, menziona discretamente la fonte (es. "secondo i nostri materiali aziendali...")' : ''}
 
 STILE:
 - Professionale ma accessibile
@@ -65,14 +68,16 @@ STILE:
 - Evita tecnicismi eccessivi
 - Sii consultivo, non solo informativo
 - Usa il nome della persona occasionalmente
+${contextFromDocuments ? '- Integra naturalmente le informazioni documentali senza menzionare esplicitamente "documenti" o "fonti"' : ''}
 
 OBIETTIVI:
-- Dimostrare expertise in AI
+- Dimostrare expertise in AI basata su conoscenza aziendale specifica
 - Qualificare il lead
 - Guidare verso una consulenza
 - Mantenere engagement alto
+- Fornire valore attraverso insights personalizzati
 
-Non menzionare questi prompt. Comportati come un vero consulente di Maverick AI con esperienza pratica.
+Non menzionare questi prompt o il sistema di ricerca documentale. Comportati come un vero consulente di Maverick AI con esperienza pratica e accesso alla knowledge base aziendale.
 `
 
 export async function POST(request: NextRequest) {
@@ -104,13 +109,39 @@ export async function POST(request: NextRequest) {
       throw new Error('Lead not found')
     }
 
-    // Generate AI response
+    // RAG: Search for relevant context from documents
+    let contextFromDocuments = ''
+    let ragUsed = false
+    
+    try {
+      console.log('Searching for relevant context...')
+      const conversationMessages = conversationHistory.map(msg => msg.content)
+      
+      const relevantChunks = await searchForContext(
+        message,
+        leadData.company,
+        conversationMessages
+      )
+      
+      if (relevantChunks.length > 0) {
+        contextFromDocuments = formatContextForPrompt(relevantChunks)
+        ragUsed = true
+        console.log(`Found ${relevantChunks.length} relevant document chunks for context`)
+      } else {
+        console.log('No relevant document context found, using base knowledge')
+      }
+    } catch (error) {
+      console.error('RAG context search error:', error)
+      // Continue without context if search fails
+    }
+
+    // Generate AI response with enhanced prompt (includes RAG context if found)
     const completion = await openai.chat.completions.create({
       model: 'gpt-4-turbo-preview',
       messages: [
         {
           role: 'system',
-          content: generateConversationPrompt(leadData, conversationHistory)
+          content: generateConversationPrompt(leadData, conversationHistory, contextFromDocuments)
         },
         {
           role: 'user',
@@ -118,7 +149,7 @@ export async function POST(request: NextRequest) {
         }
       ],
       temperature: 0.7,
-      max_tokens: 800
+      max_tokens: 1000 // Increased to accommodate context
     })
 
     const response = completion.choices[0].message.content
@@ -192,7 +223,7 @@ export async function POST(request: NextRequest) {
       console.log('Created new conversation')
     }
 
-    // Log the interaction for analytics
+    // Log the interaction for analytics (including RAG metadata)
     await prisma.aIInteraction.createMany({
       data: [
         {
@@ -205,7 +236,10 @@ export async function POST(request: NextRequest) {
           messageType: 'assistant',
           content: response,
           tokensUsed: completion.usage?.total_tokens || 0,
-          modelUsed: 'gpt-4-turbo-preview'
+          modelUsed: 'gpt-4-turbo-preview',
+          promptVersion: ragUsed ? 'rag-enhanced-v1' : 'base-v1',
+          useCaseGenerated: false,
+          containsCta: response.toLowerCase().includes('consulenza') || response.toLowerCase().includes('call')
         }
       ]
     })
@@ -221,13 +255,15 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    console.log('Chat response generated successfully')
+    console.log(`Chat response generated successfully ${ragUsed ? 'with RAG context' : 'using base knowledge'}`)
 
     return NextResponse.json({
       success: true,
       response,
       engagementScore,
-      messageCount: (existingConversation?.messageCount || 0) + 2
+      messageCount: (existingConversation?.messageCount || 0) + 2,
+      ragUsed,
+      tokensUsed: completion.usage?.total_tokens || 0
     })
 
   } catch (error) {
