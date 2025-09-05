@@ -58,7 +58,7 @@ export default function WhatWeDoSection() {
   }
 
   return (
-    <section id="cosa-facciamo" className="bg-white section-padding">
+    <section id="cosa-facciamo" className="bg-gray-50 section-padding">
       <div className="container-width">
         <div className="text-center mb-20">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6 px-4">
