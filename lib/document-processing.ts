@@ -19,7 +19,8 @@ export const DOCUMENT_CONFIG = {
 // Initialize clients
 const getSupabaseClient = () => {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    throw new Error('Supabase configuration missing')
+    console.warn('Supabase configuration missing - document storage will be disabled')
+    return null
   }
   return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -29,7 +30,8 @@ const getSupabaseClient = () => {
 
 const getOpenAIClient = () => {
   if (!process.env.OPENAI_API_KEY) {
-    throw new Error('OpenAI API key missing')
+    console.warn('OpenAI API key missing - embedding generation will be disabled')
+    return null
   }
   return new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 }
@@ -171,6 +173,12 @@ export function extractKeywordsAndEntities(text: string): { keywords: string[], 
 export async function generateEmbedding(text: string): Promise<number[]> {
   const openai = getOpenAIClient()
   
+  if (!openai) {
+    console.warn('OpenAI not configured - returning dummy embedding')
+    // Return a dummy embedding of the correct dimensions for testing
+    return new Array(DOCUMENT_CONFIG.embeddingDimensions).fill(0)
+  }
+  
   try {
     const response = await openai.embeddings.create({
       model: DOCUMENT_CONFIG.embeddingModel,
@@ -233,6 +241,13 @@ export async function storeDocumentWithChunks(
   chunks: ChunkWithEmbedding[]
 ): Promise<ProcessingResult> {
   const supabase = getSupabaseClient()
+  
+  if (!supabase) {
+    return {
+      success: false,
+      error: 'Document storage unavailable - Supabase not configured'
+    }
+  }
   
   try {
     // Store document in Prisma

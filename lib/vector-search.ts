@@ -46,7 +46,8 @@ export interface SearchFilters {
 // Initialize Supabase client
 const getSupabaseClient = () => {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    throw new Error('Supabase configuration missing')
+    console.warn('Supabase configuration missing - RAG features will be disabled')
+    return null
   }
   return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -73,6 +74,11 @@ export async function semanticSearch(
   filters: SearchFilters = {}
 ): Promise<SearchResult[]> {
   const supabase = getSupabaseClient()
+  
+  if (!supabase) {
+    console.warn('Semantic search unavailable - Supabase not configured')
+    return []
+  }
   
   try {
     // Generate embedding for the query
@@ -119,6 +125,11 @@ export async function hybridSearch(
   filters: SearchFilters = {}
 ): Promise<HybridSearchResult[]> {
   const supabase = getSupabaseClient()
+  
+  if (!supabase) {
+    console.warn('Hybrid search unavailable - Supabase not configured')
+    return []
+  }
   
   try {
     // Generate embedding for the query
@@ -283,6 +294,17 @@ ${contextSections}
 // Get document statistics for admin dashboard
 export async function getDocumentSearchStats(): Promise<any> {
   const supabase = getSupabaseClient()
+  
+  if (!supabase) {
+    // Return mock data when Supabase is not configured
+    return {
+      total_documents: 0,
+      completed_documents: 0,
+      total_chunks: 0,
+      avg_chunks_per_document: 0,
+      document_types: {}
+    }
+  }
   
   try {
     const { data, error } = await supabase.rpc('get_document_stats')
