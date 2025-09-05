@@ -298,7 +298,7 @@ export default function AdminPage() {
                       {Object.entries(stats.document_types).map(([type, count]) => (
                         <div key={type} className="flex justify-between">
                           <span className="text-sm">{type}</span>
-                          <span className="text-sm font-medium">{count}</span>
+                          <span className="text-sm font-medium">{String(count)}</span>
                         </div>
                       ))}
                     </div>
