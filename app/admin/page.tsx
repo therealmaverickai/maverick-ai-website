@@ -29,16 +29,20 @@ interface SearchResult {
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('dashboard')
-  const [documents, setDocuments] = useState<Document[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<SearchResult[]>([])
   const [loading, setLoading] = useState(false)
   const [uploadResults, setUploadResults] = useState<any[]>([])
+  const [documents, setDocuments] = useState<any[]>([])
+  const [prompts, setPrompts] = useState<any>({})
+  const [selectedPrompt, setSelectedPrompt] = useState('')
+  const [promptContent, setPromptContent] = useState('')
   const [stats, setStats] = useState<any>(null)
 
   useEffect(() => {
     fetchStats()
-    fetchDocuments()
+    fetchAllDocuments()
+    fetchPrompts()
   }, [])
 
   const fetchStats = async () => {
@@ -53,9 +57,79 @@ export default function AdminPage() {
     }
   }
 
-  const fetchDocuments = async () => {
-    // This would need a new API endpoint to list documents
-    // For now, we'll use the upload results as a proxy
+  const fetchAllDocuments = async () => {
+    try {
+      const response = await fetch('/api/documents/list')
+      const data = await response.json()
+      if (data.success) {
+        setDocuments(data.documents)
+      }
+    } catch (error) {
+      console.error('Error fetching documents:', error)
+    }
+  }
+
+  const fetchPrompts = async () => {
+    try {
+      const response = await fetch('/api/prompts')
+      const data = await response.json()
+      if (data.success) {
+        setPrompts(data.prompts)
+        if (Object.keys(data.prompts).length > 0) {
+          const firstPromptId = Object.keys(data.prompts)[0]
+          setSelectedPrompt(firstPromptId)
+          setPromptContent(data.prompts[firstPromptId].content)
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching prompts:', error)
+    }
+  }
+
+  const deleteDocument = async (documentId: string) => {
+    if (!confirm('Are you sure you want to delete this document?')) return
+    
+    try {
+      const response = await fetch(`/api/documents/delete?id=${documentId}`, {
+        method: 'DELETE'
+      })
+      const data = await response.json()
+      if (data.success) {
+        fetchAllDocuments() // Refresh the list
+        fetchStats() // Update stats
+        alert('Document deleted successfully')
+      } else {
+        alert(data.error || 'Failed to delete document')
+      }
+    } catch (error) {
+      console.error('Error deleting document:', error)
+      alert('Failed to delete document')
+    }
+  }
+
+  const updatePrompt = async () => {
+    if (!selectedPrompt || !promptContent.trim()) return
+    
+    try {
+      const response = await fetch('/api/prompts', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          promptId: selectedPrompt,
+          content: promptContent
+        })
+      })
+      const data = await response.json()
+      if (data.success) {
+        alert('Prompt updated successfully')
+        fetchPrompts() // Refresh prompts
+      } else {
+        alert(data.error || 'Failed to update prompt')
+      }
+    } catch (error) {
+      console.error('Error updating prompt:', error)
+      alert('Failed to update prompt')
+    }
   }
 
   const handleSearch = async () => {
@@ -87,6 +161,7 @@ export default function AdminPage() {
   const handleUploadComplete = (result: any) => {
     setUploadResults(prev => [result, ...prev])
     fetchStats() // Refresh stats after upload
+    fetchAllDocuments() // Refresh documents list
   }
 
   return (
@@ -116,8 +191,10 @@ export default function AdminPage() {
           <nav className="flex space-x-8">
             {[
               { id: 'dashboard', label: '📊 Dashboard', icon: '📊' },
+              { id: 'documents', label: '📚 Gestione Documenti', icon: '📚' },
               { id: 'upload', label: '📤 Upload Documenti', icon: '📤' },
               { id: 'search', label: '🔍 Test Search', icon: '🔍' },
+              { id: 'prompts', label: '🤖 AI Prompts', icon: '🤖' },
               { id: 'analytics', label: '📈 Analytics', icon: '📈' }
             ].map(tab => (
               <button
@@ -223,6 +300,100 @@ export default function AdminPage() {
           </div>
         )}
 
+        {/* Documents Management Tab */}
+        {activeTab === 'documents' && (
+          <div className="space-y-6">
+            <div className="bg-white rounded-lg shadow p-6">
+              <h3 className="text-lg font-semibold mb-4">📚 Documenti Caricati ({documents.length})</h3>
+              
+              {documents.length === 0 ? (
+                <p className="text-gray-500 text-center py-8">
+                  Nessun documento caricato. Vai alla sezione Upload per aggiungere documenti.
+                </p>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Documento</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stato</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dettagli</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contesto</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Azioni</th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {documents.map((doc) => (
+                        <tr key={doc.id} className="hover:bg-gray-50">
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center">
+                              <div className="text-sm font-medium text-gray-900">{doc.title || doc.filename}</div>
+                              <div className="text-sm text-gray-500">{doc.filename}</div>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                              doc.processingStatus === 'completed' ? 'bg-green-100 text-green-800' :
+                              doc.processingStatus === 'processing' ? 'bg-yellow-100 text-yellow-800' :
+                              doc.processingStatus === 'failed' ? 'bg-red-100 text-red-800' :
+                              'bg-gray-100 text-gray-800'
+                            }`}>
+                              {doc.processingStatus === 'completed' ? '✅ Completato' :
+                               doc.processingStatus === 'processing' ? '⏳ Elaborazione' :
+                               doc.processingStatus === 'failed' ? '❌ Fallito' :
+                               '⏱️ In attesa'}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <div>{doc.fileSizeMB} MB • {doc.chunkCount} chunks</div>
+                            <div className="text-xs">{doc.contentType}</div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <div className="max-w-xs">
+                              {doc.companyContext?.length > 0 ? (
+                                <div className="flex flex-wrap gap-1">
+                                  {doc.companyContext.map((company: string, idx: number) => (
+                                    <span key={idx} className="inline-flex px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded">
+                                      {company}
+                                    </span>
+                                  ))}
+                                </div>
+                              ) : (
+                                <span className="text-gray-400">Nessun contesto</span>
+                              )}
+                              {doc.tags?.length > 0 && (
+                                <div className="flex flex-wrap gap-1 mt-1">
+                                  {doc.tags.map((tag: string, idx: number) => (
+                                    <span key={idx} className="inline-flex px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded">
+                                      #{tag}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {new Date(doc.createdAt).toLocaleDateString('it-IT')}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <button
+                              onClick={() => deleteDocument(doc.id)}
+                              className="text-red-600 hover:text-red-900"
+                            >
+                              🗑️ Elimina
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Upload Tab */}
         {activeTab === 'upload' && (
           <div>
@@ -282,6 +453,108 @@ export default function AdminPage() {
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {/* AI Prompts Tab */}
+        {activeTab === 'prompts' && (
+          <div className="space-y-6">
+            <div className="bg-white rounded-lg shadow p-6">
+              <h3 className="text-lg font-semibold mb-4">🤖 Gestione AI Prompts</h3>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Prompt Selection */}
+                <div className="lg:col-span-1">
+                  <h4 className="font-medium mb-3">Seleziona Prompt:</h4>
+                  <div className="space-y-2">
+                    {Object.entries(prompts).map(([id, prompt]: [string, any]) => (
+                      <button
+                        key={id}
+                        onClick={() => {
+                          setSelectedPrompt(id)
+                          setPromptContent(prompt.content)
+                        }}
+                        className={`w-full text-left p-3 rounded-lg border transition-colors ${
+                          selectedPrompt === id
+                            ? 'border-blue-500 bg-blue-50 text-blue-900'
+                            : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                        }`}
+                      >
+                        <div className="font-medium">{prompt.name}</div>
+                        <div className="text-sm text-gray-500 mt-1">
+                          Ultimo aggiornamento: {new Date(prompt.lastModified).toLocaleDateString('it-IT')}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Prompt Editor */}
+                <div className="lg:col-span-2">
+                  {selectedPrompt && prompts[selectedPrompt] && (
+                    <div>
+                      <div className="flex items-center justify-between mb-3">
+                        <h4 className="font-medium">Modifica: {prompts[selectedPrompt].name}</h4>
+                        <button
+                          onClick={updatePrompt}
+                          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                        >
+                          💾 Salva Prompt
+                        </button>
+                      </div>
+                      
+                      <textarea
+                        value={promptContent}
+                        onChange={(e) => setPromptContent(e.target.value)}
+                        className="w-full h-96 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm"
+                        placeholder="Inserisci il contenuto del prompt..."
+                      />
+                      
+                      <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                        <h5 className="font-medium text-gray-700 mb-2">💡 Suggerimenti:</h5>
+                        <ul className="text-sm text-gray-600 space-y-1">
+                          <li>• Usa un linguaggio chiaro e specifico</li>
+                          <li>• Definisci il ruolo e il contesto dell'AI</li>
+                          <li>• Includi esempi quando possibile</li>
+                          <li>• Specifica il formato di risposta desiderato</li>
+                          <li>• I documenti caricati verranno automaticamente inclusi come contesto</li>
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {!selectedPrompt && (
+                    <div className="text-center py-12 text-gray-500">
+                      <div className="text-4xl mb-4">🤖</div>
+                      <p>Seleziona un prompt dalla lista per iniziare la modifica</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Prompt Usage Guide */}
+            <div className="bg-blue-50 rounded-lg p-6">
+              <h4 className="font-semibold text-blue-900 mb-3">📋 Come funzionano i Prompt</h4>
+              <div className="grid md:grid-cols-2 gap-4 text-blue-800 text-sm">
+                <div>
+                  <h5 className="font-medium mb-2">AI Chat System Prompt:</h5>
+                  <ul className="space-y-1">
+                    <li>• Definisce il comportamento dell'AI nella chat</li>
+                    <li>• Viene utilizzato per ogni conversazione</li>
+                    <li>• Include automaticamente i documenti RAG</li>
+                  </ul>
+                </div>
+                <div>
+                  <h5 className="font-medium mb-2">Variabili disponibili:</h5>
+                  <ul className="space-y-1">
+                    <li>• {`{leadData}`} - Informazioni del cliente</li>
+                    <li>• {`{contextFromDocuments}`} - Contenuto documenti RAG</li>
+                    <li>• {`{conversationHistory}`} - Cronologia chat</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
