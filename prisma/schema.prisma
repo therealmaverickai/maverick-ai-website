@@ -149,8 +149,8 @@ model AIInteraction {
 // RAG System Models for Document-based Knowledge Retrieval
 model Document {
   id              String   @id @default(cuid())
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
 
   // Document metadata
   filename        String
@@ -185,7 +185,7 @@ model Document {
 model DocumentChunk {
   id            String   @id @default(cuid())
   documentId    String   @map("document_id")
-  createdAt     DateTime @default(now())
+  createdAt     DateTime @default(now()) @map("created_at")
   
   // Chunk content
   content       String   @db.Text
