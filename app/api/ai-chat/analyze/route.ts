@@ -1,19 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { prisma } from '@/lib/database'
 import OpenAI from 'openai'
 import { z } from 'zod'
 
-// Initialize clients - with runtime checks
-const getSupabaseClient = () => {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    throw new Error('Supabase configuration is missing')
-  }
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_ROLE_KEY
-  )
-}
-
+// Initialize OpenAI client - with runtime checks
 const getOpenAIClient = () => {
   if (!process.env.OPENAI_API_KEY) {
     throw new Error('OpenAI configuration is missing')
@@ -79,8 +69,7 @@ export async function POST(request: NextRequest) {
   try {
     console.log('AI Analysis request received')
     
-    // Initialize clients at runtime
-    const supabase = getSupabaseClient()
+    // Initialize OpenAI client at runtime
     const openai = getOpenAIClient()
     
     // Parse and validate request
@@ -90,30 +79,23 @@ export async function POST(request: NextRequest) {
     console.log(`Analyzing lead for ${leadData.company}`)
 
     // Calculate lead score
-    const leadScore = await calculateLeadScore(leadData, supabase)
+    const leadScore = calculateLeadScore(leadData)
 
-    // Save lead to database
-    const { data: savedLead, error: leadError } = await supabase
-      .from('leads')
-      .insert({
-        full_name: leadData.fullName,
+    // Save lead to database using Prisma
+    const savedLead = await prisma.lead.create({
+      data: {
+        fullName: leadData.fullName,
         email: leadData.email,
         company: leadData.company,
         website: leadData.website || null,
         industry: leadData.industry,
-        company_size: leadData.companySize,
-        job_role: leadData.jobRole,
-        business_description: leadData.businessDescription,
-        lead_score: leadScore,
+        companySize: leadData.companySize,
+        jobRole: leadData.jobRole,
+        businessDescription: leadData.businessDescription,
+        leadScore: leadScore,
         source: 'ai-assistant'
-      })
-      .select()
-      .single()
-
-    if (leadError) {
-      console.error('Error saving lead:', leadError)
-      throw new Error('Failed to save lead data')
-    }
+      }
+    })
 
     console.log(`Lead saved with ID: ${savedLead.id}, Score: ${leadScore}`)
 
@@ -140,16 +122,15 @@ export async function POST(request: NextRequest) {
       throw new Error('No analysis generated')
     }
 
-    // Create conversation record
+    // Create conversation record using Prisma
     const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
     
-    const { data: conversation, error: convError } = await supabase
-      .from('conversations')
-      .insert({
-        lead_id: savedLead.id,
-        session_id: sessionId,
-        message_count: 1,
-        conversation_data: {
+    const conversation = await prisma.conversation.create({
+      data: {
+        leadId: savedLead.id,
+        sessionId: sessionId,
+        messageCount: 1,
+        conversationData: JSON.stringify({
           messages: [
             {
               type: 'assistant',
@@ -158,24 +139,18 @@ export async function POST(request: NextRequest) {
               isInitialAnalysis: true
             }
           ]
-        },
+        }),
         status: 'active'
-      })
-      .select()
-      .single()
-
-    if (convError) {
-      console.error('Error creating conversation:', convError)
-    }
+      }
+    })
 
     // Update lead with analysis completion
-    await supabase
-      .from('leads')
-      .update({
-        ai_analysis_completed: true,
-        updated_at: new Date().toISOString()
-      })
-      .eq('id', savedLead.id)
+    await prisma.lead.update({
+      where: { id: savedLead.id },
+      data: {
+        aiAnalysisCompleted: true
+      }
+    })
 
     console.log('AI Analysis completed successfully')
 
@@ -213,25 +188,61 @@ export async function POST(request: NextRequest) {
 }
 
 // Helper function to calculate lead score
-async function calculateLeadScore(leadData: any, supabase: any): Promise<number> {
-  try {
-    const { data, error } = await supabase
-      .rpc('calculate_lead_score', {
-        p_industry: leadData.industry,
-        p_company_size: leadData.companySize,
-        p_job_role: leadData.jobRole,
-        p_business_description: leadData.businessDescription,
-        p_has_website: !!leadData.website
-      })
+function calculateLeadScore(leadData: any): number {
+  let score = 20 // Base score
 
-    if (error) {
-      console.error('Error calculating lead score:', error)
-      return 50 // Default score
-    }
+  // Industry scoring (high-value industries)
+  const highValueIndustries = [
+    'Tecnologia e Software', 'Servizi Finanziari', 'Sanità e Farmaceutico', 'Manifatturiero'
+  ]
+  const mediumValueIndustries = [
+    'Retail e E-commerce', 'Energia e Utilities', 'Trasporti e Logistica'
+  ]
 
-    return data || 50
-  } catch (error) {
-    console.error('Error in calculateLeadScore:', error)
-    return 50 // Default score
+  if (highValueIndustries.includes(leadData.industry)) {
+    score += 25
+  } else if (mediumValueIndustries.includes(leadData.industry)) {
+    score += 20
+  } else {
+    score += 10
   }
+
+  // Company size scoring
+  switch (leadData.companySize) {
+    case 'enterprise':
+      score += 30
+      break
+    case 'sme':
+      score += 25
+      break
+    case 'startup':
+      score += 15
+      break
+  }
+
+  // Job role scoring (decision makers)
+  const decisionMakerRoles = ['CEO', 'CTO', 'CDO', 'Chief', 'Direttore', 'Director', 'VP', 'President']
+  const managerRoles = ['Manager', 'Head', 'Lead', 'Responsabile']
+
+  const roleUpper = leadData.jobRole.toUpperCase()
+  if (decisionMakerRoles.some(role => roleUpper.includes(role.toUpperCase()))) {
+    score += 20
+  } else if (managerRoles.some(role => roleUpper.includes(role.toUpperCase()))) {
+    score += 15
+  } else {
+    score += 5
+  }
+
+  // Business description quality
+  if (leadData.businessDescription.length > 100) {
+    score += 5
+  }
+
+  // Has website
+  if (leadData.website && leadData.website.trim()) {
+    score += 5
+  }
+
+  // Ensure score is between 0-100
+  return Math.min(Math.max(score, 0), 100)
 }

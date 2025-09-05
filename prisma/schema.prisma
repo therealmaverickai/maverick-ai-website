@@ -53,3 +53,95 @@ model Assessment {
 
   @@map("assessments")
 }
+
+// AI Lead Generation Models
+model Lead {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Contact information
+  fullName    String
+  email       String
+  company     String
+  website     String?
+
+  // Business information
+  industry       String
+  companySize    String // startup, sme, enterprise
+  jobRole        String
+  businessDescription String @db.Text
+
+  // Lead qualification
+  leadScore      Int      @default(0) // 0-100 score
+  leadStatus     String   @default("new") // new, qualified, contacted, converted
+
+  // Metadata
+  source         String   @default("ai-assistant")
+  utmSource      String?
+  utmMedium      String?
+  utmCampaign    String?
+
+  // AI analysis results
+  aiAnalysisCompleted Boolean  @default(false)
+  aiUseCases         String?   @db.Text // JSON
+  estimatedRoi       String?
+  implementationTimeline String?
+
+  // Relationships
+  conversations Conversation[]
+
+  @@map("leads")
+}
+
+model Conversation {
+  id              String   @id @default(cuid())
+  leadId          String
+  createdAt       DateTime @default(now())
+
+  // Conversation data
+  sessionId       String
+  messageCount    Int      @default(0)
+  conversationData String  @db.Text // JSON with full conversation
+
+  // Analysis metrics
+  engagementScore Int      @default(0) // 1-10
+  topicsDiscussed String[] // Array of main topics
+  questionsAsked  String[] // Key questions from prospect
+
+  // Status
+  status          String    @default("active") // active, completed, abandoned
+  completedAt     DateTime?
+
+  // Relationships
+  lead            Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  interactions    AIInteraction[]
+
+  @@unique([leadId, sessionId])
+  @@map("conversations")
+}
+
+model AIInteraction {
+  id              String   @id @default(cuid())
+  conversationId  String
+  createdAt       DateTime @default(now())
+
+  // Message data
+  messageType     String   // user, assistant, system
+  content         String   @db.Text
+
+  // AI metrics
+  responseTimeMs  Int?
+  tokensUsed      Int?
+  modelUsed       String?
+
+  // Context
+  promptVersion   String?
+  useCaseGenerated Boolean @default(false)
+  containsCta     Boolean @default(false)
+
+  // Relationships
+  conversation    Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@map("ai_interactions")
+}

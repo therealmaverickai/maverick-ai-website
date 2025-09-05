@@ -1,19 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { prisma } from '@/lib/database'
 import OpenAI from 'openai'
 import { z } from 'zod'
 
-// Initialize clients - with runtime checks
-const getSupabaseClient = () => {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    throw new Error('Supabase configuration is missing')
-  }
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_ROLE_KEY
-  )
-}
-
+// Initialize OpenAI client - with runtime checks
 const getOpenAIClient = () => {
   if (!process.env.OPENAI_API_KEY) {
     throw new Error('OpenAI configuration is missing')
@@ -89,8 +79,7 @@ export async function POST(request: NextRequest) {
   try {
     console.log('AI Chat request received')
     
-    // Initialize clients at runtime
-    const supabase = getSupabaseClient()
+    // Initialize OpenAI client at runtime
     const openai = getOpenAIClient()
     
     // Parse and validate request
@@ -99,18 +88,19 @@ export async function POST(request: NextRequest) {
 
     console.log(`Chat message from ${leadData.company}: ${message.substring(0, 50)}...`)
 
-    // Find existing lead
-    const { data: lead, error: leadError } = await supabase
-      .from('leads')
-      .select('id')
-      .eq('email', leadData.email)
-      .eq('company', leadData.company)
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .single()
+    // Find existing lead using Prisma
+    const lead = await prisma.lead.findFirst({
+      where: {
+        email: leadData.email,
+        company: leadData.company
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    })
 
-    if (leadError) {
-      console.error('Lead not found:', leadError)
+    if (!lead) {
+      console.error('Lead not found')
       throw new Error('Lead not found')
     }
 
@@ -141,14 +131,15 @@ export async function POST(request: NextRequest) {
     const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
     
     // Try to find existing active conversation
-    const { data: existingConversation } = await supabase
-      .from('conversations')
-      .select('id, conversation_data, message_count')
-      .eq('lead_id', lead.id)
-      .eq('status', 'active')
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .maybeSingle()
+    const existingConversation = await prisma.conversation.findFirst({
+      where: {
+        leadId: lead.id,
+        status: 'active'
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    })
 
     const newMessage = {
       type: 'user',
@@ -162,71 +153,73 @@ export async function POST(request: NextRequest) {
       timestamp: new Date().toISOString()
     }
 
+    let conversationId: string
+
     if (existingConversation) {
       // Update existing conversation
+      const existingMessages = JSON.parse(existingConversation.conversationData).messages || []
       const updatedMessages = [
-        ...(existingConversation.conversation_data.messages || []),
+        ...existingMessages,
         newMessage,
         aiResponse
       ]
 
-      await supabase
-        .from('conversations')
-        .update({
-          conversation_data: { messages: updatedMessages },
-          message_count: existingConversation.message_count + 2
-        })
-        .eq('id', existingConversation.id)
+      await prisma.conversation.update({
+        where: { id: existingConversation.id },
+        data: {
+          conversationData: JSON.stringify({ messages: updatedMessages }),
+          messageCount: existingConversation.messageCount + 2
+        }
+      })
 
+      conversationId = existingConversation.id
       console.log(`Updated conversation ${existingConversation.id}`)
     } else {
       // Create new conversation
-      await supabase
-        .from('conversations')
-        .insert({
-          lead_id: lead.id,
-          session_id: sessionId,
-          message_count: 2,
-          conversation_data: {
+      const newConversation = await prisma.conversation.create({
+        data: {
+          leadId: lead.id,
+          sessionId: sessionId,
+          messageCount: 2,
+          conversationData: JSON.stringify({
             messages: [newMessage, aiResponse]
-          },
+          }),
           status: 'active'
-        })
+        }
+      })
 
+      conversationId = newConversation.id
       console.log('Created new conversation')
     }
 
     // Log the interaction for analytics
-    const conversationId = existingConversation?.id || null
-    if (conversationId) {
-      await supabase
-        .from('ai_interactions')
-        .insert([
-          {
-            conversation_id: conversationId,
-            message_type: 'user',
-            content: message
-          },
-          {
-            conversation_id: conversationId,
-            message_type: 'assistant',
-            content: response,
-            tokens_used: completion.usage?.total_tokens || 0,
-            model_used: 'gpt-4-turbo-preview'
-          }
-        ])
-    }
+    await prisma.aIInteraction.createMany({
+      data: [
+        {
+          conversationId: conversationId,
+          messageType: 'user',
+          content: message
+        },
+        {
+          conversationId: conversationId,
+          messageType: 'assistant',
+          content: response,
+          tokensUsed: completion.usage?.total_tokens || 0,
+          modelUsed: 'gpt-4-turbo-preview'
+        }
+      ]
+    })
 
     // Analyze conversation for lead qualification
     const engagementScore = calculateEngagementScore(message, conversationHistory.length)
     
     // Update lead engagement metrics
-    await supabase
-      .from('leads')
-      .update({
-        updated_at: new Date().toISOString()
-      })
-      .eq('id', lead.id)
+    await prisma.lead.update({
+      where: { id: lead.id },
+      data: {
+        updatedAt: new Date()
+      }
+    })
 
     console.log('Chat response generated successfully')
 
@@ -234,7 +227,7 @@ export async function POST(request: NextRequest) {
       success: true,
       response,
       engagementScore,
-      messageCount: (existingConversation?.message_count || 0) + 2
+      messageCount: (existingConversation?.messageCount || 0) + 2
     })
 
   } catch (error) {
