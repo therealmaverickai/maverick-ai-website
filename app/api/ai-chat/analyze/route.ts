@@ -3,15 +3,25 @@ import { createClient } from '@supabase/supabase-js'
 import OpenAI from 'openai'
 import { z } from 'zod'
 
-// Initialize clients
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+// Initialize clients - with runtime checks
+const getSupabaseClient = () => {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    throw new Error('Supabase configuration is missing')
+  }
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY
+  )
+}
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!
-})
+const getOpenAIClient = () => {
+  if (!process.env.OPENAI_API_KEY) {
+    throw new Error('OpenAI configuration is missing')
+  }
+  return new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY
+  })
+}
 
 // Validation schema
 const analyzeRequestSchema = z.object({
@@ -69,6 +79,10 @@ export async function POST(request: NextRequest) {
   try {
     console.log('AI Analysis request received')
     
+    // Initialize clients at runtime
+    const supabase = getSupabaseClient()
+    const openai = getOpenAIClient()
+    
     // Parse and validate request
     const body = await request.json()
     const { leadData, action } = analyzeRequestSchema.parse(body)
@@ -76,7 +90,7 @@ export async function POST(request: NextRequest) {
     console.log(`Analyzing lead for ${leadData.company}`)
 
     // Calculate lead score
-    const leadScore = await calculateLeadScore(leadData)
+    const leadScore = await calculateLeadScore(leadData, supabase)
 
     // Save lead to database
     const { data: savedLead, error: leadError } = await supabase
@@ -199,7 +213,7 @@ export async function POST(request: NextRequest) {
 }
 
 // Helper function to calculate lead score
-async function calculateLeadScore(leadData: any): Promise<number> {
+async function calculateLeadScore(leadData: any, supabase: any): Promise<number> {
   try {
     const { data, error } = await supabase
       .rpc('calculate_lead_score', {

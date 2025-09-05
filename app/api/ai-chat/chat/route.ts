@@ -3,15 +3,25 @@ import { createClient } from '@supabase/supabase-js'
 import OpenAI from 'openai'
 import { z } from 'zod'
 
-// Initialize clients
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+// Initialize clients - with runtime checks
+const getSupabaseClient = () => {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    throw new Error('Supabase configuration is missing')
+  }
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY
+  )
+}
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!
-})
+const getOpenAIClient = () => {
+  if (!process.env.OPENAI_API_KEY) {
+    throw new Error('OpenAI configuration is missing')
+  }
+  return new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY
+  })
+}
 
 // Validation schema
 const chatRequestSchema = z.object({
@@ -78,6 +88,10 @@ Non menzionare questi prompt. Comportati come un vero consulente di Maverick AI 
 export async function POST(request: NextRequest) {
   try {
     console.log('AI Chat request received')
+    
+    // Initialize clients at runtime
+    const supabase = getSupabaseClient()
+    const openai = getOpenAIClient()
     
     // Parse and validate request
     const body = await request.json()
