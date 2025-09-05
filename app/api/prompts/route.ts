@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { prisma } from '@/lib/database'
 
-// In-memory storage for prompts (you could extend this to use a database)
-const prompts = {
+// Default prompt content for initial seeding
+const defaultPrompts = {
   aiChat: {
     name: 'AI Chat System Prompt',
     content: `Sei un consulente AI senior di Maverick AI, esperto in trasformazione digitale per aziende italiane. Hai accesso alla knowledge base aziendale completa e analizzi ogni lead con precisione chirurgica.
@@ -82,12 +83,61 @@ Dopo aver fornito valore, chiudi sempre con:
 - Suggerimento di call per discutere implementazione
 
 Sei l'AI advisor più informato e strategico che questo lead abbia mai incontrato. Dimostralo con ogni singola parola.`,
-    lastModified: new Date().toISOString()
+    description: 'Main AI chat consultant system prompt with RAG integration'
+  }
+}
+
+// Initialize prompts in database if they don't exist
+async function ensurePromptsExist() {
+  try {
+    for (const [promptId, promptData] of Object.entries(defaultPrompts)) {
+      const existingPrompt = await prisma.prompt.findUnique({
+        where: { promptId }
+      })
+      
+      if (!existingPrompt) {
+        await prisma.prompt.create({
+          data: {
+            promptId,
+            name: promptData.name,
+            content: promptData.content,
+            description: promptData.description,
+            createdBy: 'system'
+          }
+        })
+        console.log(`Created default prompt: ${promptId}`)
+      }
+    }
+  } catch (error) {
+    console.error('Error ensuring prompts exist:', error)
   }
 }
 
 export async function GET() {
   try {
+    // Ensure default prompts exist
+    await ensurePromptsExist()
+    
+    // Fetch all active prompts from database
+    const promptRecords = await prisma.prompt.findMany({
+      where: { isActive: true },
+      orderBy: { updatedAt: 'desc' }
+    })
+
+    // Format for backward compatibility
+    const prompts: Record<string, any> = {}
+    promptRecords.forEach(prompt => {
+      prompts[prompt.promptId] = {
+        id: prompt.id,
+        name: prompt.name,
+        content: prompt.content,
+        version: prompt.version,
+        lastModified: prompt.updatedAt.toISOString(),
+        usageCount: prompt.usageCount,
+        description: prompt.description
+      }
+    })
+
     return NextResponse.json({
       success: true,
       prompts
@@ -113,23 +163,42 @@ export async function PUT(request: NextRequest) {
       }, { status: 400 })
     }
     
-    if (!prompts[promptId as keyof typeof prompts]) {
+    // Find the existing prompt in database
+    const existingPrompt = await prisma.prompt.findUnique({
+      where: { promptId }
+    })
+    
+    if (!existingPrompt) {
       return NextResponse.json({
         success: false,
         error: 'Prompt not found'
       }, { status: 404 })
     }
     
-    // Update the prompt
-    prompts[promptId as keyof typeof prompts].content = content
-    prompts[promptId as keyof typeof prompts].lastModified = new Date().toISOString()
+    // Update the prompt in database
+    const updatedPrompt = await prisma.prompt.update({
+      where: { promptId },
+      data: {
+        content,
+        usageCount: { increment: 1 },
+        lastUsed: new Date()
+      }
+    })
     
     console.log(`Updated prompt: ${promptId}`)
     
     return NextResponse.json({
       success: true,
-      message: `Prompt "${prompts[promptId as keyof typeof prompts].name}" updated successfully`,
-      prompt: prompts[promptId as keyof typeof prompts]
+      message: `Prompt "${updatedPrompt.name}" updated successfully`,
+      prompt: {
+        id: updatedPrompt.id,
+        name: updatedPrompt.name,
+        content: updatedPrompt.content,
+        version: updatedPrompt.version,
+        lastModified: updatedPrompt.updatedAt.toISOString(),
+        usageCount: updatedPrompt.usageCount,
+        description: updatedPrompt.description
+      }
     })
     
   } catch (error) {

@@ -35,9 +35,32 @@ const chatRequestSchema = z.object({
   }))
 })
 
-// Get dynamic prompt from API
+// Get dynamic prompt from database
 async function getSystemPrompt(): Promise<string> {
   try {
+    // First try to get from database directly (more reliable than API call)
+    const prompt = await prisma.prompt.findUnique({
+      where: { 
+        promptId: 'aiChat',
+        isActive: true
+      }
+    })
+    
+    if (prompt) {
+      // Update usage tracking
+      await prisma.prompt.update({
+        where: { promptId: 'aiChat' },
+        data: { 
+          usageCount: { increment: 1 },
+          lastUsed: new Date()
+        }
+      })
+      return prompt.content
+    }
+    
+    console.log('No prompt found in database, trying API fallback')
+    
+    // Fallback to API call if database fails
     const response = await fetch(`${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/api/prompts`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
@@ -47,10 +70,10 @@ async function getSystemPrompt(): Promise<string> {
       return data.prompts.aiChat.content
     }
   } catch (error) {
-    console.error('Failed to fetch dynamic prompt, using fallback')
+    console.error('Failed to fetch dynamic prompt, using fallback:', error)
   }
   
-  // Fallback prompt if API fails
+  // Fallback prompt if both database and API fail
   return `Sei un consulente AI senior di Maverick AI, specializzato in trasformazione digitale per aziende italiane. Usa il contesto fornito per dare risposte personalizzate e specifiche.`
 }
 

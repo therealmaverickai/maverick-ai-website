@@ -211,3 +211,29 @@ model DocumentChunk {
   @@unique([documentId, chunkIndex])
   @@map("document_chunks")
 }
+
+// AI Prompt Management
+model Prompt {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Prompt identification
+  promptId    String   @unique @map("prompt_id") // e.g., "aiChat", "emailResponse"
+  name        String
+  
+  // Prompt content
+  content     String   @db.Text
+  version     String   @default("1.0")
+  
+  // Metadata
+  isActive    Boolean  @default(true) @map("is_active")
+  createdBy   String?  @map("created_by")
+  description String?  @db.Text
+  
+  // Usage tracking
+  usageCount  Int      @default(0) @map("usage_count")
+  lastUsed    DateTime? @map("last_used")
+
+  @@map("prompts")
+}
