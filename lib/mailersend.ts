@@ -418,12 +418,12 @@ Maverick AI - Sistema di notifica automatico
     `
 
     // Configure sender and recipient - always send to admin
-    const fromEmail = process.env.MAILERSEND_FROM_EMAIL || 'federico.thiella@maverickai.it'
+    const fromEmail = process.env.MAILERSEND_FROM_EMAIL || 'fedethl@gmail.com'
     const sentFrom = new Sender(fromEmail, 'Maverick AI System')
 
     const recipients = [
       new Recipient(
-        process.env.MAILERSEND_ADMIN_EMAIL || 'federico.thiella@maverickai.it',
+        process.env.MAILERSEND_ADMIN_EMAIL || 'fedethl@gmail.com',
         'Maverick AI Admin'
       )
     ]
