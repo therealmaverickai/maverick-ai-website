@@ -1,8 +1,9 @@
 import { createClient } from '@supabase/supabase-js'
 import OpenAI from 'openai'
 import { encoding_for_model } from 'tiktoken'
-import pdfParse from 'pdf-parse'
-import mammoth from 'mammoth'
+// Dynamic imports to prevent build issues
+// import pdfParse from 'pdf-parse'
+// import mammoth from 'mammoth'
 import { prisma } from './database'
 
 // Document processing configuration
@@ -67,6 +68,7 @@ export interface ChunkWithEmbedding {
 // Text extraction functions
 export async function extractTextFromPDF(buffer: Buffer): Promise<{ text: string; pages: number }> {
   try {
+    const pdfParse = (await import('pdf-parse')).default
     const data = await pdfParse(buffer)
     return {
       text: data.text,
@@ -80,6 +82,7 @@ export async function extractTextFromPDF(buffer: Buffer): Promise<{ text: string
 
 export async function extractTextFromDOCX(buffer: Buffer): Promise<{ text: string; pages: number }> {
   try {
+    const mammoth = await import('mammoth')
     const result = await mammoth.extractRawText({ buffer })
     return {
       text: result.value,
