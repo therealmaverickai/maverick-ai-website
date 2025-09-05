@@ -28,7 +28,7 @@ export default function ProductsSection() {
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center px-4">
-                <a href="#contatti" className="btn-primary text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 inline-block text-center">
+                <a href="/ai-axcelerate" className="btn-primary text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 inline-block text-center">
                   {product.cta}
                 </a>
               </div>
