@@ -35,7 +35,7 @@ export default function WhoWeServeSection() {
   ]
 
   return (
-    <section id="chi-serviamo" className="bg-gray-50 section-padding">
+    <section id="chi-serviamo" className="bg-white section-padding">
       <div className="container-width">
         <div className="text-center mb-20">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6 px-4">
