@@ -1,51 +1,29 @@
 export default function ProductsSection() {
   const product = {
     name: "AI aXcelerate",
-    tagline: "Accelera la tua trasformazione digitale",
-    description: "Piattaforma completa per implementare rapidamente soluzioni AI nel tuo business, con moduli pre-configurati e personalizzabili per diversi settori industriali.",
-    features: [
-      "Deploy rapido (< 30 giorni)",
-      "Moduli industry-specific",
-      "Interfaccia user-friendly",
-      "Scalabilità enterprise",
-      "Support 24/7",
-      "Analytics avanzati",
-      "Sicurezza enterprise",
-      "Integrazione seamless"
-    ],
-    cta: "Scopri AI aXcelerate",
-    image: "🚀",
-    gradient: "from-blue-500 via-purple-600 to-indigo-700"
+    cta: "Scopri AI aXcelerate"
   }
 
   return (
     <section id="prodotti" className="bg-white section-padding">
       <div className="container-width">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-navy-900 mb-6 px-4">
-            Il nostro programma
-          </h2>
-          <p className="text-lg sm:text-xl text-navy-700 max-w-3xl mx-auto px-4">
-            La piattaforma AI proprietaria progettata per accelerare il successo del tuo business
-          </p>
-        </div>
-
         <div className="text-center">
-          <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300">
+          <div className="bg-white rounded-2xl p-8 sm:p-12 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300">
             <div className="text-center">
-              {/* Product Title */}
-              <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold text-navy-900 mb-4">
-                {product.name}
-              </h3>
-              
-              {/* Tagline */}
-              <p className="text-lg sm:text-xl md:text-2xl text-accent-600 font-semibold mb-6 sm:mb-8">
-                {product.tagline}
-              </p>
+              {/* Title */}
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-navy-900 mb-8 px-4">
+                AI aXcelerate - Il programma per accelerare l'adozione dell'AI in azienda
+              </h2>
               
               {/* Description */}
-              <p className="text-sm sm:text-base md:text-lg text-navy-600 mb-8 sm:mb-12 leading-relaxed max-w-3xl mx-auto px-4">
-                {product.description}
+              <p className="text-base sm:text-lg text-navy-700 max-w-4xl mx-auto px-4 leading-relaxed mb-8">
+                Un percorso end-to-end pensato per guidare le imprese nell'integrazione dell'intelligenza artificiale. AIxcelerate combina consulenza strategica, design dei processi e sviluppo tecnologico, accompagnando le aziende:
+                <br /><br />
+                dall'esplorazione delle opportunità AI,
+                <br /><br />
+                alla definizione e prioritizzazione degli use case,
+                <br /><br />
+                fino alla prototipazione e implementazione delle soluzioni.
               </p>
 
               {/* CTA Buttons */}
