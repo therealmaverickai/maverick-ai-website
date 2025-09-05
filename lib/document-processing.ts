@@ -1,6 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
 import OpenAI from 'openai'
-import { encoding_for_model } from 'tiktoken'
+// Conditional import for tiktoken to handle serverless issues
+// import { encoding_for_model } from 'tiktoken'
 // Dynamic imports to prevent build issues
 // import pdfParse from 'pdf-parse'
 // import mammoth from 'mammoth'
@@ -109,36 +110,49 @@ export async function extractTextFromTXT(buffer: Buffer): Promise<{ text: string
   }
 }
 
-// Text chunking with token counting
-export function chunkText(text: string, chunkSize: number = DOCUMENT_CONFIG.chunkSize, overlap: number = DOCUMENT_CONFIG.chunkOverlap): string[] {
-  const encoding = encoding_for_model('gpt-4')
-  const tokens = encoding.encode(text)
-  const chunks: string[] = []
-  
-  let start = 0
-  while (start < tokens.length) {
-    const end = Math.min(start + chunkSize, tokens.length)
-    const chunkTokens = tokens.slice(start, end)
-    const chunkText = new TextDecoder().decode(encoding.decode(chunkTokens))
-    
-    chunks.push(chunkText)
-    
-    // Move start position with overlap
-    start = end - overlap
-    if (start >= tokens.length) break
-  }
-  
-  encoding.free()
-  return chunks
+// Simplified token estimation (1 token ≈ 4 characters for English text)
+function estimateTokens(text: string): number {
+  return Math.ceil(text.length / 4)
 }
 
-// Token counting utility
+// Text chunking with estimated token counting
+export function chunkText(text: string, chunkSize: number = DOCUMENT_CONFIG.chunkSize, overlap: number = DOCUMENT_CONFIG.chunkOverlap): string[] {
+  const chunks: string[] = []
+  const estimatedTokens = estimateTokens(text)
+  const avgCharsPerToken = text.length / estimatedTokens
+  
+  const chunkSizeChars = Math.floor(chunkSize * avgCharsPerToken)
+  const overlapChars = Math.floor(overlap * avgCharsPerToken)
+  
+  let start = 0
+  while (start < text.length) {
+    const end = Math.min(start + chunkSizeChars, text.length)
+    const chunkText = text.slice(start, end)
+    
+    // Try to break on word boundaries
+    if (end < text.length) {
+      const lastSpace = chunkText.lastIndexOf(' ')
+      if (lastSpace > chunkSizeChars * 0.8) { // Only break if we're not losing too much
+        chunks.push(chunkText.slice(0, lastSpace))
+        start = start + lastSpace + 1 - overlapChars
+      } else {
+        chunks.push(chunkText)
+        start = end - overlapChars
+      }
+    } else {
+      chunks.push(chunkText)
+      break
+    }
+    
+    if (start >= text.length) break
+  }
+  
+  return chunks.filter(chunk => chunk.trim().length > 0)
+}
+
+// Token counting utility - simplified for serverless compatibility
 export function countTokens(text: string): number {
-  const encoding = encoding_for_model('gpt-4')
-  const tokens = encoding.encode(text)
-  const count = tokens.length
-  encoding.free()
-  return count
+  return estimateTokens(text)
 }
 
 // Extract keywords and entities from text (simple implementation)
