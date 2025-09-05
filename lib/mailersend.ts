@@ -40,7 +40,7 @@ export async function sendContactEmailWithMailerSend(data: ContactFormData): Pro
     console.log('MailerSend: Starting fresh email send process')
     console.log('MailerSend: API Token exists:', !!process.env.MAILERSEND_API_TOKEN)
     console.log('MailerSend: From email env var:', process.env.MAILERSEND_FROM_EMAIL)
-    console.log('MailerSend: Using from email:', process.env.MAILERSEND_FROM_EMAIL || 'fedethl@gmail.com')
+    console.log('MailerSend: Using from email:', process.env.MAILERSEND_FROM_EMAIL || 'federico.thiella@maverickai.it')
     console.log('MailerSend: API Token value:', process.env.MAILERSEND_API_TOKEN ? `${process.env.MAILERSEND_API_TOKEN.substring(0, 10)}...` : 'undefined')
     
     const mailerSendClient = getMailerSendClient()
@@ -287,7 +287,7 @@ export async function sendConfirmationEmailWithMailerSend(data: ContactFormData)
     `
 
     const sentFrom = new Sender(
-      process.env.MAILERSEND_FROM_EMAIL || 'info@maverickai.it',
+      process.env.MAILERSEND_FROM_EMAIL || 'federico.thiella@maverickai.it',
       'Maverick AI'
     )
 
@@ -418,12 +418,12 @@ Maverick AI - Sistema di notifica automatico
     `
 
     // Configure sender and recipient - always send to admin
-    const fromEmail = process.env.MAILERSEND_FROM_EMAIL || 'fedethl@gmail.com'
+    const fromEmail = process.env.MAILERSEND_FROM_EMAIL || 'federico.thiella@maverickai.it'
     const sentFrom = new Sender(fromEmail, 'Maverick AI System')
 
     const recipients = [
       new Recipient(
-        process.env.MAILERSEND_ADMIN_EMAIL || 'fedethl@gmail.com',
+        process.env.MAILERSEND_ADMIN_EMAIL || 'federico.thiella@maverickai.it',
         'Maverick AI Admin'
       )
     ]
@@ -502,7 +502,7 @@ export async function testMailerSendConfiguration(): Promise<{ success: boolean;
     
     // Test with a simple email setup (don't send, just validate)
     const sentFrom = new Sender(
-      process.env.MAILERSEND_FROM_EMAIL || 'info@maverickai.it',
+      process.env.MAILERSEND_FROM_EMAIL || 'federico.thiella@maverickai.it',
       'Maverick AI Test'
     )
     
