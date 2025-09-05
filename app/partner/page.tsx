@@ -107,7 +107,6 @@ export default function PartnersPage() {
         </div>
       </section>
 
-      <ContactSection />
       <Footer />
     </main>
   )
