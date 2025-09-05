@@ -81,7 +81,7 @@ ${conversationHistory.slice(-6).map(msg => `${msg.type.toUpperCase()}: ${msg.con
 === DOMANDA ATTUALE DA RISPONDERE ===`
 
   return basePrompt + conversationContext
-}`
+}
 
 export async function POST(request: NextRequest) {
   try {
