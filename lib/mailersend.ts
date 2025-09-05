@@ -316,20 +316,16 @@ export async function sendConfirmationEmailWithMailerSend(data: ContactFormData)
   }
 }
 
-export async function sendAssessmentResultsWithMailerSend(assessmentData: any): Promise<{ success: boolean; messageId?: string; error?: string }> {
+export async function sendAssessmentNotificationToAdmin(assessmentData: any): Promise<{ success: boolean; messageId?: string; error?: string }> {
   try {
-    console.log('MailerSend: Starting assessment results email send process')
-    console.log('MailerSend: Sending to:', assessmentData.email)
+    console.log('MailerSend: Starting admin notification for new assessment')
+    console.log('MailerSend: User:', assessmentData.email)
     console.log('MailerSend: Company:', assessmentData.company)
     
-    // For trial accounts, send to administrator email with user info in subject/content
-    // In production, this will be changed to send to the actual user
-    const isTrialAccount = true // Set to false when upgrading from trial
-    
     const mailerSendClient = getMailerSendClient()
-    console.log('MailerSend: Client initialized successfully for assessment')
+    console.log('MailerSend: Client initialized successfully for admin notification')
 
-    // HTML content for assessment results email
+    // Simple HTML content for admin notification
     const htmlContent = `
       <!DOCTYPE html>
       <html>
@@ -337,143 +333,98 @@ export async function sendAssessmentResultsWithMailerSend(assessmentData: any): 
         <meta charset="utf-8">
         <style>
           body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-          .header { background: linear-gradient(135deg, #0F172A, #1E293B); color: white; padding: 30px; text-align: center; }
+          .header { background: linear-gradient(135deg, #0F172A, #1E293B); color: white; padding: 20px; text-align: center; }
           .content { padding: 30px; background: #f9f9f9; }
-          .results { background: white; border-radius: 10px; padding: 20px; margin: 20px 0; border-left: 5px solid #3B82F6; }
-          .score { font-size: 48px; font-weight: bold; color: #3B82F6; text-align: center; margin: 20px 0; }
-          .cluster { font-size: 24px; font-weight: bold; color: #0F172A; text-align: center; margin-bottom: 20px; }
-          .section { margin-bottom: 25px; }
-          .question { font-weight: bold; color: #0F172A; margin-bottom: 5px; }
-          .answer { color: #666; margin-bottom: 15px; padding-left: 20px; }
+          .notification { background: white; border-radius: 10px; padding: 20px; margin: 20px 0; border-left: 5px solid #f59e0b; }
+          .data { background: #f8f9fa; border-radius: 8px; padding: 15px; margin: 15px 0; }
           .footer { background: #0F172A; color: white; padding: 20px; text-align: center; }
-          .ai-summary { background: #f0f9ff; border-left: 4px solid #3B82F6; padding: 20px; margin: 30px 0; border-radius: 8px; }
-          .cta-box { background: #3B82F6; color: white; padding: 20px; border-radius: 10px; text-align: center; margin: 30px 0; }
         </style>
       </head>
       <body>
         <div class="header">
-          <h1>🤖 AI Readiness Assessment - I tuoi Risultati</h1>
-          <p>Maverick AI</p>
+          <h1>🔔 Nuovo AI Assessment Completato</h1>
+          <p>Maverick AI - Notifica Admin</p>
         </div>
         
         <div class="content">
-          ${isTrialAccount ? `
-          <div style="background: #fef3c7; border: 1px solid #f59e0b; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-            <strong>🧪 MODALITÀ TEST:</strong> Questo è un test dell'automazione email. In produzione, questa email sarebbe stata inviata direttamente a <strong>${assessmentData.email}</strong>.
-          </div>
-          ` : ''}
-          <h2>Ciao ${assessmentData.name},</h2>
-          <p>Grazie per aver completato il nostro AI Readiness Assessment per <strong>${assessmentData.company}</strong>. Ecco i tuoi risultati dettagliati:</p>
-          
-          <div class="results">
-            <div class="score">${assessmentData.assessment.score}%</div>
-            <div class="cluster">${assessmentData.assessment.cluster}</div>
-            <p style="text-align: center; color: #666;">
-              Il livello di preparazione AI di <strong>${assessmentData.company}</strong> si classifica come "<strong>${assessmentData.assessment.cluster}</strong>"
-            </p>
-          </div>
-
-          <div class="ai-summary">
-            <h3 style="color: #1e40af; margin-bottom: 15px; font-size: 18px;">
-              🤖 Executive Summary AI-Generated
-            </h3>
-            <div style="color: #374151; line-height: 1.6;">
-              ${assessmentData.aiSummary ? assessmentData.aiSummary.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') : 'Analisi in elaborazione...'}
+          <div class="notification">
+            <h2>📋 Un nuovo utente ha completato l'AI Assessment</h2>
+            
+            <div class="data">
+              <h3>👤 Informazioni Contatto</h3>
+              <p><strong>Nome:</strong> ${assessmentData.name}</p>
+              <p><strong>Email:</strong> ${assessmentData.email}</p>
+              <p><strong>Ruolo:</strong> ${assessmentData.role}</p>
+              <p><strong>Società:</strong> ${assessmentData.company}</p>
+              ${assessmentData.website ? `<p><strong>Sito web:</strong> ${assessmentData.website}</p>` : ''}
             </div>
-            <p style="text-align: right; font-size: 12px; color: #6b7280; margin-top: 15px;">
-              <em>Analisi generata da Maverick AI</em>
-            </p>
-          </div>
-
-          <h3>📊 Riepilogo Assessment</h3>
-          
-          <div class="section">
-            <h4>👤 Informazioni Aziendali</h4>
-            <div class="question">Nome:</div>
-            <div class="answer">${assessmentData.name}</div>
-            <div class="question">Ruolo:</div>
-            <div class="answer">${assessmentData.role}</div>
-            <div class="question">Società:</div>
-            <div class="answer">${assessmentData.company}</div>
-            ${assessmentData.website ? `<div class="question">Sito web:</div><div class="answer">${assessmentData.website}</div>` : ''}
-          </div>
-
-          <div class="section">
-            <h4>🎯 Risultati Chiave</h4>
-            <div class="question">Punteggio Complessivo:</div>
-            <div class="answer"><strong>${assessmentData.assessment.score}% - ${assessmentData.assessment.cluster}</strong></div>
-            <div class="question">Chiarezza visione AI:</div>
-            <div class="answer">${assessmentData.aiVisionClarity || 'N/A'}/5</div>
-            <div class="question">Vantaggio competitivo AI:</div>
-            <div class="answer">${assessmentData.competitiveAdvantage || 'N/A'}/5</div>
-            <div class="question">Utilizzo corrente AI (dipendenti):</div>
-            <div class="answer">${assessmentData.employeeUsage || 'N/A'}/5</div>
-            <div class="question">Utilizzo corrente AI (management):</div>
-            <div class="answer">${assessmentData.managementUsage || 'N/A'}/5</div>
-          </div>
-          
-          <div class="cta-box">
-            <h3>🚀 Prossimi Passi</h3>
-            <p>Basandoci sui tuoi risultati, possiamo aiutarti a sviluppare una roadmap personalizzata per accelerare la trasformazione AI di <strong>${assessmentData.company}</strong>.</p>
-            <p style="margin-top: 20px;">
-              <strong>Vuoi saperne di più?</strong><br>
-              Contattaci per una consulenza personalizzata gratuita!
-            </p>
-            <p style="margin-top: 15px;">
-              📧 <strong>info@maverickai.it</strong> | 🌐 <strong>www.maverickai.it</strong>
-            </p>
+            
+            <div class="data">
+              <h3>📊 Risultati Assessment</h3>
+              <p><strong>Punteggio:</strong> ${assessmentData.assessment.score}% - ${assessmentData.assessment.cluster}</p>
+              <p><strong>Data:</strong> ${new Date().toLocaleDateString('it-IT')} alle ${new Date().toLocaleTimeString('it-IT')}</p>
+            </div>
+            
+            <div class="data">
+              <h3>🎯 Highlights</h3>
+              <p><strong>Visione AI:</strong> ${assessmentData.aiVisionClarity}/5</p>
+              <p><strong>Vantaggio Competitivo:</strong> ${assessmentData.competitiveAdvantage}/5</p>
+              <p><strong>Utilizzo Dipendenti:</strong> ${assessmentData.employeeUsage}/5</p>
+              <p><strong>Utilizzo Management:</strong> ${assessmentData.managementUsage}/5</p>
+            </div>
+            
+            <div style="background: #e3f2fd; border-radius: 8px; padding: 15px; margin: 20px 0;">
+              <h4>⚡ Azione Richiesta</h4>
+              <p>Considera di contattare <strong>${assessmentData.name}</strong> presso <strong>${assessmentData.company}</strong> per una consulenza personalizzata.</p>
+              <p><strong>Email di contatto:</strong> ${assessmentData.email}</p>
+            </div>
           </div>
         </div>
         
         <div class="footer">
-          <p>Maverick AI - Partner strategici per la trasformazione digitale</p>
-          <p>Questo report è stato generato automaticamente dal nostro AI Assessment Tool.</p>
+          <p>Maverick AI - Sistema di notifica automatico</p>
         </div>
       </body>
       </html>
     `
 
-    // Text content for the email
+    // Text content for the admin notification
     const textContent = `
-AI Readiness Assessment - Risultati per ${assessmentData.company}
+Nuovo AI Assessment Completato - Notifica Admin
 
-Ciao ${assessmentData.name},
+Un nuovo utente ha completato l'AI Assessment:
 
-Grazie per aver completato il nostro AI Readiness Assessment. Ecco un riepilogo dei tuoi risultati:
-
-PUNTEGGIO COMPLESSIVO: ${assessmentData.assessment.score}% - ${assessmentData.assessment.cluster}
-
-EXECUTIVE SUMMARY:
-${assessmentData.aiSummary || 'Analisi in elaborazione...'}
-
-INFORMAZIONI AZIENDALI:
+INFORMAZIONI CONTATTO:
 - Nome: ${assessmentData.name}
+- Email: ${assessmentData.email}
 - Ruolo: ${assessmentData.role}
 - Società: ${assessmentData.company}
 ${assessmentData.website ? `- Sito web: ${assessmentData.website}` : ''}
 
-RISULTATI CHIAVE:
-- Chiarezza visione AI: ${assessmentData.aiVisionClarity || 'N/A'}/5
-- Vantaggio competitivo AI: ${assessmentData.competitiveAdvantage || 'N/A'}/5
-- Utilizzo AI dipendenti: ${assessmentData.employeeUsage || 'N/A'}/5
-- Utilizzo AI management: ${assessmentData.managementUsage || 'N/A'}/5
+RISULTATI ASSESSMENT:
+- Punteggio: ${assessmentData.assessment.score}% - ${assessmentData.assessment.cluster}
+- Data: ${new Date().toLocaleDateString('it-IT')} alle ${new Date().toLocaleTimeString('it-IT')}
 
-PROSSIMI PASSI:
-Contattaci per una consulenza personalizzata gratuita e sviluppare insieme una roadmap AI su misura per ${assessmentData.company}.
+HIGHLIGHTS:
+- Visione AI: ${assessmentData.aiVisionClarity}/5
+- Vantaggio Competitivo: ${assessmentData.competitiveAdvantage}/5
+- Utilizzo Dipendenti: ${assessmentData.employeeUsage}/5
+- Utilizzo Management: ${assessmentData.managementUsage}/5
 
-Maverick AI
-Email: info@maverickai.it
-Web: www.maverickai.it
+AZIONE RICHIESTA:
+Considera di contattare ${assessmentData.name} presso ${assessmentData.company} per una consulenza personalizzata.
+
+Maverick AI - Sistema di notifica automatico
     `
 
-    // Configure sender and recipient
+    // Configure sender and recipient - always send to admin
     const fromEmail = process.env.MAILERSEND_FROM_EMAIL || 'federico.thiella@maverickai.it'
-    const sentFrom = new Sender(fromEmail, 'Maverick AI Assessment')
+    const sentFrom = new Sender(fromEmail, 'Maverick AI System')
 
     const recipients = [
       new Recipient(
-        isTrialAccount ? (process.env.MAILERSEND_ADMIN_EMAIL || 'federico.thiella@maverickai.it') : assessmentData.email,
-        isTrialAccount ? 'Maverick AI Admin' : assessmentData.name
+        process.env.MAILERSEND_ADMIN_EMAIL || 'federico.thiella@maverickai.it',
+        'Maverick AI Admin'
       )
     ]
 
@@ -481,11 +432,7 @@ Web: www.maverickai.it
     const mailParams = new EmailParams()
     mailParams.setFrom(sentFrom)
     mailParams.setTo(recipients)
-    mailParams.setSubject(
-      isTrialAccount 
-        ? `🧪 [TEST] AI Assessment Results for ${assessmentData.name} (${assessmentData.company})` 
-        : `🤖 I tuoi risultati AI Readiness Assessment - ${assessmentData.company}`
-    )
+    mailParams.setSubject(`🔔 Nuovo AI Assessment: ${assessmentData.name} (${assessmentData.company})`)
     mailParams.setHtml(htmlContent)
     mailParams.setText(textContent)
       

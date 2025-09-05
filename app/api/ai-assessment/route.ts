@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sendContactEmail } from '@/lib/email'
-import { sendAssessmentResultsWithMailerSend } from '@/lib/mailersend'
+import { sendAssessmentNotificationToAdmin } from '@/lib/mailersend'
 import { generateAISummary } from '@/lib/openai'
 import { saveAssessment } from '@/lib/database'
 import { z } from 'zod'
@@ -304,31 +304,30 @@ Contatta il nostro team per una consultazione gratuita dove approfondiremo i ris
       </html>
     `
 
-    // Send detailed assessment results email using MailerSend
-    console.log('Sending assessment results email to:', data.email)
+    // Send admin notification email
+    console.log('Sending admin notification for assessment by:', data.email)
     
     try {
-      const emailResult = await sendAssessmentResultsWithMailerSend({
+      const emailResult = await sendAssessmentNotificationToAdmin({
         ...data,
         aiSummary
       })
 
       if (!emailResult.success) {
-        console.error('Failed to send assessment results email:', emailResult.error)
-        // Don't fail the entire request if email fails - user still gets results on screen
-        console.log('Email failed but assessment completed successfully')
+        console.error('Failed to send admin notification:', emailResult.error)
+        console.log('Admin notification failed but assessment completed successfully')
       } else {
-        console.log('Assessment results email sent successfully:', emailResult.messageId)
+        console.log('Admin notification sent successfully:', emailResult.messageId)
       }
     } catch (emailError) {
-      console.error('Error sending assessment email:', emailError)
+      console.error('Error sending admin notification:', emailError)
       // Continue with success response even if email fails
     }
 
     // Return success response with AI summary
     return NextResponse.json({
       success: true,
-      message: 'Assessment completato con successo! Tra poco riceverai un email con il report dettagliato.',
+      message: 'Assessment completato con successo! I tuoi risultati sono stati generati.',
       assessment: {
         ...data.assessment,
         aiSummary
