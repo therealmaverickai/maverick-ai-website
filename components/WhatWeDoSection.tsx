@@ -9,7 +9,7 @@ export default function WhatWeDoSection() {
     {
       id: 1,
       title: "Consulenza",
-      shortDescription: "Aiutiamo le aziende a capire cosa significa davvero introdurre l'intelligenza artificiale nei propri processi.",
+      shortDescription: "Consulenza strategica per analizzare la tua azienda, definire roadmap AI e guidare l'adozione con priorità concrete.",
       expandedDescription: "Aiutiamo le aziende a capire cosa significa davvero introdurre l'intelligenza artificiale nei propri processi. Partiamo da un'analisi dello stato attuale, individuiamo i punti di forza e le aree di miglioramento e costruiamo una roadmap chiara e concreta.\n\n• Valutazione del livello di maturità AI dell'organizzazione\n• Identificazione dei processi che possono beneficiare di più dall'AI\n• Definizione di una strategia e di un piano operativo",
       icon: (
         <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -20,7 +20,7 @@ export default function WhatWeDoSection() {
     {
       id: 2,
       title: "Sviluppo",
-      shortDescription: "Trasformiamo la strategia in soluzioni reali, scegliendo e integrando le tecnologie più adatte.",
+      shortDescription: "Sviluppiamo soluzioni AI personalizzate o integriamo tool esistenti per ottimizzare processi e generare risultati misurabili.",
       expandedDescription: "Trasformiamo la strategia in soluzioni reali, scegliendo e integrando le tecnologie più adatte. Possiamo utilizzare strumenti già disponibili sul mercato oppure sviluppare applicazioni su misura per automatizzare attività e supportare i team aziendali.\n\n• Selezione e implementazione dei migliori tool AI per specifiche esigenze\n• Creazione di assistenti digitali a supporto dei dipendenti\n• Sviluppo di soluzioni personalizzate per ottimizzare processi e decisioni",
       icon: (
         <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -32,7 +32,7 @@ export default function WhatWeDoSection() {
     {
       id: 3,
       title: "Co-piloti & Agenti",
-      shortDescription: "Progettiamo strumenti pratici e immediatamente utilizzabili per risolvere bisogni concreti.",
+      shortDescription: "Copiloti verticali e agenti AI su misura che automatizzano attività e migliorano efficienza operativa quotidiana.",
       expandedDescription: "Progettiamo strumenti pratici e immediatamente utilizzabili per risolvere bisogni concreti. Si tratta di \"copiloti digitali\" che affiancano le persone nelle attività quotidiane e di agenti intelligenti che gestiscono in autonomia flussi di lavoro. Ad esempio:\n\n• Copilot per la forza vendita: generazione offerte e proposte\n• Copilot per il customer service: risposte a clienti e gestione ticket\n• Copilot per HR: screening dei CV, onboarding, comunicazioni ai candidati",
       icon: (
         <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -43,7 +43,7 @@ export default function WhatWeDoSection() {
     {
       id: 4,
       title: "Formazione",
-      shortDescription: "Crediamo che l'adozione dell'AI passi anche dalla cultura e dalle competenze delle persone.",
+      shortDescription: "Esperienze formative personalizzate che sviluppano competenze AI e rispondono alle tue esigenze professionali, online e in presenza.",
       expandedDescription: "Crediamo che l'adozione dell'AI passi anche dalla cultura e dalle competenze delle persone. Offriamo percorsi formativi personalizzati, in aula o online, che uniscono teoria e pratica per rendere i team davvero autonomi.\n\n• Workshop esperienziali su casi d'uso aziendali\n• Programmi di formazione strutturati per team e manager\n• Percorsi personalizzati online e in presenza, adattati agli obiettivi dell'organizzazione",
       icon: (
         <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
