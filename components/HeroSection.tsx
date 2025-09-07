@@ -177,7 +177,7 @@ export default function HeroSection() {
               className="btn-secondary text-base px-8 py-3 inline-block text-center group"
             >
               <span className="group-hover:translate-x-1 transition-transform duration-300 inline-block">
-                AI readiness assessment
+                AI Readiness Assessment
               </span>
             </Link>
           </div>

@@ -159,7 +159,7 @@ export default function ProductsSection() {
                       <span className="text-xl font-bold text-white">1</span>
                     </div>
                     <p className="text-sm font-semibold text-navy-700">
-                      Dall'esplorazione delle opportunità AI
+                      Dall'esplorazione delle opportunità per la tua azienda
                     </p>
                   </div>
                 </div>

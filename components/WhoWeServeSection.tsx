@@ -13,7 +13,7 @@ export default function WhoWeServeSection() {
       ),
     },
     {
-      title: "Private equity funds",
+      title: "Fondi di investimento",
       description: "Fondi di investimento che cercano di massimizzare il valore delle loro portfolio companies con tecnologie AI",
       link: "/private-equity",
       icon: (
@@ -23,7 +23,7 @@ export default function WhoWeServeSection() {
       ),
     },
     {
-      title: "Aspiring entrepreneurs",
+      title: "Aspiranti imprenditori",
       description: "Imprenditori visionari che vogliono costruire il futuro integrando AI nelle loro startup e business model",
       link: "/imprenditori",
       icon: (
