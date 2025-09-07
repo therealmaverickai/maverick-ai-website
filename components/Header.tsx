@@ -25,12 +25,12 @@ export default function Header() {
               <span>Home</span>
               <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
             </Link>
-            <Link href="/#chi-serviamo" className="text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
-              <span>Clienti</span>
-              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
-            </Link>
             <Link href="/#cosa-facciamo" className="text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
               <span>Servizi</span>
+              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
+            </Link>
+            <Link href="/#chi-serviamo" className="text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
+              <span>Clienti</span>
               <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
             </Link>
             <Link href="/#prodotti" className="text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
@@ -84,18 +84,18 @@ export default function Header() {
                 Home
               </Link>
               <Link 
-                href="/#chi-serviamo" 
-                className="text-navy-700 hover:text-accent-500 transition-colors py-2 px-3 rounded-lg hover:bg-gray-50"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Clienti
-              </Link>
-              <Link 
                 href="/#cosa-facciamo" 
                 className="text-navy-700 hover:text-accent-500 transition-colors py-2 px-3 rounded-lg hover:bg-gray-50"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Servizi
+              </Link>
+              <Link 
+                href="/#chi-serviamo" 
+                className="text-navy-700 hover:text-accent-500 transition-colors py-2 px-3 rounded-lg hover:bg-gray-50"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Clienti
               </Link>
               <Link 
                 href="/#prodotti" 

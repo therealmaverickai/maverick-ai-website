@@ -12,7 +12,7 @@ export default function AIAcceleratePage() {
         <div className="container-width">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-navy-900 mb-8">
-              AI eXcelerate
+              AI aXcelerate
             </h1>
             <p className="text-lg sm:text-xl text-navy-700 mb-8 leading-relaxed">
               L'AI sta trasformando il modo in cui le aziende operano, ma molte imprese si trovano bloccate: da dove iniziare per implementarla con successo?
@@ -88,7 +88,7 @@ export default function AIAcceleratePage() {
               Senza un approccio chiaro e pragmatico, molte aziende testano l'AI senza risultati concreti, investendo tempo e risorse in progetti poco utili.
             </p>
             <p className="text-xl font-semibold text-navy-900 mb-8">
-              Il nostro percorso AI eXcelerate elimina questi ostacoli e guida la tua azienda passo dopo passo verso un'adozione efficace e sostenibile dell'AI.
+              Il nostro percorso AI aXcelerate elimina questi ostacoli e guida la tua azienda passo dopo passo verso un'adozione efficace e sostenibile dell'AI.
             </p>
             <a href="#contatti" className="btn-primary text-lg px-8 py-4 inline-block">
               Prenota una call gratuita
@@ -102,7 +102,7 @@ export default function AIAcceleratePage() {
         <div className="container-width">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-navy-900 mb-6">
-              Il percorso AI eXcelerate è composto da 3 moduli:
+              Il percorso AI aXcelerate è composto da 3 moduli:
             </h2>
           </div>
 
@@ -275,7 +275,7 @@ export default function AIAcceleratePage() {
           <div className="text-center">
             <div className="bg-gradient-to-r from-navy-900 via-navy-800 to-navy-700 rounded-3xl p-12 text-white">
               <h2 className="text-3xl font-bold mb-6">
-                Se desideri approfondire e valutare se AI eXcelerate è adatto alla tua azienda...
+                Se desideri approfondire e valutare se AI aXcelerate è adatto alla tua azienda...
               </h2>
               <p className="text-xl text-gray-200 mb-8 max-w-3xl mx-auto">
                 Puoi prenotare una call gratuita per ottenere maggiori informazioni, discutere i tuoi obiettivi e valutare il percorso più efficace per te.
