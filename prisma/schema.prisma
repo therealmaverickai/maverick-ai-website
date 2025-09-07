@@ -18,6 +18,7 @@ model Assessment {
   role     String
   company  String
   website  String?
+  privacyConsent Boolean @default(false)
 
   // Assessment Questions
   aiVisionClarity         Int

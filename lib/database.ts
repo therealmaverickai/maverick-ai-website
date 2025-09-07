@@ -19,6 +19,7 @@ interface AssessmentData {
   role: string
   company: string
   website?: string
+  privacyConsent?: boolean
   
   aiVisionClarity: number
   visionFormalized: string
@@ -69,6 +70,7 @@ export async function saveAssessment(data: AssessmentData, aiSummary: string) {
         role: data.role,
         company: data.company,
         website: data.website,
+        privacyConsent: data.privacyConsent || false,
         
         // Assessment Questions
         aiVisionClarity: data.aiVisionClarity,

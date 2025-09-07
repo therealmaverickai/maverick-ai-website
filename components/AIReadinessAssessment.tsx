@@ -56,6 +56,7 @@ export default function AIReadinessAssessment() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [results, setResults] = useState<any>(null)
   const [emailError, setEmailError] = useState('')
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false)
   const { trackEvent } = useGoogleAnalytics()
 
   const steps = [
@@ -424,23 +425,49 @@ export default function AIReadinessAssessment() {
                   className="mt-1 w-4 h-4 text-accent-600 border-gray-300 rounded focus:ring-accent-500 focus:ring-2"
                   required
                 />
-                <label htmlFor="privacyConsent" className="ml-3 text-sm text-navy-700 leading-relaxed">
-                  <span className="font-semibold">Consenso al trattamento dei dati *</span>
-                  <br />
-                  Acconsento al trattamento dei miei dati personali per:
-                  <ul className="list-disc ml-5 mt-2 space-y-1">
-                    <li>Elaborazione e invio dei risultati dell'assessment</li>
-                    <li>Contatto per consulenze e servizi relativi all'AI</li>
-                    <li>Invio di comunicazioni di marketing sui prodotti e servizi Maverick AI</li>
-                  </ul>
-                  <span className="text-xs text-gray-600 mt-2 block">
-                    I tuoi dati saranno trattati in conformità con la nostra{' '}
-                    <a href="/privacy-policy" target="_blank" className="text-accent-600 hover:text-accent-700 underline">
-                      Privacy Policy
-                    </a>
-                    . Puoi revocare il consenso in qualsiasi momento.
-                  </span>
-                </label>
+                <div className="ml-3 flex-1">
+                  <label htmlFor="privacyConsent" className="text-sm font-semibold text-navy-700 cursor-pointer">
+                    Consenso al trattamento dei dati *
+                  </label>
+                  
+                  {/* Accordion */}
+                  <div className="mt-2">
+                    <button
+                      type="button"
+                      onClick={() => setIsAccordionOpen(!isAccordionOpen)}
+                      className="flex items-center justify-between w-full text-left text-sm text-accent-600 hover:text-accent-700 transition-colors"
+                    >
+                      <span>Dettagli sul trattamento dei dati</span>
+                      <svg
+                        className={`w-4 h-4 transition-transform duration-200 ${isAccordionOpen ? 'rotate-180' : ''}`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    
+                    {/* Accordion Content */}
+                    <div className={`overflow-hidden transition-all duration-300 ${isAccordionOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+                      <div className="pt-3 text-sm text-navy-700 leading-relaxed">
+                        <p>Acconsento al trattamento dei miei dati personali per:</p>
+                        <ul className="list-disc ml-5 mt-2 space-y-1">
+                          <li>Elaborazione e invio dei risultati dell'assessment</li>
+                          <li>Contatto per consulenze e servizi relativi all'AI</li>
+                          <li>Invio di comunicazioni di marketing sui prodotti e servizi Maverick AI</li>
+                        </ul>
+                        <p className="text-xs text-gray-600 mt-3">
+                          I tuoi dati saranno trattati in conformità con la nostra{' '}
+                          <a href="/privacy-policy" target="_blank" className="text-accent-600 hover:text-accent-700 underline">
+                            Privacy Policy
+                          </a>
+                          . Puoi revocare il consenso in qualsiasi momento.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               {!data.privacyConsent && (
                 <p className="mt-2 text-sm text-red-600 flex items-center">

@@ -13,6 +13,9 @@ const assessmentSchema = z.object({
   role: z.string().min(1, 'Ruolo deve essere specificato'),
   company: z.string().min(1, 'Società deve essere specificata'),
   website: z.string().optional().or(z.literal('')),
+  privacyConsent: z.boolean().refine((val) => val === true, {
+    message: 'Il consenso al trattamento dei dati è obbligatorio'
+  }),
   
   // Assessment Questions
   aiVisionClarity: z.number().min(1).max(5).optional().default(1),
