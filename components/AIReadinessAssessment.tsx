@@ -11,6 +11,7 @@ interface AssessmentData {
   role: string
   company: string
   website: string
+  privacyConsent: boolean
   
   // Assessment Questions (exact from your survey)
   aiVisionClarity: number // 1-5: Da 1 a 5, quanto l'azienda ha una visione chiara sull'AI
@@ -254,7 +255,7 @@ export default function AIReadinessAssessment() {
     switch (currentStep) {
       case 0: // Contact Info
         return data.name && data.email && data.role && data.company && 
-               !emailError && validateEmail(data.email || '')
+               !emailError && validateEmail(data.email || '') && data.privacyConsent
       case 1: // Strategy
         return data.aiVisionClarity && data.visionFormalized && data.aiStrategicImportance && 
                data.competitiveAdvantage && data.investmentPlans
@@ -410,6 +411,45 @@ export default function AIReadinessAssessment() {
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-colors"
                 placeholder="https://www.azienda.com"
               />
+            </div>
+
+            {/* Privacy and Consent Checkbox */}
+            <div className="mt-8 p-6 bg-gray-50 border border-gray-200 rounded-lg">
+              <div className="flex items-start">
+                <input
+                  type="checkbox"
+                  id="privacyConsent"
+                  checked={data.privacyConsent || false}
+                  onChange={(e) => handleInputChange('privacyConsent', e.target.checked)}
+                  className="mt-1 w-4 h-4 text-accent-600 border-gray-300 rounded focus:ring-accent-500 focus:ring-2"
+                  required
+                />
+                <label htmlFor="privacyConsent" className="ml-3 text-sm text-navy-700 leading-relaxed">
+                  <span className="font-semibold">Consenso al trattamento dei dati *</span>
+                  <br />
+                  Acconsento al trattamento dei miei dati personali per:
+                  <ul className="list-disc ml-5 mt-2 space-y-1">
+                    <li>Elaborazione e invio dei risultati dell'assessment</li>
+                    <li>Contatto per consulenze e servizi relativi all'AI</li>
+                    <li>Invio di comunicazioni di marketing sui prodotti e servizi Maverick AI</li>
+                  </ul>
+                  <span className="text-xs text-gray-600 mt-2 block">
+                    I tuoi dati saranno trattati in conformità con la nostra{' '}
+                    <a href="/privacy-policy" target="_blank" className="text-accent-600 hover:text-accent-700 underline">
+                      Privacy Policy
+                    </a>
+                    . Puoi revocare il consenso in qualsiasi momento.
+                  </span>
+                </label>
+              </div>
+              {!data.privacyConsent && (
+                <p className="mt-2 text-sm text-red-600 flex items-center">
+                  <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  </svg>
+                  Il consenso è obbligatorio per continuare con l'assessment
+                </p>
+              )}
             </div>
           </div>
         )
