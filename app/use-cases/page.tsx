@@ -103,66 +103,37 @@ export default function UseCasesPage() {
         <div className="container-width">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-              Casi d'Uso 
-              <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"> AI</span>
+              Cosa abbiamo 
+              <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"> realizzato</span>
             </h1>
             <p className="text-xl sm:text-2xl text-gray-300 mb-8 leading-relaxed">
-              Scopri come l'Intelligenza Artificiale sta trasformando le aziende con 
-              <span className="text-accent-400 font-semibold"> risultati misurabili</span> e 
-              <span className="text-accent-400 font-semibold"> ROI comprovati</span>
+              Alcuni nostri progetti di 
+              <span className="text-accent-400 font-semibold"> Intelligenza Artificiale</span> sviluppati per 
+              <span className="text-accent-400 font-semibold"> aziende innovative</span>
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a 
-                href="/ai-consultant" 
-                className="btn-primary text-lg px-8 py-4 bg-white text-navy-900 hover:bg-gray-100"
-              >
-                🤖 Parla con il nostro AI Consultant
-              </a>
+            <div className="flex justify-center">
               <a 
                 href="#use-cases" 
                 className="btn-secondary text-lg px-8 py-4 border-white hover:bg-white hover:text-navy-900"
               >
-                📋 Esplora i Casi d'Uso
+                📋 Esplora i Progetti
               </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Statistics Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container-width">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-            <div className="bg-white p-6 rounded-xl shadow-lg">
-              <div className="text-3xl font-bold text-blue-600 mb-2">6</div>
-              <div className="text-gray-600">Soluzioni Sviluppate</div>
-            </div>
-            <div className="bg-white p-6 rounded-xl shadow-lg">
-              <div className="text-3xl font-bold text-green-600 mb-2">90%</div>
-              <div className="text-gray-600">Riduzione Tempi Operativi</div>
-            </div>
-            <div className="bg-white p-6 rounded-xl shadow-lg">
-              <div className="text-3xl font-bold text-orange-600 mb-2">50+</div>
-              <div className="text-gray-600">Lingue Supportate</div>
-            </div>
-            <div className="bg-white p-6 rounded-xl shadow-lg">
-              <div className="text-3xl font-bold text-purple-600 mb-2">200+</div>
-              <div className="text-gray-600">Portali Automatizzati</div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Use Cases Grid */}
       <section id="use-cases" className="section-padding">
         <div className="container-width">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-navy-900 mb-6">
-              Casi d'Uso Reali
+              Alcuni nostri progetti
             </h2>
             <p className="text-lg sm:text-xl text-navy-700 max-w-3xl mx-auto">
-              Esempi concreti di come l'AI sta rivoluzionando diversi settori, 
-              con dati e risultati verificabili
+              Soluzioni di Intelligenza Artificiale sviluppate per ottimizzare processi aziendali 
+              e generare valore tangibile per i nostri clienti
             </p>
           </div>
 
@@ -249,7 +220,7 @@ export default function UseCasesPage() {
               href="https://calendar.app.google/qRHonaahhRhqZqSu8"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-secondary border-white text-white hover:bg-white hover:text-blue-600 text-lg px-8 py-4"
+              className="bg-white text-blue-600 border-2 border-white hover:bg-blue-50 hover:border-blue-100 text-lg px-8 py-4 rounded-lg font-semibold transition-all duration-300"
             >
               📞 Prenota Consulenza Gratuita
             </a>
