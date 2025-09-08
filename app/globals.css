@@ -8,6 +8,14 @@
   html {
     font-family: 'Inter', system-ui, sans-serif;
   }
+  
+  /* Prevent layout shifts during font loading */
+  * {
+    font-feature-settings: "kern" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
 
 @layer components {
@@ -42,6 +50,13 @@
   
   .container-width {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Fix navigation menu size flashing */
+  .nav-link {
+    @apply text-sm font-medium;
+    font-size: 0.875rem !important;
+    line-height: 1.25rem !important;
   }
 
   /* Mobile-specific improvements */

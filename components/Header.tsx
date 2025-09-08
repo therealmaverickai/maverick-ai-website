@@ -32,31 +32,31 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex space-x-8">
-            <Link href="/#home" className="text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
+            <Link href="/#home" className="nav-link text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
               <span>Home</span>
               <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
             </Link>
-            <Link href="/#cosa-facciamo" className="text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
+            <Link href="/#cosa-facciamo" className="nav-link text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
               <span>Servizi</span>
               <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
             </Link>
-            <Link href="/#chi-serviamo" className="text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
+            <Link href="/#chi-serviamo" className="nav-link text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
               <span>Clienti</span>
               <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
             </Link>
-            <Link href="/#prodotti" className="text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
+            <Link href="/#prodotti" className="nav-link text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
               <span>AI aXcelerate</span>
               <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
             </Link>
-            <Link href="/partner" className="text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
+            <Link href="/partner" className="nav-link text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
               <span>Partner</span>
               <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
             </Link>
-            <Link href="/ai-readiness" className="text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
+            <Link href="/ai-readiness" className="nav-link text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
               <span>AI Readiness Assessment</span>
               <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
             </Link>
-            <Link href="/use-cases" className="text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
+            <Link href="/use-cases" className="nav-link text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
               <span>Case history</span>
               <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
             </Link>
