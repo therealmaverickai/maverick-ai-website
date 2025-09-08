@@ -1,0 +1,13 @@
+<svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="120" height="40" rx="8" fill="#2B65F0" opacity="0.1"/>
+  
+  <!-- Logo Icon -->
+  <rect x="8" y="8" width="24" height="24" rx="4" fill="#2B65F0"/>
+  <path d="M15.5 14.5L19 18L15.5 21.5H12L11 19.5V16.5L12 14.5H15.5Z" fill="white"/>
+  <path d="M21.5 14.5L25 18L21.5 21.5V18L21.5 14.5Z" fill="white"/>
+  
+  <!-- Text -->
+  <text x="40" y="16" font-family="Inter, sans-serif" font-weight="700" font-size="12" fill="#1F2937">Maverick</text>
+  <text x="40" y="28" font-family="Inter, sans-serif" font-weight="700" font-size="10" fill="#2B65F0">AI</text>
+</svg>
