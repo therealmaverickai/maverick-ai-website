@@ -19,7 +19,7 @@ const useCases = [
     ],
     technologies: ["Web scraping", "Natural language processing", "Document generation"],
     icon: "",
-    color: "bg-gradient-to-r from-blue-400 to-purple-400"
+    color: "bg-gradient-to-br from-navy-900 via-navy-800 to-blue-900"
   },
   {
     id: 2,
@@ -33,7 +33,7 @@ const useCases = [
     ],
     technologies: ["Web automation", "Email automation", "Form processing"],
     icon: "",
-    color: "bg-gradient-to-r from-blue-400 to-purple-400"
+    color: "bg-gradient-to-br from-navy-900 via-navy-800 to-blue-900"
   },
   {
     id: 3,
@@ -47,7 +47,7 @@ const useCases = [
     ],
     technologies: ["Computer vision", "Natural language generation", "Multi-language AI"],
     icon: "",
-    color: "bg-gradient-to-r from-blue-400 to-purple-400"
+    color: "bg-gradient-to-br from-navy-900 via-navy-800 to-blue-900"
   },
   {
     id: 4,
@@ -61,7 +61,7 @@ const useCases = [
     ],
     technologies: ["CRM integration", "Messaging APIs", "Pricing algorithms"],
     icon: "",
-    color: "bg-gradient-to-r from-blue-400 to-purple-400"
+    color: "bg-gradient-to-br from-navy-900 via-navy-800 to-blue-900"
   },
   {
     id: 5,
@@ -75,7 +75,7 @@ const useCases = [
     ],
     technologies: ["Semantic search", "RAG systems", "Document AI"],
     icon: "",
-    color: "bg-gradient-to-r from-blue-400 to-purple-400"
+    color: "bg-gradient-to-br from-navy-900 via-navy-800 to-blue-900"
   },
   {
     id: 6,
@@ -89,7 +89,7 @@ const useCases = [
     ],
     technologies: ["Sentiment analysis", "Response generation", "Brand voice AI"],
     icon: "",
-    color: "bg-gradient-to-r from-blue-400 to-purple-400"
+    color: "bg-gradient-to-br from-navy-900 via-navy-800 to-blue-900"
   }
 ]
 
