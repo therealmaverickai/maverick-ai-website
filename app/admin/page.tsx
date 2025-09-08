@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import DocumentUpload from '@/components/DocumentUpload'
 
 interface Document {
@@ -28,6 +29,9 @@ interface SearchResult {
 }
 
 export default function AdminPage() {
+  const router = useRouter()
+  const [user, setUser] = useState<any>(null)
+  const [isLoading, setIsLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('dashboard')
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<SearchResult[]>([])
@@ -40,10 +44,60 @@ export default function AdminPage() {
   const [stats, setStats] = useState<any>(null)
 
   useEffect(() => {
-    fetchStats()
-    fetchAllDocuments()
-    fetchPrompts()
+    verifyAuth()
   }, [])
+
+  useEffect(() => {
+    if (user) {
+      fetchStats()
+      fetchAllDocuments()
+      fetchPrompts()
+    }
+  }, [user])
+
+  const verifyAuth = async () => {
+    try {
+      const token = localStorage.getItem('admin-token')
+      if (!token) {
+        router.push('/admin/login')
+        return
+      }
+
+      const response = await fetch('/api/admin/verify', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setUser(data.user)
+      } else {
+        localStorage.removeItem('admin-token')
+        router.push('/admin/login')
+      }
+    } catch (error) {
+      console.error('Auth verification failed:', error)
+      router.push('/admin/login')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem('admin-token')
+      if (token) {
+        await fetch('/api/admin/logout', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` }
+        })
+      }
+    } catch (error) {
+      console.error('Logout error:', error)
+    } finally {
+      localStorage.removeItem('admin-token')
+      router.push('/admin/login')
+    }
+  }
 
   const fetchStats = async () => {
     try {
@@ -164,6 +218,23 @@ export default function AdminPage() {
     fetchAllDocuments() // Refresh documents list
   }
 
+  // Show loading spinner while checking authentication
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Verifying authentication...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // If not authenticated, don't render anything (user will be redirected)
+  if (!user) {
+    return null
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -178,8 +249,16 @@ export default function AdminPage() {
                 Gestione RAG System e Documenti
               </p>
             </div>
-            <div className="text-sm text-gray-500">
-              Sistema di amministrazione nascosto
+            <div className="flex items-center space-x-4">
+              <div className="text-sm text-gray-600">
+                Welcome, <span className="font-semibold">{user.username}</span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="text-sm bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md transition-colors"
+              >
+                🚪 Logout
+              </button>
             </div>
           </div>
         </div>

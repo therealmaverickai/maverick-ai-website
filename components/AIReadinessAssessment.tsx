@@ -329,7 +329,7 @@ export default function AIReadinessAssessment() {
           <div className="space-y-6">
             <h3 className="text-2xl font-bold text-navy-900 mb-6">Informazioni Aziendali</h3>
             
-            <div className="grid sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-semibold text-navy-700 mb-2">
                   Nome e Cognome *
@@ -339,7 +339,7 @@ export default function AIReadinessAssessment() {
                   required
                   value={data.name || ''}
                   onChange={(e) => handleInputChange('name', e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-colors"
+                  className="w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-colors"
                   placeholder="Mario Rossi"
                 />
               </div>
@@ -355,7 +355,7 @@ export default function AIReadinessAssessment() {
                   title="Inserisci un indirizzo email valido"
                   value={data.email || ''}
                   onChange={(e) => handleInputChange('email', e.target.value)}
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-colors ${
+                  className={`w-full px-4 py-3 text-base border rounded-lg focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-colors ${
                     emailError ? 'border-red-500 bg-red-50' : 'border-gray-300'
                   }`}
                   placeholder="mario@azienda.com"
@@ -371,7 +371,7 @@ export default function AIReadinessAssessment() {
               </div>
             </div>
 
-            <div className="grid sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-semibold text-navy-700 mb-2">
                   Ruolo in azienda *
@@ -381,7 +381,7 @@ export default function AIReadinessAssessment() {
                   required
                   value={data.role || ''}
                   onChange={(e) => handleInputChange('role', e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-colors"
+                  className="w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-colors"
                   placeholder="CEO, CTO, Manager, ecc."
                 />
               </div>
@@ -395,7 +395,7 @@ export default function AIReadinessAssessment() {
                   required
                   value={data.company || ''}
                   onChange={(e) => handleInputChange('company', e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-colors"
+                  className="w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-colors"
                   placeholder="Nome dell'azienda"
                 />
               </div>
@@ -409,20 +409,20 @@ export default function AIReadinessAssessment() {
                 type="url"
                 value={data.website || ''}
                 onChange={(e) => handleInputChange('website', e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-colors"
+                className="w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent-500 focus:border-transparent transition-colors"
                 placeholder="https://www.azienda.com"
               />
             </div>
 
             {/* Privacy and Consent Checkbox */}
-            <div className="mt-8 p-6 bg-gray-50 border border-gray-200 rounded-lg">
+            <div className="mt-6 md:mt-8 p-4 md:p-6 bg-gray-50 border border-gray-200 rounded-lg">
               <div className="flex items-start">
                 <input
                   type="checkbox"
                   id="privacyConsent"
                   checked={data.privacyConsent || false}
                   onChange={(e) => handleInputChange('privacyConsent', e.target.checked)}
-                  className="mt-1 w-4 h-4 text-accent-600 border-gray-300 rounded focus:ring-accent-500 focus:ring-2"
+                  className="mt-1 w-5 h-5 md:w-4 md:h-4 text-accent-600 border-gray-300 rounded focus:ring-accent-500 focus:ring-2"
                   required
                 />
                 <div className="ml-3 flex-1">
@@ -459,7 +459,7 @@ export default function AIReadinessAssessment() {
                         </ul>
                         <p className="text-xs text-gray-600 mt-3">
                           I tuoi dati saranno trattati in conformità con la nostra{' '}
-                          <a href="/privacy-policy" target="_blank" className="text-accent-600 hover:text-accent-700 underline">
+                          <a href="/privacy" target="_blank" className="text-accent-600 hover:text-accent-700 underline">
                             Privacy Policy
                           </a>
                           . Puoi revocare il consenso in qualsiasi momento.
@@ -504,22 +504,22 @@ export default function AIReadinessAssessment() {
               <label className="block text-sm font-semibold text-navy-700 mb-4">
                 La vision e la strategia aziendale sull'AI sono formalizzate in un documento? *
               </label>
-              <div className="space-y-2">
+              <div className="space-y-3 md:space-y-2">
                 {[
                   { value: 'si', label: 'Sì' },
                   { value: 'in_parte', label: 'In parte' },
                   { value: 'no', label: 'No' }
                 ].map(option => (
-                  <label key={option.value} className="flex items-center">
+                  <label key={option.value} className="flex items-center p-3 md:p-2 bg-white md:bg-transparent rounded-lg md:rounded-none border md:border-none border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors">
                     <input
                       type="radio"
                       name="visionFormalized"
                       value={option.value}
                       checked={data.visionFormalized === option.value}
                       onChange={(e) => handleInputChange('visionFormalized', e.target.value)}
-                      className="mr-3"
+                      className="mr-3 w-5 h-5 md:w-4 md:h-4"
                     />
-                    <span className="text-navy-700">{option.label}</span>
+                    <span className="text-navy-700 text-base md:text-sm">{option.label}</span>
                   </label>
                 ))}
               </div>
@@ -529,22 +529,22 @@ export default function AIReadinessAssessment() {
               <label className="block text-sm font-semibold text-navy-700 mb-4">
                 L'AI è considerata un elemento chiave nella strategia aziendale? *
               </label>
-              <div className="space-y-2">
+              <div className="space-y-3 md:space-y-2">
                 {[
                   { value: 'si', label: 'Sì' },
                   { value: 'parzialmente', label: 'Parzialmente' },
                   { value: 'no', label: 'No' }
                 ].map(option => (
-                  <label key={option.value} className="flex items-center">
+                  <label key={option.value} className="flex items-center p-3 md:p-2 bg-white md:bg-transparent rounded-lg md:rounded-none border md:border-none border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors">
                     <input
                       type="radio"
                       name="aiStrategicImportance"
                       value={option.value}
                       checked={data.aiStrategicImportance === option.value}
                       onChange={(e) => handleInputChange('aiStrategicImportance', e.target.value)}
-                      className="mr-3"
+                      className="mr-3 w-5 h-5 md:w-4 md:h-4"
                     />
-                    <span className="text-navy-700">{option.label}</span>
+                    <span className="text-navy-700 text-base md:text-sm">{option.label}</span>
                   </label>
                 ))}
               </div>
@@ -568,21 +568,21 @@ export default function AIReadinessAssessment() {
               <label className="block text-sm font-semibold text-navy-700 mb-4">
                 L'azienda sta pianificando investimenti in AI nei prossimi 12 mesi? *
               </label>
-              <div className="space-y-2">
+              <div className="space-y-3 md:space-y-2">
                 {[
                   { value: 'si', label: 'Sì' },
                   { value: 'no', label: 'No' }
                 ].map(option => (
-                  <label key={option.value} className="flex items-center">
+                  <label key={option.value} className="flex items-center p-3 md:p-2 bg-white md:bg-transparent rounded-lg md:rounded-none border md:border-none border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors">
                     <input
                       type="radio"
                       name="investmentPlans"
                       value={option.value}
                       checked={data.investmentPlans === option.value}
                       onChange={(e) => handleInputChange('investmentPlans', e.target.value)}
-                      className="mr-3"
+                      className="mr-3 w-5 h-5 md:w-4 md:h-4"
                     />
-                    <span className="text-navy-700">{option.label}</span>
+                    <span className="text-navy-700 text-base md:text-sm">{option.label}</span>
                   </label>
                 ))}
               </div>
@@ -599,23 +599,23 @@ export default function AIReadinessAssessment() {
               <label className="block text-sm font-semibold text-navy-700 mb-4">
                 Quanti progetti AI avete già realizzato o state attualmente sviluppando? *
               </label>
-              <div className="space-y-2">
+              <div className="space-y-3 md:space-y-2">
                 {[
                   { value: '0', label: '0' },
                   { value: '1-3', label: '1-3' },
                   { value: '3-7', label: '3-7' },
                   { value: '>7', label: '>7' }
                 ].map(option => (
-                  <label key={option.value} className="flex items-center">
+                  <label key={option.value} className="flex items-center p-3 md:p-2 bg-white md:bg-transparent rounded-lg md:rounded-none border md:border-none border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors">
                     <input
                       type="radio"
                       name="currentProjects"
                       value={option.value}
                       checked={data.currentProjects === option.value}
                       onChange={(e) => handleInputChange('currentProjects', e.target.value)}
-                      className="mr-3"
+                      className="mr-3 w-5 h-5 md:w-4 md:h-4"
                     />
-                    <span className="text-navy-700">{option.label}</span>
+                    <span className="text-navy-700 text-base md:text-sm">{option.label}</span>
                   </label>
                 ))}
               </div>
@@ -625,16 +625,16 @@ export default function AIReadinessAssessment() {
               <label className="block text-sm font-semibold text-navy-700 mb-4">
                 Per quali ambiti l'azienda sta considerando/utilizzando l'AI? (selezione multipla)
               </label>
-              <div className="grid sm:grid-cols-2 gap-2 max-h-60 overflow-y-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-2 max-h-60 overflow-y-auto">
                 {AI_AREAS.map(area => (
-                  <label key={area} className="flex items-center">
+                  <label key={area} className="flex items-center p-3 md:p-2 bg-white md:bg-transparent rounded-lg md:rounded-none border md:border-none border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors">
                     <input
                       type="checkbox"
                       checked={(data.aiAreas || []).includes(area)}
                       onChange={(e) => handleArrayChange('aiAreas', area, e.target.checked)}
-                      className="mr-3"
+                      className="mr-3 w-5 h-5 md:w-4 md:h-4"
                     />
-                    <span className="text-navy-700 text-sm">{area}</span>
+                    <span className="text-navy-700 text-base md:text-sm">{area}</span>
                   </label>
                 ))}
               </div>
@@ -644,22 +644,22 @@ export default function AIReadinessAssessment() {
               <label className="block text-sm font-semibold text-navy-700 mb-4">
                 L'azienda ha già testato dei progetti pilota o Proof of Concept (PoC) di soluzioni AI? *
               </label>
-              <div className="space-y-2">
+              <div className="space-y-3 md:space-y-2">
                 {[
                   { value: 'si', label: 'Sì' },
                   { value: 'no', label: 'No' },
                   { value: 'previsto_a_breve', label: 'Previsto a breve' }
                 ].map(option => (
-                  <label key={option.value} className="flex items-center">
+                  <label key={option.value} className="flex items-center p-3 md:p-2 bg-white md:bg-transparent rounded-lg md:rounded-none border md:border-none border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors">
                     <input
                       type="radio"
                       name="pilotProjects"
                       value={option.value}
                       checked={data.pilotProjects === option.value}
                       onChange={(e) => handleInputChange('pilotProjects', e.target.value)}
-                      className="mr-3"
+                      className="mr-3 w-5 h-5 md:w-4 md:h-4"
                     />
-                    <span className="text-navy-700">{option.label}</span>
+                    <span className="text-navy-700 text-base md:text-sm">{option.label}</span>
                   </label>
                 ))}
               </div>
@@ -704,9 +704,13 @@ export default function AIReadinessAssessment() {
               <label className="block text-sm font-semibold text-navy-700 mb-4">
                 Quali sono le principali sfide che la vostra organizzazione deve/dovrà affrontare nell'adozione dell'AI? (seleziona le 2 più rilevanti) *
               </label>
-              <div className="grid gap-2 max-h-60 overflow-y-auto">
+              <div className="space-y-3 md:space-y-2 max-h-60 overflow-y-auto">
                 {CHALLENGES.map(challenge => (
-                  <label key={challenge} className="flex items-center">
+                  <label key={challenge} className={`flex items-center p-3 md:p-2 bg-white md:bg-transparent rounded-lg md:rounded-none border md:border-none border-gray-200 transition-colors ${
+                    (data.mainChallenges || []).length >= 2 && !(data.mainChallenges || []).includes(challenge)
+                      ? 'opacity-50 cursor-not-allowed'
+                      : 'hover:bg-gray-50 cursor-pointer'
+                  }`}>
                     <input
                       type="checkbox"
                       checked={(data.mainChallenges || []).includes(challenge)}
@@ -718,9 +722,9 @@ export default function AIReadinessAssessment() {
                         handleArrayChange('mainChallenges', challenge, e.target.checked)
                       }}
                       disabled={(data.mainChallenges || []).length >= 2 && !(data.mainChallenges || []).includes(challenge)}
-                      className="mr-3"
+                      className="mr-3 w-5 h-5 md:w-4 md:h-4"
                     />
-                    <span className={`text-sm ${
+                    <span className={`text-base md:text-sm ${
                       (data.mainChallenges || []).length >= 2 && !(data.mainChallenges || []).includes(challenge)
                         ? 'text-gray-400'
                         : 'text-navy-700'
@@ -739,22 +743,22 @@ export default function AIReadinessAssessment() {
               <label className="block text-sm font-semibold text-navy-700 mb-4">
                 L'azienda ha collaborazioni o partnership con esperti di AI, università o startup? *
               </label>
-              <div className="space-y-2">
+              <div className="space-y-3 md:space-y-2">
                 {[
                   { value: 'si', label: 'Sì' },
                   { value: 'no', label: 'No' },
                   { value: 'previste_a_breve', label: 'Previste a breve' }
                 ].map(option => (
-                  <label key={option.value} className="flex items-center">
+                  <label key={option.value} className="flex items-center p-3 md:p-2 bg-white md:bg-transparent rounded-lg md:rounded-none border md:border-none border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors">
                     <input
                       type="radio"
                       name="partnerships"
                       value={option.value}
                       checked={data.partnerships === option.value}
                       onChange={(e) => handleInputChange('partnerships', e.target.value)}
-                      className="mr-3"
+                      className="mr-3 w-5 h-5 md:w-4 md:h-4"
                     />
-                    <span className="text-navy-700">{option.label}</span>
+                    <span className="text-navy-700 text-base md:text-sm">{option.label}</span>
                   </label>
                 ))}
               </div>
@@ -771,22 +775,22 @@ export default function AIReadinessAssessment() {
               <label className="block text-sm font-semibold text-navy-700 mb-4">
                 I dati aziendali sono sufficientemente strutturati e accessibili per sviluppare soluzioni AI? (es. presenza di un datalake, ecc.) *
               </label>
-              <div className="space-y-2">
+              <div className="space-y-3 md:space-y-2">
                 {[
                   { value: 'si', label: 'Sì' },
                   { value: 'parzialmente', label: 'Parzialmente' },
                   { value: 'no', label: 'No' }
                 ].map(option => (
-                  <label key={option.value} className="flex items-center">
+                  <label key={option.value} className="flex items-center p-3 md:p-2 bg-white md:bg-transparent rounded-lg md:rounded-none border md:border-none border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors">
                     <input
                       type="radio"
                       name="dataReadiness"
                       value={option.value}
                       checked={data.dataReadiness === option.value}
                       onChange={(e) => handleInputChange('dataReadiness', e.target.value)}
-                      className="mr-3"
+                      className="mr-3 w-5 h-5 md:w-4 md:h-4"
                     />
-                    <span className="text-navy-700">{option.label}</span>
+                    <span className="text-navy-700 text-base md:text-sm">{option.label}</span>
                   </label>
                 ))}
               </div>
@@ -796,22 +800,22 @@ export default function AIReadinessAssessment() {
               <label className="block text-sm font-semibold text-navy-700 mb-4">
                 Il team aziendale ha competenze interne (sia tecniche che di business) per sviluppare e gestire soluzioni AI? *
               </label>
-              <div className="space-y-2">
+              <div className="space-y-3 md:space-y-2">
                 {[
                   { value: 'si', label: 'Sì' },
                   { value: 'limitate', label: 'Limitate' },
                   { value: 'no', label: 'No' }
                 ].map(option => (
-                  <label key={option.value} className="flex items-center">
+                  <label key={option.value} className="flex items-center p-3 md:p-2 bg-white md:bg-transparent rounded-lg md:rounded-none border md:border-none border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors">
                     <input
                       type="radio"
                       name="internalSkills"
                       value={option.value}
                       checked={data.internalSkills === option.value}
                       onChange={(e) => handleInputChange('internalSkills', e.target.value)}
-                      className="mr-3"
+                      className="mr-3 w-5 h-5 md:w-4 md:h-4"
                     />
-                    <span className="text-navy-700">{option.label}</span>
+                    <span className="text-navy-700 text-base md:text-sm">{option.label}</span>
                   </label>
                 ))}
               </div>
@@ -821,22 +825,22 @@ export default function AIReadinessAssessment() {
               <label className="block text-sm font-semibold text-navy-700 mb-4">
                 Avete già avviato iniziative di formazione interna sull'AI? *
               </label>
-              <div className="space-y-2">
+              <div className="space-y-3 md:space-y-2">
                 {[
                   { value: 'si', label: 'Sì' },
                   { value: 'no', label: 'No' },
                   { value: 'previste_a_breve', label: 'Previste a breve' }
                 ].map(option => (
-                  <label key={option.value} className="flex items-center">
+                  <label key={option.value} className="flex items-center p-3 md:p-2 bg-white md:bg-transparent rounded-lg md:rounded-none border md:border-none border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors">
                     <input
                       type="radio"
                       name="trainingInitiatives"
                       value={option.value}
                       checked={data.trainingInitiatives === option.value}
                       onChange={(e) => handleInputChange('trainingInitiatives', e.target.value)}
-                      className="mr-3"
+                      className="mr-3 w-5 h-5 md:w-4 md:h-4"
                     />
-                    <span className="text-navy-700">{option.label}</span>
+                    <span className="text-navy-700 text-base md:text-sm">{option.label}</span>
                   </label>
                 ))}
               </div>
@@ -846,22 +850,22 @@ export default function AIReadinessAssessment() {
               <label className="block text-sm font-semibold text-navy-700 mb-4">
                 I decision maker aziendali sono informati sulle opportunità e i rischi dell'AI? *
               </label>
-              <div className="space-y-2">
+              <div className="space-y-3 md:space-y-2">
                 {[
                   { value: 'si', label: 'Sì' },
                   { value: 'parzialmente', label: 'Parzialmente' },
                   { value: 'no', label: 'No' }
                 ].map(option => (
-                  <label key={option.value} className="flex items-center">
+                  <label key={option.value} className="flex items-center p-3 md:p-2 bg-white md:bg-transparent rounded-lg md:rounded-none border md:border-none border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors">
                     <input
                       type="radio"
                       name="decisionMakerAwareness"
                       value={option.value}
                       checked={data.decisionMakerAwareness === option.value}
                       onChange={(e) => handleInputChange('decisionMakerAwareness', e.target.value)}
-                      className="mr-3"
+                      className="mr-3 w-5 h-5 md:w-4 md:h-4"
                     />
-                    <span className="text-navy-700">{option.label}</span>
+                    <span className="text-navy-700 text-base md:text-sm">{option.label}</span>
                   </label>
                 ))}
               </div>
@@ -871,22 +875,22 @@ export default function AIReadinessAssessment() {
               <label className="block text-sm font-semibold text-navy-700 mb-4">
                 Esiste un team dedicato all'AI o un responsabile specifico del tema? *
               </label>
-              <div className="space-y-2">
+              <div className="space-y-3 md:space-y-2">
                 {[
                   { value: 'si', label: 'Sì' },
                   { value: 'no', label: 'No' },
                   { value: 'previsto_a_breve', label: 'Previsto a breve' }
                 ].map(option => (
-                  <label key={option.value} className="flex items-center">
+                  <label key={option.value} className="flex items-center p-3 md:p-2 bg-white md:bg-transparent rounded-lg md:rounded-none border md:border-none border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors">
                     <input
                       type="radio"
                       name="dedicatedTeam"
                       value={option.value}
                       checked={data.dedicatedTeam === option.value}
                       onChange={(e) => handleInputChange('dedicatedTeam', e.target.value)}
-                      className="mr-3"
+                      className="mr-3 w-5 h-5 md:w-4 md:h-4"
                     />
-                    <span className="text-navy-700">{option.label}</span>
+                    <span className="text-navy-700 text-base md:text-sm">{option.label}</span>
                   </label>
                 ))}
               </div>
@@ -896,23 +900,23 @@ export default function AIReadinessAssessment() {
               <label className="block text-sm font-semibold text-navy-700 mb-4">
                 L'azienda ha definito policy o framework interni per lo sviluppo e l'uso dell'AI? *
               </label>
-              <div className="space-y-2">
+              <div className="space-y-3 md:space-y-2">
                 {[
                   { value: 'si', label: 'Sì' },
                   { value: 'no', label: 'No' },
                   { value: 'parzialmente', label: 'Parzialmente' },
                   { value: 'non_lo_so', label: 'Non lo so' }
                 ].map(option => (
-                  <label key={option.value} className="flex items-center">
+                  <label key={option.value} className="flex items-center p-3 md:p-2 bg-white md:bg-transparent rounded-lg md:rounded-none border md:border-none border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors">
                     <input
                       type="radio"
                       name="aiPolicies"
                       value={option.value}
                       checked={data.aiPolicies === option.value}
                       onChange={(e) => handleInputChange('aiPolicies', e.target.value)}
-                      className="mr-3"
+                      className="mr-3 w-5 h-5 md:w-4 md:h-4"
                     />
-                    <span className="text-navy-700">{option.label}</span>
+                    <span className="text-navy-700 text-base md:text-sm">{option.label}</span>
                   </label>
                 ))}
               </div>
@@ -922,22 +926,22 @@ export default function AIReadinessAssessment() {
               <label className="block text-sm font-semibold text-navy-700 mb-4">
                 Esistono metriche o KPI per monitorare l'impatto delle iniziative AI? *
               </label>
-              <div className="space-y-2">
+              <div className="space-y-3 md:space-y-2">
                 {[
                   { value: 'si', label: 'Sì' },
                   { value: 'no', label: 'No' },
                   { value: 'in_sviluppo', label: 'In sviluppo' }
                 ].map(option => (
-                  <label key={option.value} className="flex items-center">
+                  <label key={option.value} className="flex items-center p-3 md:p-2 bg-white md:bg-transparent rounded-lg md:rounded-none border md:border-none border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors">
                     <input
                       type="radio"
                       name="aiMetrics"
                       value={option.value}
                       checked={data.aiMetrics === option.value}
                       onChange={(e) => handleInputChange('aiMetrics', e.target.value)}
-                      className="mr-3"
+                      className="mr-3 w-5 h-5 md:w-4 md:h-4"
                     />
-                    <span className="text-navy-700">{option.label}</span>
+                    <span className="text-navy-700 text-base md:text-sm">{option.label}</span>
                   </label>
                 ))}
               </div>
@@ -947,25 +951,25 @@ export default function AIReadinessAssessment() {
 
       case 5:
         return results ? (
-          <div className="space-y-8 text-center">
-            <div className="bg-gradient-to-br from-accent-50 to-blue-50 rounded-2xl p-8">
-              <h3 className="text-3xl font-bold text-navy-900 mb-4">
+          <div className="space-y-6 md:space-y-8 text-center">
+            <div className="bg-gradient-to-br from-accent-50 to-blue-50 rounded-2xl p-6 md:p-8">
+              <h3 className="text-2xl md:text-3xl font-bold text-navy-900 mb-4">
                 I tuoi risultati AI Readiness
               </h3>
               
-              <div className="mb-8">
-                <div className="text-6xl font-bold text-accent-500 mb-2">
+              <div className="mb-6 md:mb-8">
+                <div className="text-5xl md:text-6xl font-bold text-accent-500 mb-2">
                   {results.score}%
                 </div>
-                <div className="text-2xl font-semibold text-navy-700">
+                <div className="text-xl md:text-2xl font-semibold text-navy-700">
                   {results.cluster}
                 </div>
               </div>
 
               {/* AI-Generated Executive Summary */}
               {results.aiSummary && (
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-500 rounded-xl p-6 mb-6">
-                  <div className="text-navy-700 leading-relaxed">
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-500 rounded-xl p-4 md:p-6 mb-4 md:mb-6">
+                  <div className="text-navy-700 leading-relaxed text-sm md:text-base">
                     {results.aiSummary}
                   </div>
                   <p className="text-right text-xs text-gray-500 mt-4">
@@ -980,7 +984,7 @@ export default function AIReadinessAssessment() {
                   href="https://calendar.app.google/y77DW2BB9GJnJexs8"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-primary w-full sm:w-auto inline-block text-center"
+                  className="btn-primary w-full md:w-auto inline-block text-center py-4 md:py-3 text-base md:text-sm"
                 >
                   🚀 Richiedi Consulenza Personalizzata
                 </a>
@@ -995,12 +999,12 @@ export default function AIReadinessAssessment() {
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-6 sm:p-8">
+    <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-4 md:p-6 lg:p-8">
       {/* Progress Bar */}
-      <div className="mb-8">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-navy-900">AI Readiness Assessment</h2>
-          <div className="flex items-center space-x-2">
+      <div className="mb-6 md:mb-8">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 md:mb-6 space-y-2 sm:space-y-0">
+          <h2 className="text-xl md:text-2xl font-bold text-navy-900">AI Readiness Assessment</h2>
+          <div className="flex items-center justify-between sm:justify-end space-x-2">
             <div className="bg-accent-50 px-3 py-1.5 rounded-full">
               <span className="text-sm font-semibold text-accent-700">
                 Step {currentStep + 1} of {steps.length}
@@ -1019,7 +1023,7 @@ export default function AIReadinessAssessment() {
           ></div>
         </div>
         
-        <div className="flex justify-between mt-2">
+        <div className="hidden md:flex justify-between mt-2">
           {steps.map((step, index) => (
             <span 
               key={index}
@@ -1028,6 +1032,12 @@ export default function AIReadinessAssessment() {
               {step}
             </span>
           ))}
+        </div>
+        {/* Mobile step indicator */}
+        <div className="md:hidden mt-2 text-center">
+          <span className={`text-xs font-semibold text-accent-600`}>
+            {steps[currentStep]}
+          </span>
         </div>
       </div>
 
@@ -1038,8 +1048,8 @@ export default function AIReadinessAssessment() {
 
       {/* Validation Message */}
       {!isCurrentStepValid() && (
-        <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-          <p className="text-yellow-800 text-sm">
+        <div className="mb-4 p-4 md:p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+          <p className="text-yellow-800 text-sm md:text-sm">
             ⚠️ Completa tutti i campi obbligatori per continuare
           </p>
         </div>
@@ -1047,11 +1057,11 @@ export default function AIReadinessAssessment() {
 
       {/* Navigation Buttons */}
       {currentStep < steps.length - 1 && (
-        <div className="flex justify-between">
+        <div className="flex flex-col-reverse md:flex-row justify-between gap-3 md:gap-0">
           <button
             onClick={prevStep}
             disabled={currentStep === 0}
-            className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
+            className={`w-full md:w-auto px-6 py-4 md:py-3 text-base md:text-sm rounded-lg font-semibold transition-colors ${
               currentStep === 0
                 ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                 : 'bg-gray-200 text-navy-700 hover:bg-gray-300'
@@ -1064,15 +1074,16 @@ export default function AIReadinessAssessment() {
             <button
               onClick={handleSubmit}
               disabled={isSubmitting || !isCurrentStepValid()}
-              className={`btn-primary px-8 ${!isCurrentStepValid() ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`btn-primary w-full md:w-auto px-8 py-4 md:py-3 text-base md:text-sm ${!isCurrentStepValid() ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               {isSubmitting ? (
-                <span className="flex items-center">
+                <span className="flex items-center justify-center">
                   <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Generazione analisi AI in corso...
+                  <span className="hidden md:inline">Generazione analisi AI in corso...</span>
+                  <span className="md:hidden">Generazione in corso...</span>
                 </span>
               ) : (
                 'Calcola Risultati →'
@@ -1082,7 +1093,7 @@ export default function AIReadinessAssessment() {
             <button
               onClick={nextStep}
               disabled={!isCurrentStepValid()}
-              className={`btn-primary px-8 ${!isCurrentStepValid() ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`btn-primary w-full md:w-auto px-8 py-4 md:py-3 text-base md:text-sm ${!isCurrentStepValid() ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               Avanti →
             </button>

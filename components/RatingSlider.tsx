@@ -37,18 +37,18 @@ export default function RatingSlider({
   return (
     <div className="space-y-4">
       {/* Labels above the slider */}
-      <div className="flex justify-between text-sm text-gray-600 mb-2">
-        <span className="text-left font-medium">{leftLabel}</span>
-        <span className="text-right font-medium">{rightLabel}</span>
+      <div className="flex justify-between text-xs md:text-sm text-gray-600 mb-2">
+        <span className="text-left font-medium flex-1 pr-2">{leftLabel}</span>
+        <span className="text-right font-medium flex-1 pl-2">{rightLabel}</span>
       </div>
 
       <div 
-        className="relative py-6"
+        className="relative py-8 md:py-6"
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
       >
         {/* Track */}
-        <div className="relative h-2 bg-gray-100 rounded-full shadow-inner">
+        <div className="relative h-3 md:h-2 bg-gray-100 rounded-full shadow-inner">
           {/* Progress */}
           <div 
             className="h-full bg-gradient-to-r from-accent-400 to-accent-600 transition-all duration-500 ease-out rounded-full shadow-sm"
@@ -57,10 +57,10 @@ export default function RatingSlider({
           
           {/* Thumb with Value */}
           <div 
-            className={`absolute top-1/2 -translate-y-1/2 w-8 h-8 bg-accent-500 rounded-full shadow-lg cursor-pointer transform transition-all duration-300 flex items-center justify-center ${
+            className={`absolute top-1/2 -translate-y-1/2 w-10 h-10 md:w-8 md:h-8 bg-accent-500 rounded-full shadow-lg cursor-pointer transform transition-all duration-300 flex items-center justify-center ${
               isDragging ? 'scale-125 shadow-xl' : isHovering ? 'scale-110 shadow-lg' : ''
             }`}
-            style={{ left: `calc(${percentage}% - 16px)` }}
+            style={{ left: `calc(${percentage}% - 20px)` }}
           >
             <span className="text-white text-sm font-semibold">
               {value}
