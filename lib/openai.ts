@@ -132,7 +132,23 @@ function replacePlaceholders(template: string, data: AssessmentData): string {
 
 export async function generateAISummary(data: AssessmentData, customPrompt?: string): Promise<string> {
   try {
-    const promptTemplate = customPrompt || DEFAULT_PROMPT_TEMPLATE
+    // Get prompt from database if not provided
+    let promptTemplate = customPrompt
+    if (!promptTemplate) {
+      try {
+        // Import here to avoid circular dependency
+        const { prisma } = await import('@/lib/database')
+        const promptRecord = await prisma.prompt.findUnique({
+          where: { promptId: 'aiAssessment' }
+        })
+        promptTemplate = promptRecord?.content || DEFAULT_PROMPT_TEMPLATE
+        console.log('Using AI Assessment prompt from database:', !!promptRecord)
+      } catch (dbError) {
+        console.warn('Failed to fetch prompt from database, using default:', dbError)
+        promptTemplate = DEFAULT_PROMPT_TEMPLATE
+      }
+    }
+    
     const prompt = replacePlaceholders(promptTemplate, data)
 
     const openai = getOpenAIClient()

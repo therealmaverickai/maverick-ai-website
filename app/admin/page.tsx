@@ -623,13 +623,26 @@ export default function AdminPage() {
                     <li>• Viene utilizzato per ogni conversazione</li>
                     <li>• Include automaticamente i documenti RAG</li>
                   </ul>
+                  <h5 className="font-medium mb-2 mt-4">AI Assessment Prompt:</h5>
+                  <ul className="space-y-1">
+                    <li>• Genera executive summary per l'assessment</li>
+                    <li>• Usa placeholders dinamici ({{company}}, {{name}}, etc.)</li>
+                    <li>• Personalizza l'analisi per ruolo e azienda</li>
+                  </ul>
                 </div>
                 <div>
-                  <h5 className="font-medium mb-2">Variabili disponibili:</h5>
+                  <h5 className="font-medium mb-2">Variabili Chat:</h5>
                   <ul className="space-y-1">
                     <li>• {`{leadData}`} - Informazioni del cliente</li>
                     <li>• {`{contextFromDocuments}`} - Contenuto documenti RAG</li>
                     <li>• {`{conversationHistory}`} - Cronologia chat</li>
+                  </ul>
+                  <h5 className="font-medium mb-2 mt-4">Variabili Assessment:</h5>
+                  <ul className="space-y-1">
+                    <li>• {`{{company}}`} - Nome azienda</li>
+                    <li>• {`{{name}}`} - Nome utente</li>
+                    <li>• {`{{aiVisionClarity}}`} - Score visione AI</li>
+                    <li>• {`{{role}}`} - Ruolo aziendale</li>
                   </ul>
                 </div>
               </div>
