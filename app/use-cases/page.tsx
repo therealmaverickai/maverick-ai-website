@@ -9,86 +9,86 @@ export const metadata = {
 const useCases = [
   {
     id: 1,
-    title: "Analisi Predittiva per E-commerce",
-    sector: "Retail & E-commerce",
-    description: "Sistema AI che predice la domanda di prodotti, ottimizza l'inventario e personalizza le raccomandazioni per ogni cliente.",
+    title: "Copilota per Gare e Offerte",
+    sector: "Pubblica Amministrazione & B2B",
+    description: "Piattaforma AI che intercetta automaticamente le gare sui portali pubblici e privati, segnala quelle rilevanti per l'azienda e genera bozze di risposta, riducendo tempi e complessità operative dei team commerciali.",
     benefits: [
-      "Riduzione del 30% degli sprechi di magazzino",
-      "Aumento del 25% delle conversioni",
-      "ROI del 240% nel primo anno"
+      "Riduzione del 70% del tempo di ricerca gare",
+      "Aumento del 40% delle partecipazioni qualificate",
+      "Generazione automatica bozze di risposta"
     ],
-    technologies: ["Machine Learning", "Predictive Analytics", "Recommendation Systems"],
-    icon: "🛒",
+    technologies: ["Web Scraping", "Natural Language Processing", "Document Generation"],
+    icon: "📋",
     color: "bg-blue-500"
   },
   {
     id: 2,
-    title: "Automazione Customer Service",
-    sector: "Servizi Finanziari",
-    description: "Chatbot intelligente integrato con sistemi bancari per gestire il 70% delle richieste clienti in tempo reale.",
+    title: "Agente per Iscrizione ai Portali di Procurement",
+    sector: "B2B Sales & Procurement",
+    description: "Agente AI che analizza i siti di procurement, identifica la piattaforma utilizzata e gli accessi richiesti, recupera i contatti, automatizza l'invio email con la richiesta di iscrizione/accredito e supporta l'iscrizione ai portali.",
     benefits: [
-      "Riduzione del 60% dei tempi di risposta",
-      "Risparmio di €150K annui in personale",
-      "Soddisfazione cliente aumentata del 40%"
+      "Automazione completa del processo di iscrizione",
+      "Identificazione automatica di 200+ portali",
+      "Riduzione del 90% del tempo operativo"
     ],
-    technologies: ["Natural Language Processing", "AI Chatbots", "Integration APIs"],
-    icon: "🏦",
+    technologies: ["Web Automation", "Email Automation", "Form Processing"],
+    icon: "🔐",
     color: "bg-green-500"
   },
   {
     id: 3,
-    title: "Ottimizzazione Produzione",
-    sector: "Manifatturiero",
-    description: "AI per il monitoraggio in tempo reale delle linee produttive, prevenzione guasti e ottimizzazione della qualità.",
+    title: "Traduttore AI per E-commerce",
+    sector: "E-commerce & Retail",
+    description: "Tool AI che genera automaticamente descrizioni prodotto a partire da una foto, e le traduce in più lingue e diversi tone of voice in linea con l'identità del brand.",
     benefits: [
-      "Riduzione del 45% dei fermi macchina",
-      "Miglioramento del 20% della qualità",
-      "Risparmio energetico del 15%"
+      "Generazione automatica descrizioni da immagini",
+      "Traduzione in 50+ lingue",
+      "Personalizzazione tone of voice del brand"
     ],
-    technologies: ["Computer Vision", "IoT Integration", "Predictive Maintenance"],
-    icon: "🏭",
+    technologies: ["Computer Vision", "Natural Language Generation", "Multi-language AI"],
+    icon: "🌐",
     color: "bg-orange-500"
   },
   {
     id: 4,
-    title: "Diagnosi Medica Assistita",
-    sector: "Healthcare",
-    description: "Sistema AI per l'analisi di imaging medico che supporta i radiologi nella diagnosi precoce di patologie.",
+    title: "CRM con Automazioni Intelligenti",
+    sector: "Sales & Customer Management",
+    description: "CRM evoluto che integra funzioni tradizionali di inserimento contatti e deal con simulazioni di pricing, utilizzo via WhatsApp/Telegram e un assistente digitale che aggiorna i deal e agisce come assistente personale.",
     benefits: [
-      "Accuratezza diagnostica del 95%",
-      "Riduzione del 50% dei tempi di refertazione",
-      "Diagnosi precoci aumentate del 30%"
+      "Integrazione WhatsApp/Telegram nativa",
+      "Simulazioni di pricing automatiche",
+      "Assistente AI per gestione scadenze"
     ],
-    technologies: ["Deep Learning", "Computer Vision", "Medical Imaging"],
-    icon: "🏥",
+    technologies: ["CRM Integration", "Messaging APIs", "Pricing Algorithms"],
+    icon: "💼",
     color: "bg-red-500"
   },
   {
     id: 5,
-    title: "Smart Contract Automation",
-    sector: "Legal Tech",
-    description: "Piattaforma AI per l'analisi automatica di contratti, estrazione di clausole critiche e gestione del rischio legale.",
+    title: "Enhanced Knowledge Management Tool",
+    sector: "Enterprise & Knowledge Work",
+    description: "Soluzione AI che centralizza documenti e informazioni aziendali, consentendo ricerche semantiche avanzate e chatbot interni per rispondere a domande dei team con fonti citate. Migliora l'accesso al know-how e preserva la conoscenza aziendale.",
     benefits: [
-      "Riduzione del 70% del tempo di review",
-      "Identificazione del 98% delle clausole critiche",
-      "Risparmio di €200K annui in consulenze legali"
+      "Ricerca semantica su tutti i documenti aziendali",
+      "Chatbot interno con fonti citate",
+      "Riduzione del 60% dei tempi di ricerca informazioni"
     ],
-    technologies: ["Natural Language Processing", "Document AI", "Legal Analytics"],
-    icon: "⚖️",
+    technologies: ["Semantic Search", "RAG Systems", "Document AI"],
+    icon: "🧠",
     color: "bg-purple-500"
   },
   {
     id: 6,
-    title: "Fraud Detection in Real-time",
-    sector: "FinTech",
-    description: "Sistema di rilevamento frodi in tempo reale per transazioni finanziarie con machine learning avanzato.",
+    title: "Agente per Gestione Recensioni Hospitality",
+    sector: "Hotel & Ristorazione",
+    description: "Strumento AI che supporta hotel e ristoranti a rispondere alle recensioni online generando risposte personalizzate, coerenti con il tono del brand. Permette di rispondere in modo rapido, professionale e scalabile.",
     benefits: [
-      "Riduzione del 85% delle frodi",
-      "Diminuzione del 40% dei falsi positivi",
-      "Risparmio di €2M annui in perdite"
+      "Risposta automatica a recensioni online",
+      "Tone of voice coerente con il brand",
+      "Gestione scalabile su multiple piattaforme"
     ],
-    technologies: ["Anomaly Detection", "Real-time Processing", "Risk Scoring"],
-    icon: "🛡️",
+    technologies: ["Sentiment Analysis", "Response Generation", "Brand Voice AI"],
+    icon: "🏨",
     color: "bg-indigo-500"
   }
 ]
@@ -135,19 +135,19 @@ export default function UseCasesPage() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
             <div className="bg-white p-6 rounded-xl shadow-lg">
               <div className="text-3xl font-bold text-blue-600 mb-2">6</div>
-              <div className="text-gray-600">Settori Trasformati</div>
+              <div className="text-gray-600">Soluzioni Sviluppate</div>
             </div>
             <div className="bg-white p-6 rounded-xl shadow-lg">
-              <div className="text-3xl font-bold text-green-600 mb-2">€5M+</div>
-              <div className="text-gray-600">Risparmi Generati</div>
+              <div className="text-3xl font-bold text-green-600 mb-2">90%</div>
+              <div className="text-gray-600">Riduzione Tempi Operativi</div>
             </div>
             <div className="bg-white p-6 rounded-xl shadow-lg">
-              <div className="text-3xl font-bold text-orange-600 mb-2">95%</div>
-              <div className="text-gray-600">Accuratezza Media</div>
+              <div className="text-3xl font-bold text-orange-600 mb-2">50+</div>
+              <div className="text-gray-600">Lingue Supportate</div>
             </div>
             <div className="bg-white p-6 rounded-xl shadow-lg">
-              <div className="text-3xl font-bold text-purple-600 mb-2">240%</div>
-              <div className="text-gray-600">ROI Medio</div>
+              <div className="text-3xl font-bold text-purple-600 mb-2">200+</div>
+              <div className="text-gray-600">Portali Automatizzati</div>
             </div>
           </div>
         </div>
