@@ -408,7 +408,7 @@ export async function POST(request: NextRequest) {
 
     // SECURITY VALIDATION - Message validation
     const messageValidation = validateMessage(message)
-    if (!messageValidation.isValid) {
+    if (!messageValidation.valid) {
       console.log('Message validation failed:', messageValidation.reason)
       await logSecurityEvent('message_validation_failed', clientIdentifier, { 
         reason: messageValidation.reason,
