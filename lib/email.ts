@@ -248,6 +248,14 @@ export async function sendConfirmationEmail(data: ContactFormData): Promise<{ su
 // Send admin notification for AI assistant usage
 export async function sendAIUsageNotification(leadData: any, message: string, conversationCount: number): Promise<{ success: boolean; messageId?: string; error?: string }> {
   try {
+    console.log('🔧 Attempting to send AI usage notification...')
+    console.log('📧 Email config check:', {
+      EMAIL_SERVICE: process.env.EMAIL_SERVICE ? '✓ Set' : '✗ Missing',
+      EMAIL_USER: process.env.EMAIL_USER ? '✓ Set' : '✗ Missing', 
+      EMAIL_PASSWORD: process.env.EMAIL_PASSWORD ? '✓ Set' : '✗ Missing',
+      EMAIL_FROM: process.env.EMAIL_FROM ? '✓ Set' : '✗ Missing'
+    })
+    
     const transporter = createTransporter()
 
     const htmlContent = `
@@ -369,14 +377,23 @@ Data: ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })}
       html: htmlContent,
     }
 
+    console.log('📬 Sending email to:', mailOptions.to)
+    console.log('📄 Subject:', mailOptions.subject)
+    
     const result = await transporter.sendMail(mailOptions)
     
+    console.log('✅ Email sent successfully! Message ID:', result.messageId)
     return {
       success: true,
       messageId: result.messageId
     }
   } catch (error) {
-    console.error('AI usage notification error:', error)
+    console.error('❌ AI usage notification error:', error)
+    console.error('Error details:', {
+      name: error instanceof Error ? error.name : 'Unknown',
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : 'No stack trace'
+    })
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error'

@@ -29,13 +29,25 @@ export default function AIChat({ leadData, onComplete }: AIChatProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [isInitialized, setIsInitialized] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const chatContainerRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    if (chatContainerRef.current) {
+      // Scroll within the chat container only, not the entire page
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
+        behavior: 'smooth'
+      })
+    }
   }
 
   useEffect(() => {
-    scrollToBottom()
+    // Small delay to ensure DOM is updated before scrolling
+    const timer = setTimeout(() => {
+      scrollToBottom()
+    }, 100)
+    
+    return () => clearTimeout(timer)
   }, [messages])
 
   // Initialize chat with AI analysis
@@ -267,7 +279,10 @@ export default function AIChat({ leadData, onComplete }: AIChatProps) {
       </div>
 
       {/* Messages Area - Made bigger and more readable */}
-      <div className="h-[600px] overflow-y-auto p-6 space-y-6 bg-gray-50">
+      <div 
+        ref={chatContainerRef}
+        className="h-[600px] overflow-y-auto p-6 space-y-6 bg-gray-50"
+      >
         {messages.map((message) => (
           <div
             key={message.id}
@@ -377,7 +392,9 @@ export default function AIChat({ leadData, onComplete }: AIChatProps) {
               Prenota una consulenza gratuita per approfondire i use case più promettenti
             </p>
             <a
-              href="#contatti"
+              href="https://calendar.app.google/g7HZgUkvBAbRREGK6"
+              target="_blank"
+              rel="noopener noreferrer"
               className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 inline-block"
             >
               📞 Prenota Consulenza Gratuita
