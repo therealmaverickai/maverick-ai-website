@@ -7,6 +7,11 @@ export const metadata: Metadata = {
   title: 'Maverick AI - Diamo forma al business del futuro',
   description: 'Startup specializzata in Intelligenza Artificiale Generativa e Agenticche per il business. Partner strategici per la trasformazione digitale.',
   keywords: 'AI, Intelligenza Artificiale, Business, Generative AI, Agentic AI, Digital Transformation',
+  icons: {
+    icon: '/favicon.png',
+    shortcut: '/favicon.png',
+    apple: '/favicon.png',
+  },
 }
 
 export default function RootLayout({

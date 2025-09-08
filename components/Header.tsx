@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -12,9 +13,19 @@ export default function Header() {
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
           <div className="flex items-center">
-            <Link href="/" className="text-2xl font-bold text-gray-900 hover:scale-105 transition-all duration-300 group">
-              <span className="group-hover:text-blue-600 transition-colors duration-300">Maverick</span> 
-              <span className="text-blue-600 group-hover:rotate-12 inline-block transition-transform duration-300">AI</span>
+            <Link href="/" className="hover:scale-105 transition-all duration-300 group">
+              <Image
+                src="/logo.png"
+                alt="Maverick AI"
+                width={120}
+                height={40}
+                priority
+                className="h-10 w-auto"
+                style={{
+                  maxWidth: "100%",
+                  height: "auto"
+                }}
+              />
             </Link>
           </div>
 
