@@ -35,6 +35,77 @@ const chatRequestSchema = z.object({
   }))
 })
 
+// Content filtering for business-focused conversations
+const isBusinessFocusedQuestion = (message: string): boolean => {
+  const message_lower = message.toLowerCase()
+  
+  // Keywords that indicate business/AI use case questions (ALLOWED)
+  const businessKeywords = [
+    'business', 'azienda', 'company', 'impresa', 'startup',
+    'processo', 'process', 'workflow', 'operazioni', 'operations',
+    'ai', 'intelligenza artificiale', 'artificial intelligence', 'machine learning', 'ml',
+    'automatizzazione', 'automation', 'digitale', 'digital', 'tecnologia', 'technology',
+    'vendite', 'sales', 'marketing', 'clienti', 'customers', 'customer service',
+    'produzione', 'production', 'logistica', 'logistics', 'supply chain',
+    'analytics', 'data', 'dati', 'reportistica', 'reporting',
+    'crm', 'erp', 'gestionale', 'software', 'piattaforma', 'platform',
+    'roi', 'costi', 'costs', 'budget', 'investimento', 'investment',
+    'efficienza', 'efficiency', 'produttività', 'productivity',
+    'use case', 'caso d\'uso', 'implementazione', 'implementation',
+    'strategia', 'strategy', 'roadmap', 'piano', 'plan',
+    'settore', 'industry', 'mercato', 'market', 'competitività', 'competitive'
+  ]
+  
+  // Topics that are NOT allowed (personal, general knowledge, etc.)
+  const forbiddenKeywords = [
+    'ricetta', 'recipe', 'cucinare', 'cooking', 'cibo', 'food',
+    'salute', 'health', 'medicina', 'medical', 'sintomi', 'symptoms',
+    'politica', 'politics', 'elezioni', 'elections', 'governo', 'government',
+    'sport', 'football', 'calcio', 'tennis', 'basket',
+    'meteo', 'weather', 'tempo', 'climate',
+    'celebrity', 'celebrities', 'gossip', 'entertainment',
+    'personal', 'personale', 'famiglia', 'family', 'relazione', 'relationship',
+    'homework', 'compiti', 'school', 'scuola', 'università', 'university',
+    'gioco', 'game', 'gaming', 'videogame', 'entertainment',
+    'religione', 'religion', 'filosofia', 'philosophy',
+    'storia', 'history', 'geografia', 'geography'
+  ]
+  
+  // Check for forbidden topics first
+  const hasForbiddenContent = forbiddenKeywords.some(keyword => 
+    message_lower.includes(keyword)
+  )
+  
+  if (hasForbiddenContent) {
+    return false
+  }
+  
+  // Check for business-related keywords
+  const hasBusinessContent = businessKeywords.some(keyword => 
+    message_lower.includes(keyword)
+  )
+  
+  // Additional checks for business context
+  const isQuestionAboutImplementation = /come|how|quando|when|dove|where|perch[eé]|why|cosa|what|quale|which/i.test(message_lower)
+  const mentionsBusiness = /aziend|compan|business|lavoro|work|ufficio|office/i.test(message_lower)
+  
+  return hasBusinessContent || (isQuestionAboutImplementation && mentionsBusiness)
+}
+
+const getOffTopicResponse = (): string => {
+  const responses = [
+    "Mi dispiace, ma sono specializzato nell'aiutare le aziende a scoprire use case concreti per l'intelligenza artificiale nel loro business. Potresti farmi una domanda relativa all'implementazione dell'AI nella tua azienda?",
+    
+    "Il mio ruolo è quello di identificare opportunità AI specifiche per il tuo business. Potresti riformulare la tua domanda focalizzandoti su come l'intelligenza artificiale potrebbe aiutare la tua azienda?",
+    
+    "Sono qui per analizzare il tuo business e suggerire use case AI concreti. Ti invito a farmi domande su come l'intelligenza artificiale può migliorare i processi, l'efficienza o la competitività della tua azienda.",
+    
+    "La mia expertise si concentra sulla trasformazione digitale aziendale attraverso l'AI. Parliamo di come l'intelligenza artificiale può risolvere sfide specifiche nel tuo settore o migliorare i tuoi processi aziendali."
+  ]
+  
+  return responses[Math.floor(Math.random() * responses.length)]
+}
+
 // Get dynamic prompt from database
 async function getSystemPrompt(): Promise<string> {
   try {
@@ -74,7 +145,25 @@ async function getSystemPrompt(): Promise<string> {
   }
   
   // Fallback prompt if both database and API fail
-  return `Sei un consulente AI senior di Maverick AI, specializzato in trasformazione digitale per aziende italiane. Usa il contesto fornito per dare risposte personalizzate e specifiche.`
+  return `Sei un consulente AI senior di Maverick AI, specializzato ESCLUSIVAMENTE in trasformazione digitale per aziende italiane.
+
+RUOLO SPECIFICO:
+- Identifichi use case AI concreti per il business del cliente
+- Analizzi processi aziendali per trovare opportunità di automazione
+- Suggerisci implementazioni AI pratiche e misurabili
+- Fornisci stime di ROI e timeline realistiche
+
+LIMITAZIONI RIGIDE:
+- Rispondi SOLO a domande relative a business, AI, tecnologia, processi aziendali
+- NON fornire informazioni su: ricette, salute, sport, politica, intrattenimento, argomenti personali
+- Se la domanda non è business-related, reindirizza cortesemente verso use case AI
+
+STILE:
+- Professionale ma accessibile
+- Focalizzato su soluzioni concrete e actionable
+- Sempre collegato al business specifico del cliente
+
+Usa il contesto fornito per dare risposte personalizzate e specifiche al settore e alle esigenze aziendali.`
 }
 
 // Enhanced system prompt with dynamic content and variables
@@ -118,6 +207,18 @@ export async function POST(request: NextRequest) {
     const { leadData, message, conversationHistory } = chatRequestSchema.parse(body)
 
     console.log(`Chat message from ${leadData.company}: ${message.substring(0, 50)}...`)
+
+    // CONTENT FILTERING: Check if the question is business-focused
+    if (!isBusinessFocusedQuestion(message)) {
+      console.log('Off-topic question detected, returning redirect response')
+      return NextResponse.json({
+        success: true,
+        response: getOffTopicResponse(),
+        ragUsed: false,
+        tokensUsed: 0,
+        conversationTurns: conversationHistory.length + 1
+      })
+    }
 
     // Find existing lead using Prisma
     const lead = await prisma.lead.findFirst({

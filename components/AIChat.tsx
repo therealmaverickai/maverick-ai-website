@@ -174,21 +174,39 @@ export default function AIChat({ leadData, onComplete }: AIChatProps) {
   }
 
   return (
-    <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
-      {/* Chat Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6">
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-            <span className="text-xl">🤖</span>
+    <div className="max-w-4xl mx-auto">
+      {/* Usage Guidelines */}
+      <div className="bg-amber-50 border-l-4 border-amber-400 p-4 mb-4 rounded-r-lg">
+        <div className="flex items-start">
+          <div className="flex-shrink-0">
+            <svg className="h-5 w-5 text-amber-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+            </svg>
           </div>
-          <div>
-            <h3 className="text-xl font-semibold">AI Assistant Maverick</h3>
-            <p className="text-blue-100 text-sm">
-              Analisi personalizzata per {leadData.company}
+          <div className="ml-3">
+            <p className="text-sm text-amber-700">
+              <strong>Linee guida:</strong> Questo AI Assistant è specializzato nell'identificare use case AI per il tuo business. 
+              Fai domande su processi aziendali, automazione, efficienza operativa, tecnologie per il tuo settore.
             </p>
           </div>
         </div>
       </div>
+      
+      <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+        {/* Chat Header */}
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+              <span className="text-xl">🤖</span>
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold">AI Assistant Maverick</h3>
+              <p className="text-blue-100 text-sm">
+                Analisi personalizzata per {leadData.company}
+              </p>
+            </div>
+          </div>
+        </div>
 
       {/* Messages Area */}
       <div className="h-96 overflow-y-auto p-6 space-y-4 bg-gray-50">
@@ -248,7 +266,7 @@ export default function AIChat({ leadData, onComplete }: AIChatProps) {
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Chiedi dettagli sui use case, ROI, tempi di implementazione..."
+              placeholder="Es: 'Come automatizzare il customer service?' o 'Opportunità AI nel mio settore?'"
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
               rows={2}
               disabled={isLoading}
@@ -309,6 +327,7 @@ export default function AIChat({ leadData, onComplete }: AIChatProps) {
           </div>
         </div>
       </div>
+    </div>
     </div>
   )
 }
