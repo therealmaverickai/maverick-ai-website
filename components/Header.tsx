@@ -31,7 +31,7 @@ export default function Header() {
 
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex space-x-8">
+          <nav className="hidden lg:flex space-x-8 ml-auto">
             <Link href="/#home" className="nav-link text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
               <span>Home</span>
               <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-8 transition-all duration-300 rounded-full"></div>
@@ -61,11 +61,6 @@ export default function Header() {
               <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-10 transition-all duration-300 rounded-full"></div>
             </Link>
           </nav>
-
-          {/* CTA Button */}
-          <Link href="/#contatti" className="hidden lg:block btn-primary nav-button">
-            Richiedi Informazioni
-          </Link>
 
           {/* Mobile Menu Button */}
           <button 
