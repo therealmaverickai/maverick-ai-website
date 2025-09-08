@@ -9,21 +9,21 @@ export const metadata = {
 const useCases = [
   {
     id: 1,
-    title: "Copilota per Gare e Offerte",
-    sector: "Pubblica Amministrazione & B2B",
+    title: "Copilota per gare e offerte",
+    sector: "B2B Sales & Procurement",
     description: "Piattaforma AI che intercetta automaticamente le gare sui portali pubblici e privati, segnala quelle rilevanti per l'azienda e genera bozze di risposta, riducendo tempi e complessità operative dei team commerciali.",
     benefits: [
       "Riduzione del 70% del tempo di ricerca gare",
       "Aumento del 40% delle partecipazioni qualificate",
       "Generazione automatica bozze di risposta"
     ],
-    technologies: ["Web Scraping", "Natural Language Processing", "Document Generation"],
-    icon: "📋",
+    technologies: ["Web scraping", "Natural language processing", "Document generation"],
+    icon: "",
     color: "bg-blue-500"
   },
   {
     id: 2,
-    title: "Agente per Iscrizione ai Portali di Procurement",
+    title: "Agente per iscrizione ai portali di procurement",
     sector: "B2B Sales & Procurement",
     description: "Agente AI che analizza i siti di procurement, identifica la piattaforma utilizzata e gli accessi richiesti, recupera i contatti, automatizza l'invio email con la richiesta di iscrizione/accredito e supporta l'iscrizione ai portali.",
     benefits: [
@@ -31,13 +31,13 @@ const useCases = [
       "Identificazione automatica di 200+ portali",
       "Riduzione del 90% del tempo operativo"
     ],
-    technologies: ["Web Automation", "Email Automation", "Form Processing"],
-    icon: "🔐",
+    technologies: ["Web automation", "Email automation", "Form processing"],
+    icon: "",
     color: "bg-green-500"
   },
   {
     id: 3,
-    title: "Traduttore AI per E-commerce",
+    title: "Traduttore AI per e-commerce",
     sector: "E-commerce & Retail",
     description: "Tool AI che genera automaticamente descrizioni prodotto a partire da una foto, e le traduce in più lingue e diversi tone of voice in linea con l'identità del brand.",
     benefits: [
@@ -45,13 +45,13 @@ const useCases = [
       "Traduzione in 50+ lingue",
       "Personalizzazione tone of voice del brand"
     ],
-    technologies: ["Computer Vision", "Natural Language Generation", "Multi-language AI"],
-    icon: "🌐",
+    technologies: ["Computer vision", "Natural language generation", "Multi-language AI"],
+    icon: "",
     color: "bg-orange-500"
   },
   {
     id: 4,
-    title: "CRM con Automazioni Intelligenti",
+    title: "CRM con automazioni intelligenti",
     sector: "Sales & Customer Management",
     description: "CRM evoluto che integra funzioni tradizionali di inserimento contatti e deal con simulazioni di pricing, utilizzo via WhatsApp/Telegram e un assistente digitale che aggiorna i deal e agisce come assistente personale.",
     benefits: [
@@ -59,13 +59,13 @@ const useCases = [
       "Simulazioni di pricing automatiche",
       "Assistente AI per gestione scadenze"
     ],
-    technologies: ["CRM Integration", "Messaging APIs", "Pricing Algorithms"],
-    icon: "💼",
+    technologies: ["CRM integration", "Messaging APIs", "Pricing algorithms"],
+    icon: "",
     color: "bg-red-500"
   },
   {
     id: 5,
-    title: "Enhanced Knowledge Management Tool",
+    title: "Enhanced knowledge management tool",
     sector: "Enterprise & Knowledge Work",
     description: "Soluzione AI che centralizza documenti e informazioni aziendali, consentendo ricerche semantiche avanzate e chatbot interni per rispondere a domande dei team con fonti citate. Migliora l'accesso al know-how e preserva la conoscenza aziendale.",
     benefits: [
@@ -73,13 +73,13 @@ const useCases = [
       "Chatbot interno con fonti citate",
       "Riduzione del 60% dei tempi di ricerca informazioni"
     ],
-    technologies: ["Semantic Search", "RAG Systems", "Document AI"],
-    icon: "🧠",
+    technologies: ["Semantic search", "RAG systems", "Document AI"],
+    icon: "",
     color: "bg-purple-500"
   },
   {
     id: 6,
-    title: "Agente per Gestione Recensioni Hospitality",
+    title: "Agente per gestione recensioni hospitality",
     sector: "Hotel & Ristorazione",
     description: "Strumento AI che supporta hotel e ristoranti a rispondere alle recensioni online generando risposte personalizzate, coerenti con il tono del brand. Permette di rispondere in modo rapido, professionale e scalabile.",
     benefits: [
@@ -87,8 +87,8 @@ const useCases = [
       "Tone of voice coerente con il brand",
       "Gestione scalabile su multiple piattaforme"
     ],
-    technologies: ["Sentiment Analysis", "Response Generation", "Brand Voice AI"],
-    icon: "🏨",
+    technologies: ["Sentiment analysis", "Response generation", "Brand voice AI"],
+    icon: "",
     color: "bg-indigo-500"
   }
 ]
@@ -143,12 +143,9 @@ export default function UseCasesPage() {
                 {/* Header */}
                 <div className={`${useCase.color} p-6`}>
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
-                      <div className="text-4xl">{useCase.icon}</div>
-                      <div>
-                        <h3 className="text-xl font-bold text-white">{useCase.title}</h3>
-                        <p className="text-white/80">{useCase.sector}</p>
-                      </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white">{useCase.title}</h3>
+                      <p className="text-white/80">{useCase.sector}</p>
                     </div>
                   </div>
                 </div>

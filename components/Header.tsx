@@ -40,10 +40,6 @@ export default function Header() {
               <span>Servizi</span>
               <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
             </Link>
-            <Link href="/use-cases" className="text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
-              <span>Case history</span>
-              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
-            </Link>
             <Link href="/#chi-serviamo" className="text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
               <span>Clienti</span>
               <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
@@ -58,6 +54,10 @@ export default function Header() {
             </Link>
             <Link href="/ai-readiness" className="text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
               <span>AI Readiness Assessment</span>
+              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
+            </Link>
+            <Link href="/use-cases" className="text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
+              <span>Case history</span>
               <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
             </Link>
           </nav>
@@ -102,13 +102,6 @@ export default function Header() {
                 Servizi
               </Link>
               <Link 
-                href="/use-cases" 
-                className="text-navy-700 hover:text-accent-500 transition-colors py-2 px-3 rounded-lg hover:bg-gray-50"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Case history
-              </Link>
-              <Link 
                 href="/#chi-serviamo" 
                 className="text-navy-700 hover:text-accent-500 transition-colors py-2 px-3 rounded-lg hover:bg-gray-50"
                 onClick={() => setIsMenuOpen(false)}
@@ -135,6 +128,13 @@ export default function Header() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 AI Readiness Assessment
+              </Link>
+              <Link 
+                href="/use-cases" 
+                className="text-navy-700 hover:text-accent-500 transition-colors py-2 px-3 rounded-lg hover:bg-gray-50"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Case history
               </Link>
               <Link 
                 href="/#contatti" 
