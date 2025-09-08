@@ -12,7 +12,7 @@ export default function Header() {
       <div className="container-width">
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
-          <div className="flex items-center">
+          <div className="flex items-center -ml-2">
             <Link href="/" className="hover:scale-105 transition-all duration-300 group">
               <Image
                 src="/logo.png"

@@ -37,7 +37,7 @@ export default function Footer() {
         <div className="grid md:grid-cols-4 gap-8">
           {/* Logo and Description */}
           <div className="md:col-span-2">
-            <div className="mb-4">
+            <div className="mb-4 -ml-2">
               <Image
                 src="/footer-logo.png"
                 alt="Maverick AI"
@@ -51,8 +51,7 @@ export default function Footer() {
               />
             </div>
             <p className="text-gray-300 mb-6 leading-relaxed">
-              Startup specializzata in Intelligenza Artificiale Generativa e Agentiche per il business. 
-              Partner strategici per la trasformazione digitale del futuro.
+              Un partner strategico che guida le aziende nella trasformazione digitale, trasformando l'AI in soluzioni pratiche, ad alto impatto e in tempi rapidi.
             </p>
             <div className="flex space-x-4">
               <a href="https://www.linkedin.com/company/maverick-ai-consulting/" className="bg-accent-500 hover:bg-accent-600 p-2 rounded-lg transition-colors">
@@ -85,11 +84,10 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-semibold mb-4">Servizi</h4>
             <ul className="space-y-2">
-              <li><a href="#cosa-facciamo" className="text-gray-300 hover:text-accent-500 transition-colors">Business process optimization</a></li>
-              <li><a href="#cosa-facciamo" className="text-gray-300 hover:text-accent-500 transition-colors">Educational workshop & masterclass</a></li>
-              <li><a href="#cosa-facciamo" className="text-gray-300 hover:text-accent-500 transition-colors">AI vision & strategic plan</a></li>
-              <li><a href="#cosa-facciamo" className="text-gray-300 hover:text-accent-500 transition-colors">Startup studio & venture building</a></li>
-              <li><a href="#cosa-facciamo" className="text-gray-300 hover:text-accent-500 transition-colors">Change management & operating model</a></li>
+              <li><a href="#cosa-facciamo" className="text-gray-300 hover:text-accent-500 transition-colors">Consulenza</a></li>
+              <li><a href="#cosa-facciamo" className="text-gray-300 hover:text-accent-500 transition-colors">Sviluppo</a></li>
+              <li><a href="#cosa-facciamo" className="text-gray-300 hover:text-accent-500 transition-colors">Co-piloti & Agenti</a></li>
+              <li><a href="#cosa-facciamo" className="text-gray-300 hover:text-accent-500 transition-colors">Formazione</a></li>
             </ul>
           </div>
         </div>
