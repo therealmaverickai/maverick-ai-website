@@ -31,7 +31,7 @@ export default function Header() {
 
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8">
+          <nav className="hidden lg:flex space-x-8">
             <Link href="/#home" className="text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
               <span>Home</span>
               <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
@@ -63,13 +63,13 @@ export default function Header() {
           </nav>
 
           {/* CTA Button */}
-          <Link href="/#contatti" className="hidden md:block btn-primary">
+          <Link href="/#contatti" className="hidden lg:block btn-primary">
             Richiedi Informazioni
           </Link>
 
           {/* Mobile Menu Button */}
           <button 
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle mobile menu"
           >
@@ -85,7 +85,7 @@ export default function Header() {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden pb-4 border-t border-gray-100 mt-4 pt-4">
+          <div className="lg:hidden pb-4 border-t border-gray-100 mt-4 pt-4">
             <div className="flex flex-col space-y-4">
               <Link 
                 href="/#home" 
