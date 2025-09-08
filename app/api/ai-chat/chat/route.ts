@@ -3,6 +3,7 @@ import { prisma } from '@/lib/database'
 import OpenAI from 'openai'
 import { z } from 'zod'
 import { searchForContext, formatContextForPrompt } from '@/lib/vector-search'
+import { sendAIUsageNotification } from '@/lib/email'
 
 // Initialize OpenAI client - with runtime checks
 const getOpenAIClient = () => {
@@ -87,19 +88,83 @@ const isBusinessFocusedQuestion = (message: string): boolean => {
   
   // Keywords that indicate business/AI use case questions (ALLOWED)
   const businessKeywords = [
-    'business', 'azienda', 'company', 'impresa', 'startup',
-    'processo', 'process', 'workflow', 'operazioni', 'operations',
-    'ai', 'intelligenza artificiale', 'artificial intelligence', 'machine learning', 'ml',
-    'automatizzazione', 'automation', 'digitale', 'digital', 'tecnologia', 'technology',
-    'vendite', 'sales', 'marketing', 'clienti', 'customers', 'customer service',
-    'produzione', 'production', 'logistica', 'logistics', 'supply chain',
-    'analytics', 'data', 'dati', 'reportistica', 'reporting',
-    'crm', 'erp', 'gestionale', 'software', 'piattaforma', 'platform',
-    'roi', 'costi', 'costs', 'budget', 'investimento', 'investment',
-    'efficienza', 'efficiency', 'produttività', 'productivity',
-    'use case', 'caso d\'uso', 'implementazione', 'implementation',
-    'strategia', 'strategy', 'roadmap', 'piano', 'plan',
-    'settore', 'industry', 'mercato', 'market', 'competitività', 'competitive'
+    // Company & Business basics
+    'business', 'azienda', 'aziende', 'company', 'companies', 'impresa', 'imprese', 'startup', 'startups',
+    'società', 'corporation', 'corporate', 'enterprise', 'firm', 'organization', 'organizzazione',
+    
+    // Processes & Operations  
+    'processo', 'processi', 'process', 'processes', 'workflow', 'workflows', 'operazioni', 'operations',
+    'procedura', 'procedure', 'procedures', 'attività', 'activity', 'activities', 'task', 'tasks',
+    'gestione', 'management', 'amministrazione', 'administration', 'controllo', 'control',
+    
+    // AI & Technology
+    'ai', 'ia', 'intelligenza artificiale', 'artificial intelligence', 'machine learning', 'ml', 'deep learning',
+    'neural network', 'reti neurali', 'algoritmo', 'algorithm', 'algorithms', 'algoritmi',
+    'automatizzazione', 'automation', 'automazione', 'digitale', 'digital', 'digitalizzazione', 'digitalization',
+    'tecnologia', 'technology', 'tech', 'innovazione', 'innovation', 'trasformazione digitale', 'digital transformation',
+    'chatbot', 'bot', 'nlp', 'computer vision', 'predictive analytics', 'analitica predittiva',
+    
+    // Sales & Marketing
+    'vendite', 'vendita', 'sales', 'sale', 'selling', 'marketing', 'promozione', 'promotion', 'advertising', 'pubblicità',
+    'lead generation', 'generazione lead', 'prospect', 'prospecting', 'customer acquisition', 'acquisizione clienti',
+    'conversion', 'conversione', 'funnel', 'pipeline', 'commerciale', 'commercial', 'revenue', 'ricavi',
+    
+    // Customer Service & Relations
+    'clienti', 'cliente', 'customers', 'customer', 'client', 'clients', 'customer service', 'customer services',
+    'servizio clienti', 'servizi clienti', 'assistenza', 'assistance', 'support', 'supporto', 'help desk',
+    'customer care', 'customer success', 'customer experience', 'esperienza cliente', 'satisfaction', 'soddisfazione',
+    'feedback', 'recensioni', 'reviews', 'rating', 'valutazioni', 'complaints', 'reclami',
+    
+    // Production & Manufacturing
+    'produzione', 'production', 'manufacturing', 'manifattura', 'fabbrica', 'factory', 'plant', 'stabilimento',
+    'supply chain', 'catena di fornitura', 'logistica', 'logistics', 'magazzino', 'warehouse', 'inventory', 'inventario',
+    'quality control', 'controllo qualità', 'qa', 'qc', 'testing', 'test', 'compliance', 'conformità',
+    
+    // Data & Analytics
+    'analytics', 'analisi', 'analysis', 'data', 'dati', 'database', 'reportistica', 'reporting', 'report', 'reports',
+    'dashboard', 'kpi', 'metrics', 'metriche', 'performance', 'prestazioni', 'insight', 'insights', 'business intelligence', 'bi',
+    'big data', 'data science', 'data mining', 'visualization', 'visualizzazione', 'statistics', 'statistiche',
+    
+    // Software & Platforms
+    'crm', 'erp', 'gestionale', 'gestionali', 'software', 'piattaforma', 'piattaforme', 'platform', 'platforms',
+    'sistema', 'sistemi', 'system', 'systems', 'application', 'applicazione', 'applicazioni', 'app', 'apps',
+    'integration', 'integrazione', 'api', 'database', 'cloud', 'saas', 'paas', 'iaas',
+    
+    // Financial & Investment
+    'roi', 'return on investment', 'ritorno investimento', 'costi', 'costo', 'costs', 'cost', 'budget', 'budgets',
+    'investimento', 'investimenti', 'investment', 'investments', 'finanziamento', 'financing', 'funding',
+    'price', 'prezzo', 'prezzi', 'pricing', 'revenue', 'ricavi', 'profit', 'profitto', 'margin', 'margine',
+    
+    // Performance & Efficiency
+    'efficienza', 'efficiency', 'produttività', 'productivity', 'performance', 'prestazioni', 'optimization', 'ottimizzazione',
+    'improvement', 'miglioramento', 'enhancement', 'upgrade', 'scaling', 'scalabilità', 'growth', 'crescita',
+    
+    // Strategy & Planning
+    'use case', 'use cases', 'caso d\'uso', 'casi d\'uso', 'implementazione', 'implementation', 'deploy', 'deployment',
+    'strategia', 'strategy', 'strategies', 'roadmap', 'piano', 'piani', 'plan', 'plans', 'planning', 'pianificazione',
+    'obiettivi', 'objectives', 'goals', 'target', 'milestone', 'timeline', 'schedule', 'programma',
+    
+    // Industry & Market
+    'settore', 'settori', 'industry', 'industries', 'mercato', 'mercati', 'market', 'markets', 'competitive', 'competitività',
+    'competition', 'competitor', 'concorrenza', 'concorrenti', 'benchmark', 'positioning', 'posizionamento',
+    
+    // Human Resources & Teams
+    'team', 'teams', 'staff', 'personale', 'employee', 'employees', 'dipendenti', 'dipendente',
+    'human resources', 'risorse umane', 'hr', 'recruitment', 'reclutamento', 'training', 'formazione',
+    'skills', 'competenze', 'talent', 'talento', 'workforce', 'forza lavoro',
+    
+    // Operations & Logistics
+    'operations', 'operazioni', 'operational', 'operativo', 'delivery', 'consegna', 'shipping', 'spedizione',
+    'fulfillment', 'order management', 'gestione ordini', 'procurement', 'approvvigionamento', 'sourcing',
+    
+    // Communication & Collaboration
+    'communication', 'comunicazione', 'collaboration', 'collaborazione', 'meeting', 'meetings', 'riunioni',
+    'conference', 'conferenza', 'presentation', 'presentazione', 'document', 'documenti', 'workflow',
+    
+    // Sectors & Industries
+    'retail', 'e-commerce', 'ecommerce', 'healthcare', 'sanità', 'finance', 'finanza', 'banking', 'banche',
+    'insurance', 'assicurazioni', 'real estate', 'immobiliare', 'education', 'educazione', 'legal', 'legale',
+    'consulting', 'consulenza', 'professional services', 'servizi professionali'
   ]
   
   // Topics that are NOT allowed (personal, general knowledge, etc.)
@@ -282,6 +347,7 @@ const checkForSuspiciousActivity = (clientId: string, message: string): { suspic
   }
 }
 
+
 // Get dynamic prompt from database
 async function getSystemPrompt(): Promise<string> {
   try {
@@ -340,6 +406,13 @@ STILE:
 - Professionale ma accessibile
 - Focalizzato su soluzioni concrete e actionable
 - Sempre collegato al business specifico del cliente
+
+FORMATO RISPOSTE:
+- Usa struttura chiara con titoli e sottotitoli quando appropriato
+- Organizza informazioni in punti elenco per maggiore leggibilità
+- Evita simboli complessi o formattazione markdown avanzata
+- Usa linguaggio conversazionale ma professionale
+- Mantieni paragrafi concisi e ben strutturati
 
 Usa il contesto fornito per dare risposte personalizzate e specifiche al settore e alle esigenze aziendali.`
 }
@@ -624,6 +697,15 @@ Come posso aiutarti a scoprire il potenziale dell'AI nel tuo business?`,
 
     // Track successful API usage
     await trackApiUsage(clientIdentifier, completion.usage?.total_tokens || 0, 'successful_chat', prisma)
+
+    // Send admin notification about AI usage using existing email service
+    const messageCount = (existingConversation?.messageCount || 0) + 2
+    try {
+      await sendAIUsageNotification(leadData, message, messageCount)
+    } catch (error) {
+      console.error('Failed to send AI usage notification:', error)
+      // Don't break the chat flow if email fails
+    }
 
     console.log(`Chat response generated successfully ${ragUsed ? 'with RAG context' : 'using base knowledge'}`)
 

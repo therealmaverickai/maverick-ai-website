@@ -165,12 +165,88 @@ export default function AIChat({ leadData, onComplete }: AIChatProps) {
   }
 
   const formatMessage = (content: string) => {
-    return content.split('\n').map((line, index) => (
-      <span key={index}>
-        {line}
-        {index < content.split('\n').length - 1 && <br />}
-      </span>
-    ))
+    const lines = content.split('\n')
+    
+    return lines.map((line, index) => {
+      // Handle headers (# and ##)
+      if (line.startsWith('###')) {
+        return (
+          <h4 key={index} className="font-semibold text-lg text-gray-800 mt-4 mb-2">
+            {line.replace(/^###\s*/, '')}
+          </h4>
+        )
+      }
+      if (line.startsWith('##')) {
+        return (
+          <h3 key={index} className="font-bold text-xl text-gray-900 mt-4 mb-2">
+            {line.replace(/^##\s*/, '')}
+          </h3>
+        )
+      }
+      if (line.startsWith('#')) {
+        return (
+          <h2 key={index} className="font-bold text-2xl text-gray-900 mt-4 mb-3">
+            {line.replace(/^#\s*/, '')}
+          </h2>
+        )
+      }
+      
+      // Handle bullet points
+      if (line.match(/^[•\-\*]\s/)) {
+        return (
+          <div key={index} className="flex items-start space-x-2 my-1">
+            <span className="text-blue-500 font-bold mt-1">•</span>
+            <span>{formatInlineText(line.replace(/^[•\-\*]\s/, ''))}</span>
+          </div>
+        )
+      }
+      
+      // Handle numbered lists
+      if (line.match(/^\d+\.\s/)) {
+        const number = line.match(/^(\d+)\./)?.[1]
+        return (
+          <div key={index} className="flex items-start space-x-2 my-1">
+            <span className="text-blue-500 font-bold mt-1 min-w-[20px]">{number}.</span>
+            <span>{formatInlineText(line.replace(/^\d+\.\s/, ''))}</span>
+          </div>
+        )
+      }
+      
+      // Handle empty lines
+      if (line.trim() === '') {
+        return <div key={index} className="h-3" />
+      }
+      
+      // Regular text with inline formatting
+      return (
+        <p key={index} className="my-2">
+          {formatInlineText(line)}
+        </p>
+      )
+    })
+  }
+
+  const formatInlineText = (text: string) => {
+    // Handle bold text (**text** or __text__)
+    let formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    formatted = formatted.replace(/__(.*?)__/g, '<strong>$1</strong>')
+    
+    // Handle italic text (*text* or _text_)
+    formatted = formatted.replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, '<em>$1</em>')
+    formatted = formatted.replace(/(?<!_)_([^_]+)_(?!_)/g, '<em>$1</em>')
+    
+    // Split by HTML tags and create React elements
+    const parts = formatted.split(/(<strong>.*?<\/strong>|<em>.*?<\/em>)/)
+    
+    return parts.map((part, index) => {
+      if (part.startsWith('<strong>') && part.endsWith('</strong>')) {
+        return <strong key={index} className="font-semibold text-gray-900">{part.slice(8, -9)}</strong>
+      }
+      if (part.startsWith('<em>') && part.endsWith('</em>')) {
+        return <em key={index} className="italic text-gray-700">{part.slice(4, -5)}</em>
+      }
+      return <span key={index}>{part}</span>
+    })
   }
 
   return (
@@ -190,25 +266,25 @@ export default function AIChat({ leadData, onComplete }: AIChatProps) {
         </div>
       </div>
 
-      {/* Messages Area */}
-      <div className="h-96 overflow-y-auto p-6 space-y-4 bg-gray-50">
+      {/* Messages Area - Made bigger and more readable */}
+      <div className="h-[600px] overflow-y-auto p-6 space-y-6 bg-gray-50">
         {messages.map((message) => (
           <div
             key={message.id}
             className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`max-w-xs lg:max-w-md xl:max-w-lg px-4 py-3 rounded-lg ${
+              className={`max-w-2xl lg:max-w-3xl px-6 py-4 rounded-lg ${
                 message.type === 'user'
                   ? 'bg-blue-600 text-white'
-                  : 'bg-white text-gray-800 shadow-sm border'
+                  : 'bg-white text-gray-800 shadow-md border'
               }`}
             >
-              <div className="text-sm leading-relaxed">
+              <div className="text-base leading-relaxed">
                 {formatMessage(message.content)}
               </div>
               <div
-                className={`text-xs mt-2 ${
+                className={`text-sm mt-3 ${
                   message.type === 'user' ? 'text-blue-100' : 'text-gray-500'
                 }`}
               >
@@ -221,17 +297,17 @@ export default function AIChat({ leadData, onComplete }: AIChatProps) {
           </div>
         ))}
 
-        {/* Loading indicator */}
+        {/* Loading indicator - Made bigger and more readable */}
         {isLoading && (
           <div className="flex justify-start">
-            <div className="bg-white text-gray-800 px-4 py-3 rounded-lg shadow-sm border">
-              <div className="flex items-center space-x-2">
+            <div className="bg-white text-gray-800 px-6 py-4 rounded-lg shadow-md border">
+              <div className="flex items-center space-x-3">
                 <div className="flex space-x-1">
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                  <div className="w-3 h-3 bg-blue-400 rounded-full animate-bounce"></div>
+                  <div className="w-3 h-3 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                  <div className="w-3 h-3 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                 </div>
-                <span className="text-sm text-gray-600">L'AI sta analizzando...</span>
+                <span className="text-base text-gray-600">L'AI sta analizzando...</span>
               </div>
             </div>
           </div>
@@ -249,8 +325,8 @@ export default function AIChat({ leadData, onComplete }: AIChatProps) {
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Chiedi dettagli sui use case, ROI, tempi di implementazione..."
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-              rows={2}
+              className="w-full px-5 py-4 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+              rows={3}
               disabled={isLoading}
             />
           </div>
