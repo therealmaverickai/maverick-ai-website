@@ -40,6 +40,10 @@ export default function Header() {
               <span>Servizi</span>
               <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
             </Link>
+            <Link href="/use-cases" className="text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
+              <span>Casi d'Uso</span>
+              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
+            </Link>
             <Link href="/#chi-serviamo" className="text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
               <span>Clienti</span>
               <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
@@ -96,6 +100,13 @@ export default function Header() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Servizi
+              </Link>
+              <Link 
+                href="/use-cases" 
+                className="text-navy-700 hover:text-accent-500 transition-colors py-2 px-3 rounded-lg hover:bg-gray-50"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Casi d'Uso
               </Link>
               <Link 
                 href="/#chi-serviamo" 
