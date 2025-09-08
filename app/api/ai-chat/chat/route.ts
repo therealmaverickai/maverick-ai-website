@@ -3,7 +3,7 @@ import { prisma } from '@/lib/database'
 import OpenAI from 'openai'
 import { z } from 'zod'
 import { searchForContext, formatContextForPrompt } from '@/lib/vector-search'
-import { sendAIUsageNotification } from '@/lib/email'
+import { sendAIUsageNotificationWithMailerSend } from '@/lib/mailersend'
 
 // Initialize OpenAI client - with runtime checks
 const getOpenAIClient = () => {
@@ -698,12 +698,12 @@ Come posso aiutarti a scoprire il potenziale dell'AI nel tuo business?`,
     // Track successful API usage
     await trackApiUsage(clientIdentifier, completion.usage?.total_tokens || 0, 'successful_chat', prisma)
 
-    // Send admin notification about AI usage using existing email service
+    // Send admin notification about AI usage using MailerSend (same as contact form and AI assessment)
     const messageCount = (existingConversation?.messageCount || 0) + 2
     try {
-      await sendAIUsageNotification(leadData, message, messageCount)
+      await sendAIUsageNotificationWithMailerSend(leadData, message, messageCount)
     } catch (error) {
-      console.error('Failed to send AI usage notification:', error)
+      console.error('Failed to send AI usage notification via MailerSend:', error)
       // Don't break the chat flow if email fails
     }
 
