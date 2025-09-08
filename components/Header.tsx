@@ -63,7 +63,7 @@ export default function Header() {
           </nav>
 
           {/* CTA Button */}
-          <Link href="/#contatti" className="hidden lg:block btn-primary">
+          <Link href="/#contatti" className="hidden lg:block btn-primary nav-button">
             Richiedi Informazioni
           </Link>
 
