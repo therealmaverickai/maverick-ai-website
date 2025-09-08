@@ -43,7 +43,7 @@ export default function AIReadinessPage() {
             <button className="btn-primary text-lg px-8 py-4">
               Prenota Consulenza Gratuita
             </button>
-            <a href="/" className="btn-secondary text-lg px-8 py-4 border-white text-white hover:bg-white hover:text-navy-900">
+            <a href="/" className="btn-secondary text-lg px-8 py-4 border-white hover:bg-white hover:text-navy-900">
               Torna alla Homepage
             </a>
           </div>
