@@ -51,55 +51,15 @@ export default function AIConsultantPage() {
         </div>
         
         <div className="relative container-width py-20 lg:py-32">
-          <div className="text-center max-w-4xl mx-auto">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-white/10 backdrop-blur-sm rounded-2xl mb-8 border border-white/20">
-              <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-            </div>
-            
+          <div className="text-center max-w-4xl mx-auto">            
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
               AI Business 
               <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"> Consultant</span>
             </h1>
             
             <p className="text-xl sm:text-2xl text-gray-300 mb-12 leading-relaxed max-w-3xl mx-auto">
-              Scopri come l'intelligenza artificiale può trasformare il tuo business con un'analisi personalizzata gratuita
+              Il nostro AI Assistant analizza la tua azienda e genera use case concreti per l'intelligenza artificiale
             </p>
-            
-            {/* Enhanced Value Propositions */}
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
-              <div className="bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center mb-4">
-                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                </div>
-                <h3 className="font-semibold text-white mb-2">Analisi Immediata</h3>
-                <p className="text-gray-300 text-sm">Use case personalizzati in pochi minuti</p>
-              </div>
-              
-              <div className="bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg flex items-center justify-center mb-4">
-                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                </div>
-                <h3 className="font-semibold text-white mb-2">Altamente Personalizzato</h3>
-                <p className="text-gray-300 text-sm">Soluzioni specifiche per il tuo settore</p>
-              </div>
-              
-              <div className="bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300 sm:col-span-2 lg:col-span-1">
-                <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-600 rounded-lg flex items-center justify-center mb-4">
-                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                  </svg>
-                </div>
-                <h3 className="font-semibold text-white mb-2">ROI Stimato</h3>
-                <p className="text-gray-300 text-sm">Calcoli di ritorno concreti</p>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -108,41 +68,43 @@ export default function AIConsultantPage() {
       <section className="section-padding bg-white">
         <div className="container-width">
           {step === 'form' ? (
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-6xl mx-auto">
               {/* Enhanced Progress Indicator */}
-              <div className="mb-12">
-                <div className="flex items-center justify-center space-x-8 mb-8">
+              <div className="mb-16">
+                <div className="flex items-center justify-center space-x-8 mb-10">
                   <div className="flex items-center">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold shadow-lg">
+                    <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-full flex items-center justify-center text-lg font-bold shadow-lg">
                       1
                     </div>
-                    <span className="ml-3 text-lg font-semibold text-blue-600">Informazioni Business</span>
+                    <span className="ml-4 text-xl font-semibold text-blue-600">Informazioni Business</span>
                   </div>
-                  <div className="w-16 h-1 bg-gray-200 rounded-full">
+                  <div className="w-20 h-1 bg-gray-200 rounded-full">
                     <div className="w-0 h-full bg-blue-500 rounded-full transition-all duration-500"></div>
                   </div>
                   <div className="flex items-center">
-                    <div className="w-12 h-12 bg-gray-200 text-gray-400 rounded-full flex items-center justify-center text-sm font-bold">
+                    <div className="w-14 h-14 bg-gray-200 text-gray-400 rounded-full flex items-center justify-center text-lg font-bold">
                       2
                     </div>
-                    <span className="ml-3 text-lg text-gray-400">AI Analysis</span>
+                    <span className="ml-4 text-xl text-gray-400">AI Analysis</span>
                   </div>
                 </div>
                 
                 <div className="text-center">
-                  <h2 className="text-2xl sm:text-3xl font-bold text-navy-900 mb-4">
+                  <h2 className="text-3xl sm:text-4xl font-bold text-navy-900 mb-6">
                     Iniziamo con le informazioni sul tuo business
                   </h2>
-                  <p className="text-gray-600 max-w-2xl mx-auto">
+                  <p className="text-xl text-gray-600 max-w-3xl mx-auto">
                     Compila il form qui sotto per permettere al nostro AI Assistant di fornirti use case personalizzati e specifici per la tua azienda.
                   </p>
                 </div>
               </div>
 
-              <LeadCaptureForm 
-                onSubmit={handleFormSubmit}
-                isLoading={isLoading}
-              />
+              <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 lg:p-12">
+                <LeadCaptureForm 
+                  onSubmit={handleFormSubmit}
+                  isLoading={isLoading}
+                />
+              </div>
             </div>
           ) : (
             <div className="max-w-6xl mx-auto">
