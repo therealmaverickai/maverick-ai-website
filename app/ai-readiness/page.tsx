@@ -40,9 +40,14 @@ export default function AIReadinessPage() {
             e scoprire come implementare l'AI nella tua azienda.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="btn-primary text-lg px-8 py-4">
+            <a 
+              href="https://calendar.app.google/qRHonaahhRhqZqSu8"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary text-lg px-8 py-4"
+            >
               Prenota Consulenza Gratuita
-            </button>
+            </a>
             <a href="/" className="btn-secondary text-lg px-8 py-4 border-white hover:bg-white hover:text-navy-900">
               Torna alla Homepage
             </a>
