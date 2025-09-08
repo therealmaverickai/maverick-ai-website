@@ -17,10 +17,10 @@ export default function Header() {
               <Image
                 src="/logo.png"
                 alt="Maverick AI"
-                width={120}
-                height={40}
+                width={150}
+                height={50}
                 priority
-                className="h-10 w-auto"
+                className="h-12 w-auto"
                 style={{
                   maxWidth: "100%",
                   height: "auto"
