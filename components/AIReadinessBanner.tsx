@@ -15,7 +15,7 @@ export default function AIReadinessBanner() {
           
           {/* Main Heading */}
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 leading-tight">
-            La tua azienda è pronta per adottare l'<span className="text-blue-600">AI</span>?
+            La tua azienda è pronta per adottare l'<span style={{ color: '#81BFFF' }}>AI</span>?
           </h2>
           
           {/* Subheading */}

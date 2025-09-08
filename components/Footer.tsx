@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import CookieSettings from './CookieSettings'
 
 export default function Footer() {
@@ -36,9 +37,19 @@ export default function Footer() {
         <div className="grid md:grid-cols-4 gap-8">
           {/* Logo and Description */}
           <div className="md:col-span-2">
-            <h3 className="text-2xl font-bold mb-4">
-              Maverick <span className="text-accent-500">AI</span>
-            </h3>
+            <div className="mb-4">
+              <Image
+                src="/footer-logo.png"
+                alt="Maverick AI"
+                width={200}
+                height={60}
+                className="h-12 w-auto"
+                style={{
+                  maxWidth: "100%",
+                  height: "auto"
+                }}
+              />
+            </div>
             <p className="text-gray-300 mb-6 leading-relaxed">
               Startup specializzata in Intelligenza Artificiale Generativa e Agentiche per il business. 
               Partner strategici per la trasformazione digitale del futuro.
