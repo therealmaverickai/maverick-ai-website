@@ -1,11 +1,40 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [logoSrc, setLogoSrc] = useState('/logo.svg')
+  const [logoError, setLogoError] = useState(false)
+
+  useEffect(() => {
+    // Check for different logo file extensions
+    const checkLogo = async () => {
+      const extensions = ['.svg', '.png', '.jpg', '.jpeg']
+      let found = false
+      
+      for (const ext of extensions) {
+        try {
+          const response = await fetch(`/logo${ext}`, { method: 'HEAD' })
+          if (response.ok) {
+            setLogoSrc(`/logo${ext}`)
+            found = true
+            break
+          }
+        } catch {
+          // Continue to next extension
+        }
+      }
+      
+      if (!found) {
+        setLogoError(true)
+      }
+    }
+    
+    checkLogo()
+  }, [])
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
@@ -14,14 +43,23 @@ export default function Header() {
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="hover:scale-105 transition-all duration-300 group">
-              <Image
-                src="/logo.svg"
-                alt="Maverick AI"
-                width={120}
-                height={40}
-                priority
-                className="h-10 w-auto"
-              />
+              {logoError ? (
+                // Fallback to text logo if no image is found
+                <div className="text-2xl font-bold text-gray-900">
+                  <span className="group-hover:text-blue-600 transition-colors duration-300">Maverick</span>{' '}
+                  <span className="text-blue-600 group-hover:rotate-12 inline-block transition-transform duration-300">AI</span>
+                </div>
+              ) : (
+                <Image
+                  src={logoSrc}
+                  alt="Maverick AI"
+                  width={120}
+                  height={40}
+                  priority
+                  className="h-10 w-auto"
+                  onError={() => setLogoError(true)}
+                />
+              )}
             </Link>
           </div>
 

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import DocumentUpload from '@/components/DocumentUpload'
+import BrandingManager from '@/components/BrandingManager'
 
 interface Document {
   id: string
@@ -274,6 +275,7 @@ export default function AdminPage() {
               { id: 'upload', label: '📤 Upload Documenti', icon: '📤' },
               { id: 'search', label: '🔍 Test Search', icon: '🔍' },
               { id: 'prompts', label: '🤖 AI Prompts', icon: '🤖' },
+              { id: 'branding', label: '🎨 Logo & Favicon', icon: '🎨' },
               { id: 'analytics', label: '📈 Analytics', icon: '📈' }
             ].map(tab => (
               <button
@@ -634,6 +636,13 @@ export default function AdminPage() {
                 </div>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* Branding Tab */}
+        {activeTab === 'branding' && (
+          <div>
+            <BrandingManager />
           </div>
         )}
 
