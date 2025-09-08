@@ -626,7 +626,7 @@ export default function AdminPage() {
                   <h5 className="font-medium mb-2 mt-4">AI Assessment Prompt:</h5>
                   <ul className="space-y-1">
                     <li>• Genera executive summary per l'assessment</li>
-                    <li>• Usa placeholders dinamici ({{company}}, {{name}}, etc.)</li>
+                    <li>• Usa placeholders dinamici ({`{{company}}`}, {`{{name}}`}, etc.)</li>
                     <li>• Personalizza l'analisi per ruolo e azienda</li>
                   </ul>
                 </div>
