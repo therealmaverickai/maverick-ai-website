@@ -321,7 +321,7 @@
   /* Gradient animations */
   .animate-gradient {
     background-size: 300% 300%;
-    animation: gradientShift 5s ease-in-out infinite;
+    animation: gradient 5s ease-in-out infinite;
   }
 
   .bg-300% {
