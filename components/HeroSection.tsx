@@ -162,7 +162,7 @@ export default function HeroSection() {
             data-ai-summary="Main value proposition and company mission"
           >
             Diamo forma al <br className="hidden sm:block" />
-            <span className="bg-gradient-to-r from-blue-400 via-blue-600 to-blue-800 bg-clip-text text-transparent font-extrabold animate-gradient bg-300% animate-pulse">
+            <span className="bg-gradient-to-r from-blue-400 via-blue-600 to-blue-800 bg-clip-text text-transparent font-extrabold animate-gradient bg-300%">
               business del futuro
             </span>
           </h1>
