@@ -338,6 +338,56 @@
     animation: pulseGlow 2s ease-in-out infinite alternate;
   }
 
+  /* Text shadow glow effect */
+  .text-shadow-glow {
+    color: #1e40af;
+    text-shadow: 
+      0 0 10px rgba(59, 130, 246, 0.3),
+      0 0 20px rgba(59, 130, 246, 0.2),
+      0 0 30px rgba(59, 130, 246, 0.1);
+  }
+
+  /* Sun glimpse effect */
+  .sun-glimpse {
+    overflow: hidden;
+  }
+  
+  .sun-glimpse::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      rgba(255, 255, 255, 0.6),
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
+    animation: sunGlimpse 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+    pointer-events: none;
+  }
+
+  @keyframes sunGlimpse {
+    0% {
+      left: -100%;
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      left: 100%;
+      opacity: 0;
+    }
+  }
+
   @keyframes pulseGlow {
     from {
       box-shadow: 0 0 20px -10px rgba(59, 130, 246, 0.5);
