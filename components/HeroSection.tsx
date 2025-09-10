@@ -201,26 +201,6 @@ export default function HeroSection() {
             </Link>
           </div>
 
-          {/* Trust indicators */}
-          <div className="mt-16 fade-in-up stagger-animation" style={{"--stagger": 3} as any}>
-            <p className="text-sm text-gray-500 mb-6 uppercase tracking-wide font-medium">
-              Già scelto da
-            </p>
-            <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
-              <div className="text-gray-400 font-semibold text-lg hover:text-gray-600 transition-colors">
-                Private Equity
-              </div>
-              <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
-              <div className="text-gray-400 font-semibold text-lg hover:text-gray-600 transition-colors">
-                Scale-up
-              </div>
-              <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
-              <div className="text-gray-400 font-semibold text-lg hover:text-gray-600 transition-colors">
-                Enterprise
-              </div>
-            </div>
-          </div>
-
         </div>
       </div>
     </section>
