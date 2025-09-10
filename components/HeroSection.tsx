@@ -163,10 +163,10 @@ export default function HeroSection() {
           >
             Diamo forma al <br className="hidden sm:block" />
             <span className="relative inline-block">
-              <span className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 bg-clip-text text-transparent font-extrabold">
+              <span className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 bg-clip-text text-transparent font-extrabold animate-pulse">
                 business del futuro
               </span>
-              <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+              <div className="absolute -inset-2 bg-gradient-to-r from-blue-200 via-blue-200 to-blue-300 rounded-lg blur opacity-20 animate-pulse"></div>
             </span>
           </h1>
           
