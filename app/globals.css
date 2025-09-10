@@ -312,4 +312,62 @@
   .skeleton {
     @apply bg-gray-200 animate-pulse rounded;
   }
+
+  /* Enhanced shadow utilities */
+  .shadow-3xl {
+    box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.25);
+  }
+
+  /* Gradient animations */
+  .animate-gradient {
+    background-size: 400% 400%;
+    animation: gradient 4s ease infinite;
+  }
+
+  @keyframes gradient {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  /* Pulse glow effect */
+  .pulse-glow {
+    animation: pulseGlow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes pulseGlow {
+    from {
+      box-shadow: 0 0 20px -10px rgba(59, 130, 246, 0.5);
+    }
+    to {
+      box-shadow: 0 0 30px -5px rgba(59, 130, 246, 0.8);
+    }
+  }
+
+  /* Interactive step indicators */
+  .step-indicator {
+    position: relative;
+  }
+
+  .step-indicator::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -50px;
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent);
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .step-indicator.active::before {
+    opacity: 1;
+  }
+
+  /* Enhanced blur backgrounds */
+  .blur-bg {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
 }
