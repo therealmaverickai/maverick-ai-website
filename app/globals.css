@@ -320,8 +320,12 @@
 
   /* Gradient animations */
   .animate-gradient {
-    background-size: 400% 400%;
-    animation: gradient 4s ease infinite;
+    background-size: 300% 300%;
+    animation: gradientShift 3s ease-in-out infinite;
+  }
+
+  .bg-300% {
+    background-size: 300% 300%;
   }
 
   @keyframes gradient {
