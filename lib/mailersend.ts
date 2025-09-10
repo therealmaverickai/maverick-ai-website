@@ -493,6 +493,195 @@ Maverick AI - Sistema di notifica automatico
   }
 }
 
+// Send admin notification for AI assistant usage via MailerSend
+export async function sendAIUsageNotificationWithMailerSend(leadData: any, message: string, conversationCount: number): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  try {
+    console.log('🔧 MailerSend: Attempting to send AI usage notification...')
+    console.log('📧 MailerSend config check:', {
+      MAILERSEND_API_TOKEN: process.env.MAILERSEND_API_TOKEN ? '✓ Set' : '✗ Missing',
+      MAILERSEND_FROM_EMAIL: process.env.MAILERSEND_FROM_EMAIL ? '✓ Set' : '✗ Missing',
+      MAILERSEND_ADMIN_EMAIL: process.env.MAILERSEND_ADMIN_EMAIL ? '✓ Set' : '✗ Missing'
+    })
+    
+    const mailerSendClient = getMailerSendClient()
+    console.log('MailerSend: Client initialized successfully for AI usage notification')
+
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .header { background: linear-gradient(135deg, #0F172A, #1E293B); color: white; padding: 20px; text-align: center; }
+          .content { padding: 30px; background: #f9f9f9; }
+          .field { margin-bottom: 20px; }
+          .label { font-weight: bold; color: #0F172A; }
+          .value { margin-top: 5px; padding: 10px; background: white; border-left: 3px solid #3B82F6; }
+          .message-box { background-color: #e0f2fe; padding: 15px; border-radius: 6px; border-left: 4px solid #0284c7; margin: 15px 0; }
+          .business-info { background-color: #fefce8; padding: 15px; border-radius: 6px; border-left: 4px solid #ca8a04; margin: 15px 0; }
+          .footer { background: #0F172A; color: white; padding: 20px; text-align: center; font-size: 12px; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>🤖 AI Assistant - Nuova Conversazione</h1>
+          <p>Un utente sta utilizzando il tuo AI Assistant</p>
+        </div>
+        
+        <div class="content">
+          <h2>📋 Informazioni Lead:</h2>
+          
+          <div class="field">
+            <div class="label">Azienda:</div>
+            <div class="value">${leadData.company}</div>
+          </div>
+          
+          <div class="field">
+            <div class="label">Contatto:</div>
+            <div class="value">${leadData.fullName} (${leadData.email})</div>
+          </div>
+          
+          <div class="field">
+            <div class="label">Ruolo:</div>
+            <div class="value">${leadData.jobRole}</div>
+          </div>
+          
+          <div class="field">
+            <div class="label">Settore:</div>
+            <div class="value">${leadData.industry}</div>
+          </div>
+          
+          <div class="field">
+            <div class="label">Dimensione Azienda:</div>
+            <div class="value">${leadData.companySize}</div>
+          </div>
+
+          <h2>💬 Dettagli Conversazione:</h2>
+          
+          <div class="field">
+            <div class="label">Numero Messaggi:</div>
+            <div class="value">${conversationCount} messaggi totali</div>
+          </div>
+          
+          <div class="field">
+            <div class="label">Ultima Domanda:</div>
+            <div class="message-box">
+              "${message.length > 300 ? message.substring(0, 300) + '...' : message}"
+            </div>
+          </div>
+
+          <h2>🏢 Descrizione Business:</h2>
+          <div class="business-info">
+            ${leadData.businessDescription}
+          </div>
+          
+          <div class="field">
+            <div class="label">Data e Ora:</div>
+            <div class="value">${new Date().toLocaleString('it-IT', { 
+              timeZone: 'Europe/Rome',
+              year: 'numeric',
+              month: 'long', 
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            })}</div>
+          </div>
+        </div>
+        
+        <div class="footer">
+          <p>Questa notifica è stata inviata automaticamente dall'AI Assistant di Maverick AI.</p>
+          <p><strong>Lead potenzialmente qualificato!</strong> Considera di contattare direttamente: ${leadData.email}</p>
+        </div>
+      </body>
+      </html>
+    `
+
+    const textContent = `
+🤖 AI Assistant - Nuova Conversazione
+
+INFORMAZIONI LEAD:
+Azienda: ${leadData.company}
+Contatto: ${leadData.fullName} (${leadData.email})
+Ruolo: ${leadData.jobRole}
+Settore: ${leadData.industry}
+Dimensione: ${leadData.companySize}
+
+CONVERSAZIONE:
+Messaggi: ${conversationCount}
+Ultima domanda: "${message.substring(0, 200)}${message.length > 200 ? '...' : ''}"
+
+BUSINESS:
+${leadData.businessDescription}
+
+Data: ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })}
+    `
+
+    // Configure sender and recipient using MailerSend
+    const fromEmail = process.env.MAILERSEND_FROM_EMAIL || 'federico.thiella@maverickai.it'
+    const sentFrom = new Sender(fromEmail, 'Maverick AI Assistant')
+
+    const recipients = [
+      new Recipient(
+        process.env.MAILERSEND_ADMIN_EMAIL || 'federico.thiella@maverickai.it',
+        'Maverick AI Admin'
+      )
+    ]
+
+    // Build email parameters
+    const mailParams = new EmailParams()
+    mailParams.setFrom(sentFrom)
+    mailParams.setTo(recipients)
+    mailParams.setSubject(`🤖 AI Assistant Usage - ${leadData.company} (${conversationCount} messaggi)`)
+    mailParams.setHtml(htmlContent)
+    mailParams.setText(textContent)
+      
+    console.log('📬 MailerSend: Sending AI usage email to:', recipients[0].email)
+    console.log('📄 MailerSend: Subject:', mailParams.subject)
+
+    // Send the email using MailerSend
+    const emailResponse = await mailerSendClient.email.send(mailParams)
+    
+    console.log('✅ MailerSend: AI usage email sent successfully! Message ID:', emailResponse.body?.messageId)
+    return {
+      success: true,
+      messageId: emailResponse.body?.messageId || 'sent'
+    }
+  } catch (error: any) {
+    console.error('❌ MailerSend AI usage notification error:', error)
+    console.error('Error details:', {
+      name: error instanceof Error ? error.name : 'Unknown',
+      message: error instanceof Error ? error.message : 'Unknown error',
+      statusCode: error.statusCode || 'No status code'
+    })
+
+    // Specific error handling for MailerSend
+    let errorMessage = 'Unknown error'
+    if (error.statusCode === 401) {
+      errorMessage = 'Invalid MailerSend API token'
+    } else if (error.statusCode === 422) {
+      if (error.body?.message?.includes('Trial accounts')) {
+        errorMessage = 'MailerSend trial account limitation - emails can only be sent to administrator email'
+      } else if (error.body?.message?.includes('domain must be verified')) {
+        errorMessage = 'MailerSend domain verification required - please verify your sending domain'
+      } else {
+        errorMessage = 'MailerSend validation error - ' + (error.body?.message || 'check configuration')
+      }
+    } else if (error.statusCode === 429) {
+      errorMessage = 'MailerSend rate limit exceeded'
+    } else if (error instanceof Error) {
+      errorMessage = error.message
+    } else if (error.body?.message) {
+      errorMessage = error.body.message
+    }
+
+    return {
+      success: false,
+      error: errorMessage
+    }
+  }
+}
+
 // Test function to validate MailerSend configuration
 export async function testMailerSendConfiguration(): Promise<{ success: boolean; error?: string }> {
   try {

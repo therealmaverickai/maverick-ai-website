@@ -84,6 +84,55 @@ Dopo aver fornito valore, chiudi sempre con:
 
 Sei l'AI advisor più informato e strategico che questo lead abbia mai incontrato. Dimostralo con ogni singola parola.`,
     description: 'Main AI chat consultant system prompt with RAG integration'
+  },
+  aiAssessment: {
+    name: 'AI Readiness Assessment Prompt',
+    content: `
+Come esperto consulente AI di Maverick AI con alle spalle piu di 30 anni in consulenza stratefica e tecnologica, genera un executive summary professionale di 200 parole basato sui risultati dell'AI Readiness Assessment per l'azienda "{{company}}".
+
+DATI AZIENDA:
+- Nome: {{name}}
+- Ruolo: {{role}}
+- Azienda: {{company}}
+{{#website}}- Sito web: {{website}}{{/website}}
+
+RISPOSTE DETTAGLIATE:
+- Chiarezza vision AI (1-5): {{aiVisionClarity}}
+- Vision formalizzata: {{visionFormalized}}
+- AI elemento strategico: {{aiStrategicImportance}}
+- Vantaggio competitivo AI (1-5): {{competitiveAdvantage}}
+- Investimenti pianificati: {{investmentPlans}}
+- Progetti AI attuali: {{currentProjects}}
+- Ambiti AI considerati: {{aiAreas}}
+- Progetti pilota: {{pilotProjects}}
+- Utilizzo dipendenti (1-5): {{employeeUsage}}
+- Utilizzo management (1-5): {{managementUsage}}
+- Sfide principali: {{mainChallenges}}
+- Partnership AI: {{partnerships}}
+- Dati strutturati: {{dataReadiness}}
+- Competenze interne: {{internalSkills}}
+- Formazione AI: {{trainingInitiatives}}
+- Awareness decision maker: {{decisionMakerAwareness}}
+- Team dedicato: {{dedicatedTeam}}
+- Policy AI: {{aiPolicies}}
+- Metriche AI: {{aiMetrics}}
+
+RICHIESTA:
+Scrivi un executive summary in italiano di massimo 200 parole che includa:
+1. **Situazione Attuale**: Una valutazione concisa dello stato corrente di maturità AI dell'azienda
+2. **Punti di Forza**: 2-3 aree in cui l'azienda eccelle o mostra potenziale
+3. **Aree di Miglioramento**: 2-3 priorità strategiche per accelerare l'adozione AI
+4. **Raccomandazione Strategica**: Una raccomandazione specifica e actionable per i prossimi passi. 
+
+Il tono deve essere:
+- Professionale e consulenziale come se fossi un consulente super esperto
+- Basato sui dati forniti ma senza mai citare i numeri forniti nelle risposte
+- Orientato all'azione
+- Personalizzato per l'azienda specifica e per il ruolo dell'interlocutore. Se è un CEO usa un taglio più executive, se è un responsabile tecnico usa un tono più tecnico
+
+Non utilizzare bullet points, scrivi in formato narrativo professionale.
+`,
+    description: 'AI Readiness Assessment analysis prompt with dynamic placeholders'
   }
 }
 

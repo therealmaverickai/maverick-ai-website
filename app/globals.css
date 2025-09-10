@@ -8,6 +8,14 @@
   html {
     font-family: 'Inter', system-ui, sans-serif;
   }
+  
+  /* Prevent layout shifts during font loading */
+  * {
+    font-feature-settings: "kern" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
 
 @layer components {
@@ -42,6 +50,20 @@
   
   .container-width {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Fix navigation menu size flashing */
+  .nav-link {
+    @apply text-base font-medium;
+    font-size: 1rem !important;
+    line-height: 1.5rem !important;
+  }
+
+  /* Match button size to navigation */
+  .nav-button {
+    @apply text-base font-medium;
+    font-size: 1rem !important;
+    line-height: 1.5rem !important;
   }
 
   /* Mobile-specific improvements */
@@ -115,9 +137,16 @@
     animation-delay: calc(var(--stagger) * 0.1s);
   }
 
-  /* Gradient text effect */
+  /* Enhanced gradient text effect */
   .gradient-text {
-    @apply bg-gradient-to-r from-accent-500 via-blue-600 to-purple-600 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-blue-500 via-blue-600 to-blue-800 bg-clip-text text-transparent;
+    background-size: 200% 200%;
+    animation: gradientShift 3s ease-in-out infinite;
+  }
+
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
   }
 
   /* Subtle pulse animation for important elements */
@@ -224,5 +253,125 @@
   /* Better tech particle animation */
   .tech-particle {
     will-change: transform, opacity;
+  }
+
+  /* Enhanced button hover effects */
+  .btn-primary::after {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500;
+    transform: translateX(-100%);
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* Improved animations */
+  .animate-in {
+    animation-duration: 0.5s;
+    animation-fill-mode: both;
+  }
+
+  .fade-in {
+    animation-name: fadeIn;
+  }
+
+  .slide-in-from-top-5 {
+    animation-name: slideInFromTop;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideInFromTop {
+    from { 
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Smooth card transformations */
+  .card {
+    @apply transform-gpu; /* Force hardware acceleration */
+  }
+
+  /* Better focus states */
+  .focus-ring:focus-visible {
+    @apply ring-2 ring-blue-500 ring-offset-2 outline-none;
+  }
+
+  /* Loading states */
+  .skeleton {
+    @apply bg-gray-200 animate-pulse rounded;
+  }
+
+  /* Enhanced shadow utilities */
+  .shadow-3xl {
+    box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.25);
+  }
+
+  /* Gradient animations */
+  .animate-gradient {
+    background-size: 300% 300%;
+    animation: gradientShift 5s ease-in-out infinite;
+  }
+
+  .bg-300% {
+    background-size: 300% 300%;
+  }
+
+  @keyframes gradient {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  /* Pulse glow effect */
+  .pulse-glow {
+    animation: pulseGlow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes pulseGlow {
+    from {
+      box-shadow: 0 0 20px -10px rgba(59, 130, 246, 0.5);
+    }
+    to {
+      box-shadow: 0 0 30px -5px rgba(59, 130, 246, 0.8);
+    }
+  }
+
+  /* Interactive step indicators */
+  .step-indicator {
+    position: relative;
+  }
+
+  .step-indicator::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -50px;
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent);
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .step-indicator.active::before {
+    opacity: 1;
+  }
+
+  /* Enhanced blur backgrounds */
+  .blur-bg {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 }

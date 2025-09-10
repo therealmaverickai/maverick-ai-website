@@ -1,0 +1,21 @@
+{
+  "name": "Maverick AI",
+  "short_name": "Maverick AI",
+  "description": "Startup specializzata in Intelligenza Artificiale Generativa e Agenticche per il business",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#81BFFF",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.png", 
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

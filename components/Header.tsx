@@ -8,7 +8,7 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-50">
+    <header className="bg-white/95 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">
       <div className="container-width">
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
@@ -16,7 +16,7 @@ export default function Header() {
             <Link href="/" className="hover:scale-105 transition-all duration-300 group">
               <Image
                 src="/logo.png"
-                alt="Maverick AI"
+                alt="Maverick AI - Intelligenza Artificiale per il Business"
                 width={135}
                 height={45}
                 priority
@@ -31,58 +31,63 @@ export default function Header() {
 
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8">
-            <Link href="/#home" className="text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
+          <nav className="hidden lg:flex space-x-8 ml-auto">
+            <Link href="/#home" className="nav-link text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
               <span>Home</span>
-              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
+              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-8 transition-all duration-300 rounded-full"></div>
             </Link>
-            <Link href="/#cosa-facciamo" className="text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
+            <Link href="/#cosa-facciamo" className="nav-link text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
               <span>Servizi</span>
-              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
+              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-8 transition-all duration-300 rounded-full"></div>
             </Link>
-            <Link href="/#chi-serviamo" className="text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
+            <Link href="/#chi-serviamo" className="nav-link text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
               <span>Clienti</span>
-              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
+              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-8 transition-all duration-300 rounded-full"></div>
             </Link>
-            <Link href="/#prodotti" className="text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
+            <Link href="/#prodotti" className="nav-link text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
               <span>AI aXcelerate</span>
-              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
+              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-12 transition-all duration-300 rounded-full"></div>
             </Link>
-            <Link href="/partner" className="text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
+            <Link href="/partner" className="nav-link text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
               <span>Partner</span>
-              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
+              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-8 transition-all duration-300 rounded-full"></div>
             </Link>
-            <Link href="/ai-readiness" className="text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
+            <Link href="/ai-readiness" className="nav-link text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
               <span>AI Readiness Assessment</span>
-              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
+              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-16 transition-all duration-300 rounded-full"></div>
+            </Link>
+            <Link href="/use-cases" className="nav-link text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
+              <span>Case history</span>
+              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-10 transition-all duration-300 rounded-full"></div>
             </Link>
           </nav>
 
-          {/* CTA Button */}
-          <Link href="/#contatti" className="hidden md:block btn-primary">
-            Richiedi Informazioni
-          </Link>
-
           {/* Mobile Menu Button */}
           <button 
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            className="lg:hidden p-3 rounded-xl hover:bg-gray-100 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle mobile menu"
+            aria-expanded={isMenuOpen}
           >
-            <svg className="w-6 h-6 text-navy-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              {isMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
+            <div className="relative w-6 h-6">
+              <span className={`absolute inset-0 transition-transform duration-300 ${isMenuOpen ? 'rotate-45 translate-y-0' : ''}`}>
+                <svg className={`w-6 h-6 text-gray-700 transition-opacity duration-200 ${isMenuOpen ? 'opacity-0' : 'opacity-100'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </span>
+              <span className={`absolute inset-0 transition-transform duration-300 ${isMenuOpen ? 'rotate-0' : 'rotate-45 scale-0'}`}>
+                <svg className={`w-6 h-6 text-gray-700 transition-opacity duration-200 ${isMenuOpen ? 'opacity-100' : 'opacity-0'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </span>
+            </div>
           </button>
         </div>
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden pb-4 border-t border-gray-100 mt-4 pt-4">
-            <div className="flex flex-col space-y-4">
+          <div className="lg:hidden pb-4 border-t border-gray-100 mt-4 pt-4 animate-in fade-in slide-in-from-top-5 duration-300">
+            <div className="flex flex-col space-y-2">
               <Link 
                 href="/#home" 
                 className="text-navy-700 hover:text-accent-500 transition-colors py-2 px-3 rounded-lg hover:bg-gray-50"
@@ -124,6 +129,13 @@ export default function Header() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 AI Readiness Assessment
+              </Link>
+              <Link 
+                href="/use-cases" 
+                className="text-navy-700 hover:text-accent-500 transition-colors py-2 px-3 rounded-lg hover:bg-gray-50"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Case history
               </Link>
               <Link 
                 href="/#contatti" 

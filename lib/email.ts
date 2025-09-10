@@ -244,3 +244,159 @@ export async function sendConfirmationEmail(data: ContactFormData): Promise<{ su
     }
   }
 }
+
+// Send admin notification for AI assistant usage
+export async function sendAIUsageNotification(leadData: any, message: string, conversationCount: number): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  try {
+    console.log('🔧 Attempting to send AI usage notification...')
+    console.log('📧 Email config check:', {
+      EMAIL_SERVICE: process.env.EMAIL_SERVICE ? '✓ Set' : '✗ Missing',
+      EMAIL_USER: process.env.EMAIL_USER ? '✓ Set' : '✗ Missing', 
+      EMAIL_PASSWORD: process.env.EMAIL_PASSWORD ? '✓ Set' : '✗ Missing',
+      EMAIL_FROM: process.env.EMAIL_FROM ? '✓ Set' : '✗ Missing'
+    })
+    
+    const transporter = createTransporter()
+
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .header { background: linear-gradient(135deg, #0F172A, #1E293B); color: white; padding: 20px; text-align: center; }
+          .content { padding: 30px; background: #f9f9f9; }
+          .field { margin-bottom: 20px; }
+          .label { font-weight: bold; color: #0F172A; }
+          .value { margin-top: 5px; padding: 10px; background: white; border-left: 3px solid #3B82F6; }
+          .message-box { background-color: #e0f2fe; padding: 15px; border-radius: 6px; border-left: 4px solid #0284c7; margin: 15px 0; }
+          .business-info { background-color: #fefce8; padding: 15px; border-radius: 6px; border-left: 4px solid #ca8a04; margin: 15px 0; }
+          .footer { background: #0F172A; color: white; padding: 20px; text-align: center; font-size: 12px; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>🤖 AI Assistant - Nuova Conversazione</h1>
+          <p>Un utente sta utilizzando il tuo AI Assistant</p>
+        </div>
+        
+        <div class="content">
+          <h2>📋 Informazioni Lead:</h2>
+          
+          <div class="field">
+            <div class="label">Azienda:</div>
+            <div class="value">${leadData.company}</div>
+          </div>
+          
+          <div class="field">
+            <div class="label">Contatto:</div>
+            <div class="value">${leadData.fullName} (${leadData.email})</div>
+          </div>
+          
+          <div class="field">
+            <div class="label">Ruolo:</div>
+            <div class="value">${leadData.jobRole}</div>
+          </div>
+          
+          <div class="field">
+            <div class="label">Settore:</div>
+            <div class="value">${leadData.industry}</div>
+          </div>
+          
+          <div class="field">
+            <div class="label">Dimensione Azienda:</div>
+            <div class="value">${leadData.companySize}</div>
+          </div>
+
+          <h2>💬 Dettagli Conversazione:</h2>
+          
+          <div class="field">
+            <div class="label">Numero Messaggi:</div>
+            <div class="value">${conversationCount} messaggi totali</div>
+          </div>
+          
+          <div class="field">
+            <div class="label">Ultima Domanda:</div>
+            <div class="message-box">
+              "${message.length > 300 ? message.substring(0, 300) + '...' : message}"
+            </div>
+          </div>
+
+          <h2>🏢 Descrizione Business:</h2>
+          <div class="business-info">
+            ${leadData.businessDescription}
+          </div>
+          
+          <div class="field">
+            <div class="label">Data e Ora:</div>
+            <div class="value">${new Date().toLocaleString('it-IT', { 
+              timeZone: 'Europe/Rome',
+              year: 'numeric',
+              month: 'long', 
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            })}</div>
+          </div>
+        </div>
+        
+        <div class="footer">
+          <p>Questa notifica è stata inviata automaticamente dall'AI Assistant di Maverick AI.</p>
+          <p><strong>Lead potenzialmente qualificato!</strong> Considera di contattare direttamente: ${leadData.email}</p>
+        </div>
+      </body>
+      </html>
+    `
+
+    const textContent = `
+🤖 AI Assistant - Nuova Conversazione
+
+INFORMAZIONI LEAD:
+Azienda: ${leadData.company}
+Contatto: ${leadData.fullName} (${leadData.email})
+Ruolo: ${leadData.jobRole}
+Settore: ${leadData.industry}
+Dimensione: ${leadData.companySize}
+
+CONVERSAZIONE:
+Messaggi: ${conversationCount}
+Ultima domanda: "${message.substring(0, 200)}${message.length > 200 ? '...' : ''}"
+
+BUSINESS:
+${leadData.businessDescription}
+
+Data: ${new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' })}
+    `
+
+    const mailOptions = {
+      from: `"Maverick AI Assistant" <${process.env.EMAIL_FROM || process.env.EMAIL_USER}>`,
+      to: 'info@maverickai.it',
+      subject: `🤖 AI Assistant Usage - ${leadData.company} (${conversationCount} messaggi)`,
+      text: textContent,
+      html: htmlContent,
+    }
+
+    console.log('📬 Sending email to:', mailOptions.to)
+    console.log('📄 Subject:', mailOptions.subject)
+    
+    const result = await transporter.sendMail(mailOptions)
+    
+    console.log('✅ Email sent successfully! Message ID:', result.messageId)
+    return {
+      success: true,
+      messageId: result.messageId
+    }
+  } catch (error) {
+    console.error('❌ AI usage notification error:', error)
+    console.error('Error details:', {
+      name: error instanceof Error ? error.name : 'Unknown',
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : 'No stack trace'
+    })
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    }
+  }
+}
