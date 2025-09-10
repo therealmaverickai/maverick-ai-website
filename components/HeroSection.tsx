@@ -156,29 +156,69 @@ export default function HeroSection() {
           </div>
         )}
         <div className="text-center max-w-4xl mx-auto">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-8 leading-tight text-gray-900 px-4">
+          <h1 
+            className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold mb-8 leading-tight text-gray-900 px-4 fade-in-up"
+            itemProp="headline"
+            data-ai-summary="Main value proposition and company mission"
+          >
             Diamo forma al <br className="hidden sm:block" />
-            <span style={{ color: '#81BFFF' }}>
-              business del futuro
+            <span className="relative inline-block">
+              <span className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 bg-clip-text text-transparent font-extrabold">
+                business del futuro
+              </span>
+              <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
             </span>
           </h1>
           
-          <p className="text-lg sm:text-xl text-gray-600 mb-12 max-w-2xl mx-auto px-4 leading-relaxed">
+          <p 
+            className="text-lg sm:text-xl text-gray-600 mb-12 max-w-2xl mx-auto px-4 leading-relaxed fade-in-up stagger-animation"
+            style={{"--stagger": 1} as any}
+            itemProp="description"
+            data-ai-summary="Core business description and value proposition"
+          >
             Un partner strategico che guida le aziende nella trasformazione digitale, trasformando l'AI in soluzioni pratiche, ad alto impatto e in tempi rapidi.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center px-4">
-            <a href="#cosa-facciamo" className="btn-primary text-base px-8 py-3 inline-block text-center group relative">
-              <span className="relative z-10">Scopri i nostri servizi</span>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center px-4 fade-in-up stagger-animation" style={{"--stagger": 2} as any}>
+            <a href="#cosa-facciamo" className="btn-primary text-base px-8 py-4 inline-block text-center group relative hover:shadow-xl transform transition-all duration-300 hover:-translate-y-1">
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                Scopri i nostri servizi
+                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </span>
             </a>
             <Link 
               href="/ai-readiness"
-              className="btn-secondary text-base px-8 py-3 inline-block text-center group"
+              className="btn-secondary text-base px-8 py-4 inline-block text-center group relative overflow-hidden hover:shadow-lg transform transition-all duration-300 hover:-translate-y-1"
             >
-              <span className="group-hover:translate-x-1 transition-transform duration-300 inline-block">
+              <span className="group-hover:translate-x-1 transition-transform duration-300 inline-block flex items-center justify-center gap-2">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
                 AI Readiness Assessment
               </span>
             </Link>
+          </div>
+
+          {/* Trust indicators */}
+          <div className="mt-16 fade-in-up stagger-animation" style={{"--stagger": 3} as any}>
+            <p className="text-sm text-gray-500 mb-6 uppercase tracking-wide font-medium">
+              Già scelto da
+            </p>
+            <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
+              <div className="text-gray-400 font-semibold text-lg hover:text-gray-600 transition-colors">
+                Private Equity
+              </div>
+              <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+              <div className="text-gray-400 font-semibold text-lg hover:text-gray-600 transition-colors">
+                Scale-up
+              </div>
+              <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+              <div className="text-gray-400 font-semibold text-lg hover:text-gray-600 transition-colors">
+                Enterprise
+              </div>
+            </div>
           </div>
 
         </div>

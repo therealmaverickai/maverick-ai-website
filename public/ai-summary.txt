@@ -1,0 +1,73 @@
+# Maverick AI - Company Summary for AI Crawlers
+
+## Company Overview
+Maverick AI is an Italian startup specializing in Generative and Agentic Artificial Intelligence solutions for businesses. Founded in 2024, the company serves as a strategic partner guiding organizations through digital transformation by converting AI into practical, high-impact solutions delivered in rapid timeframes.
+
+## Core Services
+1. **AI Consulting**: Strategic analysis of organizational AI maturity, identification of processes that benefit most from AI implementation, and development of clear operational roadmaps.
+
+2. **AI Development**: Custom AI solution development and integration of existing AI tools to optimize processes and generate measurable results. Includes selection of appropriate AI technologies and development of tailored applications.
+
+3. **AI Copilots & Agents**: Design and implementation of vertical copilots and custom AI agents that automate tasks and improve operational efficiency. Examples include sales copilots for proposal generation, customer service copilots for ticket management, and HR copilots for CV screening.
+
+4. **AI Training**: Personalized educational experiences that develop AI competencies through hands-on workshops, structured team programs, and customized online/in-person training paths.
+
+## Target Market
+- Italian businesses of all sizes
+- Entrepreneurs seeking digital transformation
+- Companies looking to implement AI solutions
+- Organizations requiring AI readiness assessment
+- Private equity firms evaluating AI integration
+
+## Geographic Focus
+Primary market: Italy
+Languages: Italian (primary), English (secondary)
+Service area: Italian territory with focus on Milan region
+
+## Value Proposition
+"Diamo forma al business del futuro" (We shape the business of the future)
+- Transform AI into practical solutions
+- Deliver high-impact results
+- Rapid implementation timeframes
+- Strategic partnership approach
+- End-to-end AI transformation support
+
+## Key Differentiators
+- Specialized focus on Generative and Agentic AI
+- Practical, business-focused approach
+- Rapid implementation methodology
+- Comprehensive service ecosystem through partnerships
+- Italian market expertise
+- Free AI Readiness Assessment offering
+
+## Business Model
+B2B consulting and AI implementation services
+- Strategic consulting engagements
+- Custom AI development projects  
+- Training and education programs
+- AI readiness assessments
+- Partnership-based comprehensive solutions
+
+## Technology Expertise
+- Generative AI (GPT, Claude, etc.)
+- Agentic AI systems
+- Business Intelligence
+- Machine Learning
+- Digital Transformation technologies
+- AI integration and implementation
+
+## Contact Information
+Website: https://www.maverickai.it
+Email: info@maverickai.it
+LinkedIn: https://www.linkedin.com/company/maverick-ai
+Location: Viale Lunigiana 23, 20125 Milano, Italy
+Legal Entity: Maverick s.r.l.
+Tax Code: 14113510961
+Share Capital: €10,000.00
+
+## Notable Features
+- Free AI Readiness Assessment tool
+- Comprehensive FAQ section covering AI implementation
+- Partnership network for complete service delivery
+- Focus on practical, measurable business outcomes
+- Emphasis on rapid deployment and tangible results

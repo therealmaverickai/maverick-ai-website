@@ -1,6 +1,38 @@
 import Header from '@/components/Header'
+import Breadcrumb from '@/components/Breadcrumb'
 import ContactSection from '@/components/ContactSection'
 import Footer from '@/components/Footer'
+
+export const metadata = {
+  title: 'Partner Maverick AI | Rete di collaboratori per soluzioni AI complete',
+  description: 'I partner selezionati di Maverick AI: system integrator, boutique digitali, software house e academy che completano il nostro ecosistema di servizi AI.',
+  keywords: 'partner AI, collaboratori Maverick AI, rete partner intelligenza artificiale, system integrator, consulenza digitale',
+  openGraph: {
+    title: 'Partner Maverick AI | Rete di collaboratori AI',
+    description: 'I partner selezionati di Maverick AI: system integrator, boutique digitali, software house e academy che completano il nostro ecosistema di servizi AI.',
+    url: 'https://www.maverickai.it/partner',
+    siteName: 'Maverick AI',
+    images: [
+      {
+        url: '/logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'Partner Maverick AI',
+      },
+    ],
+    locale: 'it_IT',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Partner Maverick AI | Rete di collaboratori AI',
+    description: 'I partner selezionati di Maverick AI: system integrator, boutique digitali, software house e academy che completano il nostro ecosistema di servizi AI.',
+    images: ['/logo.png'],
+  },
+  alternates: {
+    canonical: '/partner',
+  },
+}
 
 export default function PartnersPage() {
   const partners = [
@@ -33,6 +65,7 @@ export default function PartnersPage() {
   return (
     <main className="min-h-screen">
       <Header />
+      <Breadcrumb />
       
       {/* Hero Section */}
       <section className="bg-gradient-to-b from-navy-50 to-white section-padding">

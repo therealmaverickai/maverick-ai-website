@@ -40,7 +40,7 @@ export default function Footer() {
             <div className="mb-4 -ml-2">
               <Image
                 src="/footer-logo.png"
-                alt="Maverick AI"
+                alt="Maverick AI - Soluzioni di Intelligenza Artificiale"
                 width={200}
                 height={60}
                 className="h-12 w-auto"

@@ -58,14 +58,38 @@ export default function WhatWeDoSection() {
   }
 
   return (
-    <section id="cosa-facciamo" className="bg-gray-50 section-padding">
+    <section 
+      id="cosa-facciamo" 
+      className="bg-gray-50 section-padding"
+      itemScope
+      itemType="https://schema.org/Service"
+      data-ai-summary="Complete service offerings and capabilities"
+    >
       <div className="container-width">
         <div className="text-center mb-20">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6 px-4">
+          <div className="inline-flex items-center bg-blue-50 text-blue-600 px-4 py-2 rounded-full text-sm font-medium mb-6">
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
             I nostri servizi
+          </div>
+          <h2 
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 px-4 fade-in-up"
+            itemProp="name"
+            data-ai-summary="Service section title"
+          >
+            Tutto quello di cui hai bisogno <br className="hidden sm:block" />
+            <span className="bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+              per innovare con l'AI
+            </span>
           </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto px-4">
-            Offriamo soluzioni complete per integrare l'Intelligenza Artificiale nel tuo business
+          <p 
+            className="text-lg text-gray-600 max-w-3xl mx-auto px-4 fade-in-up stagger-animation"
+            style={{"--stagger": 1} as any}
+            itemProp="description"
+            data-ai-summary="Service overview and integration focus"
+          >
+            Dal primo approccio strategico all'implementazione completa: accompagniamo le aziende in ogni fase della trasformazione digitale
           </p>
         </div>
 
@@ -73,38 +97,41 @@ export default function WhatWeDoSection() {
           {services.map((service, index) => (
             <div 
               key={service.id} 
-              className={`card group shimmer-effect cursor-pointer transition-all duration-300 ${
+              className={`card group shimmer-effect cursor-pointer transition-all duration-500 hover:shadow-2xl border-l-4 hover:border-l-blue-500 fade-in-up stagger-animation ${
                 expandedService === service.id 
-                  ? 'ring-2 ring-blue-500 shadow-xl' 
-                  : 'hover:shadow-lg'
+                  ? 'ring-2 ring-blue-500 shadow-2xl scale-105 border-l-blue-500' 
+                  : 'border-l-transparent hover:shadow-xl'
               }`}
+              style={{"--stagger": index + 2} as any}
               onClick={() => toggleService(service.id)}
             >
               <div className="p-8">
                 <div className="flex items-start justify-between mb-6">
                   <div className="flex items-center space-x-4">
-                    <div className="inline-flex p-3 bg-blue-100 rounded-lg text-blue-600 bg-hover icon-hover">
-                      <div className="floating-animation" style={{animationDelay: `${index * 0.15}s`}}>
+                    <div className="inline-flex p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl text-blue-600 bg-hover icon-hover shadow-sm group-hover:shadow-md">
+                      <div className="floating-animation transform group-hover:scale-110 transition-transform duration-300" style={{animationDelay: `${index * 0.15}s`}}>
                         {service.icon}
                       </div>
                     </div>
                     
                     <div>
-                      <div className="flex items-center space-x-2">
-                        <span className="text-2xl font-bold text-blue-600">
-                          {service.id.toString().padStart(2, '0')}.
+                      <div className="flex items-center space-x-3">
+                        <span className="text-sm font-bold text-white bg-blue-600 rounded-full w-8 h-8 flex items-center justify-center shadow-sm">
+                          {service.id}
                         </span>
-                        <h3 className="text-xl font-semibold text-gray-900 text-hover">
+                        <h3 className="text-xl font-bold text-gray-900 text-hover group-hover:text-blue-600 transition-colors duration-300">
                           {service.title}
                         </h3>
                       </div>
                     </div>
                   </div>
                   
-                  <div className={`transition-transform duration-300 ${
-                    expandedService === service.id ? 'rotate-180' : ''
+                  <div className={`transition-all duration-300 p-2 rounded-full hover:bg-gray-100 ${
+                    expandedService === service.id ? 'rotate-180 bg-blue-50' : ''
                   }`}>
-                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className={`w-5 h-5 transition-colors duration-300 ${
+                      expandedService === service.id ? 'text-blue-600' : 'text-gray-400'
+                    }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
                   </div>
