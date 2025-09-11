@@ -57,6 +57,7 @@ export default function AIReadinessAssessment() {
   const [results, setResults] = useState<any>(null)
   const [emailError, setEmailError] = useState('')
   const [isAccordionOpen, setIsAccordionOpen] = useState(false)
+  const [reportRequestStatus, setReportRequestStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const { trackEvent } = useGoogleAnalytics()
 
   const steps = [
@@ -71,6 +72,44 @@ export default function AIReadinessAssessment() {
   const validateEmail = (email: string) => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
     return emailRegex.test(email)
+  }
+
+  const handleDetailedReportRequest = async () => {
+    setReportRequestStatus('sending')
+    
+    try {
+      // Send notification to admin about detailed report request
+      const response = await fetch('/api/detailed-report-request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userEmail: data.email,
+          userName: data.name,
+          userRole: data.role,
+          userCompany: data.company,
+          assessmentScore: results.score,
+          assessmentCluster: results.cluster,
+          requestedAt: new Date().toISOString()
+        }),
+      })
+
+      const result = await response.json()
+      
+      if (response.ok && result.success) {
+        setReportRequestStatus('sent')
+        
+        // Track event
+        trackEvent('detailed_report_requested', 'ai_assessment', `company_${data.company}`)
+      } else {
+        console.error('Failed to send detailed report request:', result.error)
+        setReportRequestStatus('error')
+      }
+    } catch (error) {
+      console.error('Error requesting detailed report:', error)
+      setReportRequestStatus('error')
+    }
   }
 
   const handleInputChange = (field: keyof AssessmentData, value: any) => {
@@ -1539,6 +1578,87 @@ export default function AIReadinessAssessment() {
                 </div>
               )}
 
+              {/* Full Detailed Report Request Section */}
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 rounded-xl p-4 md:p-6 mb-4 md:mb-6">
+                <div className="flex items-start space-x-3">
+                  <div className="flex-shrink-0">
+                    <svg className="w-6 h-6 text-green-500 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-navy-700 mb-2">
+                      Vuoi ricevere il report completo?
+                    </h3>
+                    <p className="text-navy-600 mb-4 text-sm md:text-base">
+                      Se vuoi ricevere un'analisi dettagliata con raccomandazioni mirate, strategie di implementazione e una roadmap personalizzata per la tua azienda, richiedi gratuitamente il nostro report completo.
+                    </p>
+                    <div className="bg-white/70 rounded-lg p-3 mb-4">
+                      <div className="flex items-center space-x-2 text-sm text-navy-600">
+                        <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                        <span><strong>Completamente gratuito</strong></span>
+                      </div>
+                      <div className="flex items-center space-x-2 text-sm text-navy-600 mt-1">
+                        <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                        <span><strong>Analisi personalizzata</strong></span>
+                      </div>
+                    </div>
+                    {reportRequestStatus === 'sent' ? (
+                      <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg">
+                        <div className="flex items-center space-x-2">
+                          <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                          </svg>
+                          <div>
+                            <p className="font-medium">Richiesta inviata con successo!</p>
+                            <p className="text-sm">Riceverai il report dettagliato entro 1 giorno lavorativo all'indirizzo {data.email}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ) : reportRequestStatus === 'error' ? (
+                      <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
+                        <div className="flex items-center space-x-2">
+                          <svg className="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                          </svg>
+                          <div>
+                            <p className="font-medium">Errore nell'invio della richiesta</p>
+                            <p className="text-sm">Riprova più tardi o contattaci direttamente</p>
+                            <button 
+                              onClick={() => setReportRequestStatus('idle')} 
+                              className="text-sm underline mt-1"
+                            >
+                              Riprova
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={handleDetailedReportRequest}
+                        disabled={reportRequestStatus === 'sending'}
+                        className="btn-primary w-full md:w-auto inline-block text-center py-4 md:py-3 text-base md:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {reportRequestStatus === 'sending' ? (
+                          <>
+                            <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Invio in corso...
+                          </>
+                        ) : (
+                          '📄 Richiedi report di dettaglio'
+                        )}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
 
               <div className="space-y-4">
                 <a

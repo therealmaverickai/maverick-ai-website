@@ -9,6 +9,21 @@ export default function Header() {
 
   return (
     <header className="bg-white/95 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">
+      {/* Skip Navigation Links */}
+      <div className="sr-only focus-within:not-sr-only">
+        <a 
+          href="#main-content" 
+          className="absolute top-0 left-0 bg-blue-600 text-white px-4 py-2 z-[60] focus:relative focus:z-[60] rounded-br-md font-semibold shadow-lg transition-all duration-200 hover:bg-blue-700"
+        >
+          Skip to main content
+        </a>
+        <a 
+          href="#navigation" 
+          className="absolute top-0 left-32 bg-blue-600 text-white px-4 py-2 z-[60] focus:relative focus:z-[60] rounded-br-md font-semibold shadow-lg transition-all duration-200 hover:bg-blue-700"
+        >
+          Skip to navigation
+        </a>
+      </div>
       <div className="container-width">
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
@@ -31,7 +46,7 @@ export default function Header() {
 
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex space-x-8 ml-auto">
+          <nav id="navigation" className="hidden lg:flex space-x-8 ml-auto" role="navigation" aria-label="Main navigation">
             <Link href="/#home" className="nav-link text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
               <span>Home</span>
               <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-8 transition-all duration-300 rounded-full"></div>

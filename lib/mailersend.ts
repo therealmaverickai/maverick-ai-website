@@ -493,6 +493,135 @@ Maverick AI - Sistema di notifica automatico
   }
 }
 
+// Send admin notification for detailed report request
+export async function sendDetailedReportRequestToAdmin(requestData: any): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  try {
+    console.log('MailerSend: Starting admin notification for detailed report request')
+    console.log('MailerSend: User:', requestData.userEmail)
+    console.log('MailerSend: Company:', requestData.userCompany)
+    
+    const mailerSendClient = getMailerSendClient()
+    console.log('MailerSend: Client initialized successfully for detailed report request')
+
+    // Simple HTML content for admin notification
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .header { background: linear-gradient(135deg, #059669, #10b981); color: white; padding: 20px; text-align: center; }
+          .content { padding: 30px; background: #f9f9f9; }
+          .notification { background: white; border-radius: 10px; padding: 20px; margin: 20px 0; border-left: 5px solid #059669; }
+          .data { background: #f8f9fa; border-radius: 8px; padding: 15px; margin: 15px 0; }
+          .urgent { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px; margin: 15px 0; border-radius: 8px; }
+          .footer { background: #059669; color: white; padding: 20px; text-align: center; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>📄 Richiesta Report Dettagliato</h1>
+          <p>Maverick AI - Notifica Admin</p>
+        </div>
+        
+        <div class="content">
+          <div class="notification">
+            <h2>📋 Un utente ha richiesto il report dettagliato</h2>
+            
+            <div class="urgent">
+              <h3>⚡ Azione Richiesta</h3>
+              <p><strong>Consegna:</strong> Entro 1 giorno lavorativo</p>
+              <p><strong>Tipo:</strong> Report completo e dettagliato dell'AI Assessment</p>
+            </div>
+            
+            <div class="data">
+              <h3>👤 Informazioni Utente</h3>
+              <p><strong>Nome:</strong> ${requestData.userName}</p>
+              <p><strong>Email:</strong> ${requestData.userEmail}</p>
+              <p><strong>Ruolo:</strong> ${requestData.userRole}</p>
+              <p><strong>Società:</strong> ${requestData.userCompany}</p>
+            </div>
+            
+            <div class="data">
+              <h3>📊 Risultati Assessment Originale</h3>
+              <p><strong>Punteggio:</strong> ${requestData.assessmentScore}%</p>
+              <p><strong>Cluster:</strong> ${requestData.assessmentCluster}</p>
+              <p><strong>Data Richiesta:</strong> ${new Date(requestData.requestedAt).toLocaleDateString('it-IT')} alle ${new Date(requestData.requestedAt).toLocaleTimeString('it-IT')}</p>
+            </div>
+            
+            <div class="data">
+              <h3>📝 Cosa Includere nel Report</h3>
+              <ul>
+                <li><strong>Analisi approfondita:</strong> Dettagli per ogni area dell'assessment</li>
+                <li><strong>Raccomandazioni mirate:</strong> Specifiche per il settore e la realtà aziendale</li>
+                <li><strong>Strategie di implementazione:</strong> Piani concreti e actionable</li>
+                <li><strong>Roadmap personalizzata:</strong> Timeline e priorità per la trasformazione AI</li>
+                <li><strong>Benchmark di settore:</strong> Confronto con aziende simili</li>
+                <li><strong>ROI e metriche:</strong> Come misurare il successo</li>
+              </ul>
+            </div>
+            
+            <div style="background: #dc2626; color: white; padding: 15px; border-radius: 8px; margin: 20px 0; text-align: center;">
+              <h3>⏰ REMINDER: Deadline 1 Giorno Lavorativo</h3>
+              <p>Il report deve essere preparato e inviato a <strong>${requestData.userEmail}</strong></p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="footer">
+          <p>Maverick AI - Sistema di Notifiche Admin</p>
+          <p>📧 ${requestData.userEmail} | 🏢 ${requestData.userCompany}</p>
+        </div>
+      </body>
+      </html>
+    `
+
+    // Email configuration
+    const fromEmail = process.env.MAILERSEND_FROM_EMAIL || 'federico.thiella@maverickai.it'
+    const adminEmail = process.env.MAILERSEND_ADMIN_EMAIL || 'federico.thiella@maverickai.it'
+
+    const sentFrom = new Sender(fromEmail, 'Maverick AI Sistema')
+    const recipients = [new Recipient(adminEmail, 'Admin Maverick AI')]
+
+    const emailParams = new EmailParams()
+      .setFrom(sentFrom)
+      .setTo(recipients)
+      .setSubject(`🔥 URGENTE: Richiesta Report Dettagliato - ${requestData.userCompany}`)
+      .setHtml(htmlContent)
+
+    console.log('MailerSend: Sending detailed report request notification...')
+    const response = await mailerSendClient.email.send(emailParams)
+    
+    console.log('MailerSend: Response received:', response.body)
+    
+    if (response.statusCode === 202) {
+      console.log('MailerSend: Detailed report request notification sent successfully')
+      return {
+        success: true,
+        messageId: response.body?.message_id || 'unknown'
+      }
+    } else {
+      console.error('MailerSend: Unexpected status code:', response.statusCode)
+      return {
+        success: false,
+        error: `Unexpected status code: ${response.statusCode}`
+      }
+    }
+
+  } catch (error) {
+    console.error('MailerSend detailed report request notification error:', error)
+    
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+    console.error('MailerSend: Error details:', errorMessage)
+    
+    return {
+      success: false,
+      error: errorMessage
+    }
+  }
+}
+
 // Send admin notification for AI assistant usage via MailerSend
 export async function sendAIUsageNotificationWithMailerSend(leadData: any, message: string, conversationCount: number): Promise<{ success: boolean; messageId?: string; error?: string }> {
   try {
