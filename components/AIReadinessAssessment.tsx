@@ -1660,7 +1660,8 @@ export default function AIReadinessAssessment() {
                 </div>
               </div>
 
-              <div className="space-y-4">
+              {/* Action Buttons Section */}
+              <div className="mt-6">
                 <a
                   href="https://calendar.app.google/y77DW2BB9GJnJexs8"
                   target="_blank"
