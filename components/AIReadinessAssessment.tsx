@@ -1568,32 +1568,32 @@ export default function AIReadinessAssessment() {
 
               {/* AI-Generated Executive Summary */}
               {results.aiSummary && (
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-500 rounded-xl p-4 md:p-6 mb-4 md:mb-6">
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-500 rounded-lg md:rounded-xl p-3 sm:p-4 md:p-6 mb-4 md:mb-6">
                   <div className="text-navy-700 leading-relaxed text-sm md:text-base">
                     {results.aiSummary}
                   </div>
-                  <p className="text-right text-xs text-gray-500 mt-4">
+                  <p className="text-right text-xs text-gray-500 mt-3 sm:mt-4">
                     <em>Analisi generata tramite AI da Maverick AI. Maverick AI declina ogni responsabilità sul contenuto generato dall'AI</em>
                   </p>
                 </div>
               )}
 
               {/* Full Detailed Report Request Section */}
-              <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 rounded-xl p-4 md:p-6 mb-4 md:mb-6">
-                <div className="flex items-start space-x-3">
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 rounded-lg md:rounded-xl p-3 sm:p-4 md:p-6 mb-4 md:mb-6">
+                <div className="flex items-start space-x-2 sm:space-x-3">
                   <div className="flex-shrink-0">
-                    <svg className="w-6 h-6 text-green-500 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-green-500 mt-0.5 sm:mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-navy-700 mb-2">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-base sm:text-lg font-semibold text-navy-700 mb-2">
                       Vuoi ricevere il report completo?
                     </h3>
-                    <p className="text-navy-600 mb-4 text-sm md:text-base">
+                    <p className="text-navy-600 mb-3 sm:mb-4 text-sm md:text-base leading-relaxed">
                       Se vuoi ricevere un'analisi dettagliata con raccomandazioni mirate, strategie di implementazione e una roadmap personalizzata per la tua azienda, richiedi gratuitamente il nostro report completo.
                     </p>
-                    <div className="bg-white/70 rounded-lg p-3 mb-4">
+                    <div className="bg-white/70 rounded-lg p-2 sm:p-3 mb-3 sm:mb-4">
                       <div className="flex items-center space-x-2 text-sm text-navy-600">
                         <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
@@ -1641,7 +1641,7 @@ export default function AIReadinessAssessment() {
                       <button
                         onClick={handleDetailedReportRequest}
                         disabled={reportRequestStatus === 'sending'}
-                        className="btn-primary w-full md:w-auto inline-block text-center py-4 md:py-3 text-base md:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="btn-primary w-full sm:w-auto inline-block text-center py-3 sm:py-4 md:py-3 text-sm sm:text-base md:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {reportRequestStatus === 'sending' ? (
                           <>
@@ -1666,7 +1666,7 @@ export default function AIReadinessAssessment() {
                   href="https://calendar.app.google/y77DW2BB9GJnJexs8"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-primary w-full md:w-auto inline-block text-center py-4 md:py-3 text-base md:text-sm"
+                  className="btn-primary w-full sm:w-auto inline-block text-center py-3 sm:py-4 md:py-3 text-sm sm:text-base md:text-sm"
                 >
                   🚀 Richiedi Consulenza Personalizzata
                 </a>
@@ -1681,7 +1681,7 @@ export default function AIReadinessAssessment() {
   }
 
   return (
-    <div id="assessment-container" className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 p-6 md:p-8 lg:p-10 relative overflow-hidden">
+    <div id="assessment-container" className="bg-white/90 backdrop-blur-sm rounded-2xl md:rounded-3xl shadow-2xl border border-white/20 p-4 sm:p-6 md:p-8 lg:p-10 relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 right-0 -translate-y-4 translate-x-4">
         <div className="w-32 h-32 bg-gradient-to-br from-blue-100/50 to-purple-100/50 rounded-full blur-3xl"></div>
