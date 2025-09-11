@@ -43,7 +43,7 @@ export default function RatingSlider({
       </div>
 
       <div 
-        className="relative py-8 md:py-6"
+        className="relative py-12 md:py-10 px-4"
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
       >
@@ -60,7 +60,10 @@ export default function RatingSlider({
             className={`absolute top-1/2 -translate-y-1/2 w-10 h-10 md:w-8 md:h-8 bg-accent-500 rounded-full shadow-lg cursor-pointer transform transition-all duration-300 flex items-center justify-center ${
               isDragging ? 'scale-125 shadow-xl' : isHovering ? 'scale-110 shadow-lg' : ''
             }`}
-            style={{ left: `calc(${percentage}% - 20px)` }}
+            style={{ 
+              left: `calc(${percentage}% - 20px)`,
+              zIndex: 10
+            }}
           >
             <span className="text-white text-sm font-semibold">
               {value}
@@ -81,6 +84,13 @@ export default function RatingSlider({
           onTouchStart={() => setIsDragging(true)}
           onTouchEnd={() => setIsDragging(false)}
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+          aria-label={`Rating scale from ${leftLabel} to ${rightLabel}`}
+          aria-valuemin={min}
+          aria-valuemax={max}
+          aria-valuenow={value}
+          aria-valuetext={`${value} out of ${max} - ${value <= 2 ? leftLabel : value >= 4 ? rightLabel : 'Medio'}`}
+          aria-orientation="horizontal"
+          role="slider"
         />
       </div>
     </div>
