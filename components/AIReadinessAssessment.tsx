@@ -1609,13 +1609,13 @@ export default function AIReadinessAssessment() {
                     </div>
                     {reportRequestStatus === 'sent' ? (
                       <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg">
-                        <div className="flex items-center space-x-2">
-                          <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                        <div className="flex items-start space-x-3">
+                          <svg className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                           </svg>
-                          <div>
-                            <p className="font-medium">Richiesta inviata con successo!</p>
-                            <p className="text-sm">Riceverai il report dettagliato entro 1 giorno lavorativo all'indirizzo {data.email}</p>
+                          <div className="flex-1">
+                            <p className="font-medium mb-1">Richiesta inviata con successo!</p>
+                            <p className="text-sm leading-relaxed">Riceverai il report dettagliato entro 1 giorno lavorativo all'indirizzo <span className="font-medium">{data.email}</span></p>
                           </div>
                         </div>
                       </div>
