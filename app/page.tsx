@@ -2,6 +2,7 @@ import Header from '@/components/Header'
 import HeroSection from '@/components/HeroSection'
 import WhoWeServeSection from '@/components/WhoWeServeSection'
 import WhatWeDoSection from '@/components/WhatWeDoSection'
+import CustomPathwaysSection from '@/components/CustomPathwaysSection'
 import ProductsSection from '@/components/ProductsSection'
 import AIReadinessBanner from '@/components/AIReadinessBanner'
 import FAQSection from '@/components/FAQSection'
@@ -50,6 +51,7 @@ export default function Home() {
       <HeroSection />
       <WhatWeDoSection />
       <WhoWeServeSection />
+      <CustomPathwaysSection />
       <ProductsSection />
       <AIReadinessBanner />
       {isPreviewEnvironment && (

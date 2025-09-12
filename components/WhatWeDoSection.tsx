@@ -8,9 +8,9 @@ export default function WhatWeDoSection() {
   const services = [
     {
       id: 1,
-      title: "Consulenza",
-      shortDescription: "Consulenza strategica per analizzare la tua azienda, definire roadmap AI e guidare l'adozione con priorità concrete.",
-      expandedDescription: "Aiutiamo le aziende a capire cosa significa davvero introdurre l'intelligenza artificiale nei propri processi. Partiamo da un'analisi dello stato attuale, individuiamo i punti di forza e le aree di miglioramento e costruiamo una roadmap chiara e concreta.\n\n• Valutazione del livello di maturità AI dell'organizzazione\n• Identificazione dei processi che possono beneficiare di più dall'AI\n• Definizione di una strategia e di un piano operativo",
+      title: "Analisi strategica e direzionale",
+      shortDescription: "Individuiamo gli use case più rilevanti nel tuo settore, forniamo consulenza strategica e di visione sugli scenari futuri, analizziamo i rischi e le potenzialità. Partendo dall'analisi del tuo stato attuale, strutturiamo un percorso di AI Transformation su misura",
+      expandedDescription: "• Assessment di maturità AI\n• Roadmap e priorità di adozione\n• Valutazioni \"make or buy\"\n• Allocazione ottimale di budget e risorse",
       icon: (
         <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
@@ -19,9 +19,9 @@ export default function WhatWeDoSection() {
     },
     {
       id: 2,
-      title: "Sviluppo",
-      shortDescription: "Sviluppiamo soluzioni AI personalizzate o integriamo tool esistenti per ottimizzare processi e generare risultati misurabili.",
-      expandedDescription: "Trasformiamo la strategia in soluzioni reali, scegliendo e integrando le tecnologie più adatte. Possiamo utilizzare strumenti già disponibili sul mercato oppure sviluppare applicazioni su misura per automatizzare attività e supportare i team aziendali.\n\n• Selezione e implementazione dei migliori tool AI per specifiche esigenze\n• Creazione di assistenti digitali a supporto dei dipendenti\n• Sviluppo di soluzioni personalizzate per ottimizzare processi e decisioni",
+      title: "Progettazione e sviluppo",
+      shortDescription: "Creiamo soluzioni AI custom partendo dai bisogni reali, le integriamo nei tuoi processi esistenti e ne misuriamo i risultati attraverso indicatori chiari",
+      expandedDescription: "• Copiloti e agenti AI verticali per funzioni specifiche\n• Automazione e ottimizzazione dei workflow\n• Integrazione con sistemi aziendali (es. CRM, ERP,)\n• Progetti pilota con percorso di scalabilità",
       icon: (
         <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -31,20 +31,9 @@ export default function WhatWeDoSection() {
     },
     {
       id: 3,
-      title: "Co-piloti & Agenti",
-      shortDescription: "Copiloti verticali e agenti AI su misura che automatizzano attività e migliorano efficienza operativa quotidiana.",
-      expandedDescription: "Progettiamo strumenti pratici e immediatamente utilizzabili per risolvere bisogni concreti. Si tratta di \"copiloti digitali\" che affiancano le persone nelle attività quotidiane e di agenti intelligenti che gestiscono in autonomia flussi di lavoro. Ad esempio:\n\n• Copilot per la forza vendita: generazione offerte e proposte\n• Copilot per il customer service: risposte a clienti e gestione ticket\n• Copilot per HR: screening dei CV, onboarding, comunicazioni ai candidati",
-      icon: (
-        <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-        </svg>
-      ),
-    },
-    {
-      id: 4,
-      title: "Formazione",
-      shortDescription: "Esperienze formative personalizzate che sviluppano competenze AI e rispondono alle tue esigenze professionali, online e in presenza.",
-      expandedDescription: "Crediamo che l'adozione dell'AI passi anche dalla cultura e dalle competenze delle persone. Offriamo percorsi formativi personalizzati, in aula o online, che uniscono teoria e pratica per rendere i team davvero autonomi.\n\n• Workshop esperienziali su casi d'uso aziendali\n• Programmi di formazione strutturati per team e manager\n• Percorsi personalizzati online e in presenza, adattati agli obiettivi dell'organizzazione",
+      title: "Formazione e adoption",
+      shortDescription: "Supportiamo le persone nell'uso quotidiano dell'AI, rendendola parte integrante del lavoro. Costruiamo consapevolezza e forniamo strumenti concreti",
+      expandedDescription: "• Programmi di sensibilizzazione a livello aziendale\n• Percorsi formativi pratici e concreti\n• Workshop e academy di vibe coding\n• Librerie di prompt e metodologie \"learning by doing\"",
       icon: (
         <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
@@ -66,7 +55,7 @@ export default function WhatWeDoSection() {
       data-ai-summary="Complete service offerings and capabilities"
     >
       <div className="container-width">
-        <div className="text-center mb-20">
+        <div className="text-center mb-16">
           <div className="inline-flex items-center bg-blue-50 text-blue-600 px-4 py-2 rounded-full text-sm font-medium mb-6">
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -93,7 +82,7 @@ export default function WhatWeDoSection() {
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 gap-6 sm:gap-8 max-w-6xl mx-auto">
+        <div className="grid sm:grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 max-w-7xl mx-auto">
           {services.map((service, index) => (
             <div 
               key={service.id} 
@@ -115,14 +104,9 @@ export default function WhatWeDoSection() {
                     </div>
                     
                     <div>
-                      <div className="flex items-center space-x-3">
-                        <span className="text-sm font-bold text-white bg-blue-600 rounded-full w-8 h-8 flex items-center justify-center shadow-sm">
-                          {service.id}
-                        </span>
-                        <h3 className="text-xl font-bold text-gray-900 text-hover group-hover:text-blue-600 transition-colors duration-300">
-                          {service.title}
-                        </h3>
-                      </div>
+                      <h3 className="text-xl font-bold text-gray-900 text-hover group-hover:text-blue-600 transition-colors duration-300">
+                        {service.title}
+                      </h3>
                     </div>
                   </div>
                   
@@ -158,7 +142,7 @@ export default function WhatWeDoSection() {
         </div>
 
         {/* CTA Section */}
-        <div className="text-center mt-20">
+        <div className="text-center mt-16">
           <div className="bg-gray-50 rounded-xl p-12 max-w-3xl mx-auto">
             <h3 className="text-2xl font-semibold text-gray-900 mb-4">
               Pronto a trasformare il tuo business?

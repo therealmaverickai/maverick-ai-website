@@ -157,7 +157,7 @@ export default function HeroSection() {
         )}
         <div className="text-center max-w-4xl mx-auto">
           <h1 
-            className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold mb-8 leading-tight text-gray-900 px-4 fade-in-up"
+            className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold mb-6 leading-tight text-gray-900 px-4 fade-in-up"
             itemProp="headline"
             data-ai-summary="Main value proposition and company mission"
           >
@@ -168,12 +168,12 @@ export default function HeroSection() {
           </h1>
           
           <p 
-            className="text-lg sm:text-xl text-gray-600 mb-12 max-w-2xl mx-auto px-4 leading-relaxed fade-in-up stagger-animation"
+            className="text-lg sm:text-xl text-gray-600 mb-10 max-w-2xl mx-auto px-4 leading-relaxed fade-in-up stagger-animation"
             style={{"--stagger": 1} as any}
             itemProp="description"
             data-ai-summary="Core business description and value proposition"
           >
-            Un partner strategico che guida le aziende nella trasformazione digitale, trasformando l'AI in soluzioni pratiche, ad alto impatto e in tempi rapidi.
+            Dall'idea, allo sviluppo fino all'adozione. Con te, in ogni fase
           </p>
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center px-4 fade-in-up stagger-animation" style={{"--stagger": 2} as any}>

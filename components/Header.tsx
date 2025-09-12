@@ -55,18 +55,18 @@ export default function Header() {
               <span>Servizi</span>
               <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-8 transition-all duration-300 rounded-full"></div>
             </Link>
-            <Link href="/#chi-serviamo" className="nav-link text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
-              <span>Clienti</span>
+            <Link href="/#come-lavoriamo" className="nav-link text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
+              <span>Approccio</span>
               <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-8 transition-all duration-300 rounded-full"></div>
             </Link>
             <Link href="/#prodotti" className="nav-link text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
               <span>AI aXcelerate</span>
               <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-12 transition-all duration-300 rounded-full"></div>
             </Link>
-            <Link href="/partner" className="nav-link text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
+            {/* <Link href="/partner" className="nav-link text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
               <span>Partner</span>
               <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-8 transition-all duration-300 rounded-full"></div>
-            </Link>
+            </Link> */}
             <Link href="/ai-readiness" className="nav-link text-gray-700 hover:text-blue-600 transition-all duration-300 relative group py-2">
               <span>AI Readiness Assessment</span>
               <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-16 transition-all duration-300 rounded-full"></div>
@@ -118,11 +118,11 @@ export default function Header() {
                 Servizi
               </Link>
               <Link 
-                href="/#chi-serviamo" 
+                href="/#come-lavoriamo" 
                 className="text-navy-700 hover:text-accent-500 transition-colors py-2 px-3 rounded-lg hover:bg-gray-50"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Clienti
+                Approccio
               </Link>
               <Link 
                 href="/#prodotti" 
@@ -131,13 +131,13 @@ export default function Header() {
               >
                 AI aXcelerate
               </Link>
-              <Link 
+              {/* <Link 
                 href="/partner" 
                 className="text-navy-700 hover:text-accent-500 transition-colors py-2 px-3 rounded-lg hover:bg-gray-50"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Partner
-              </Link>
+              </Link> */}
               <Link 
                 href="/ai-readiness" 
                 className="text-navy-700 hover:text-accent-500 transition-colors py-2 px-3 rounded-lg hover:bg-gray-50"

@@ -45,11 +45,24 @@
   }
   
   .section-padding {
-    @apply py-12 px-4 sm:py-16 sm:px-6 lg:px-12;
+    @apply py-16 px-4 sm:py-20 sm:px-6 lg:py-24 lg:px-12;
   }
   
   .container-width {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Consistent spacing utilities */
+  .section-header {
+    @apply text-center mb-16;
+  }
+  
+  .section-content {
+    @apply mb-16 last:mb-0;
+  }
+  
+  .cta-section {
+    @apply mt-16 text-center;
   }
 
   /* Fix navigation menu size flashing */

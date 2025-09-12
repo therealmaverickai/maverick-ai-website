@@ -73,7 +73,7 @@ export default function Footer() {
             <h4 className="text-lg font-semibold mb-4">Menu</h4>
             <ul className="space-y-2">
               <li><a href="#home" className="text-gray-300 hover:text-accent-500 transition-colors">Home</a></li>
-              <li><a href="#chi-serviamo" className="text-gray-300 hover:text-accent-500 transition-colors">Clienti</a></li>
+              <li><a href="#come-lavoriamo" className="text-gray-300 hover:text-accent-500 transition-colors">Approccio</a></li>
               <li><a href="#cosa-facciamo" className="text-gray-300 hover:text-accent-500 transition-colors">Servizi</a></li>
               <li><a href="#prodotti" className="text-gray-300 hover:text-accent-500 transition-colors">AI aXcelerate</a></li>
               <li><a href="/ai-readiness" className="text-gray-300 hover:text-accent-500 transition-colors">AI Readiness Assessment</a></li>
@@ -84,10 +84,9 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-semibold mb-4">Servizi</h4>
             <ul className="space-y-2">
-              <li><a href="#cosa-facciamo" className="text-gray-300 hover:text-accent-500 transition-colors">Consulenza</a></li>
-              <li><a href="#cosa-facciamo" className="text-gray-300 hover:text-accent-500 transition-colors">Sviluppo</a></li>
-              <li><a href="#cosa-facciamo" className="text-gray-300 hover:text-accent-500 transition-colors">Co-piloti & Agenti</a></li>
-              <li><a href="#cosa-facciamo" className="text-gray-300 hover:text-accent-500 transition-colors">Formazione</a></li>
+              <li><a href="#cosa-facciamo" className="text-gray-300 hover:text-accent-500 transition-colors">Analisi strategica e direzionale</a></li>
+              <li><a href="#cosa-facciamo" className="text-gray-300 hover:text-accent-500 transition-colors">Progettazione e sviluppo</a></li>
+              <li><a href="#cosa-facciamo" className="text-gray-300 hover:text-accent-500 transition-colors">Formazione e adoption</a></li>
             </ul>
           </div>
         </div>
