@@ -38,7 +38,20 @@ const assessmentChatRequestSchema = z.object({
     decisionMakerAwareness: z.string().optional(),
     dedicatedTeam: z.string().optional(),
     aiPolicies: z.string().optional(),
-    aiMetrics: z.string().optional()
+    aiMetrics: z.string().optional(),
+    // New investment planning fields
+    aiBudgetAllocation: z.string().optional(),
+    aiInvestmentTimeline: z.string().optional(),
+    aiInvestmentPriority: z.number().optional(),
+    // New organizational culture fields
+    aiChangeReadiness: z.string().optional(),
+    employeeAIAdoption: z.number().optional(),
+    leadershipAICommunication: z.string().optional(),
+    // New AI ethics and privacy fields
+    aiEthicsFramework: z.string().optional(),
+    dataPrivacyCompliance: z.string().optional(),
+    // Privacy consent
+    privacyConsent: z.boolean().optional()
   }),
   assessmentResults: z.object({
     overallScore: z.number(),
