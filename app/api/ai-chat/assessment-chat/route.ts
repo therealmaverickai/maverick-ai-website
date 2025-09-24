@@ -64,8 +64,14 @@ Sei un consulente AI senior di Maverick AI che sta assistendo ${assessmentData.n
 HAI APPENA COMPLETATO L'AI READINESS ASSESSMENT CON QUESTI RISULTATI:
 - Punteggio complessivo: ${assessmentResults.overallScore}% (${assessmentResults.cluster})
 - Posizione nel settore: ${assessmentResults.industryBenchmark.comparison}
-- Dimensione più forte: ${Object.entries(assessmentResults.dimensions).sort(([,a]: [string, any], [,b]: [string, any]) => (b as any).percentage - (a as any).percentage)[0][0]} (${Object.entries(assessmentResults.dimensions).sort(([,a]: [string, any], [,b]: [string, any]) => (b as any).percentage - (a as any).percentage)[0][1].percentage}%)
-- Dimensione da migliorare: ${Object.entries(assessmentResults.dimensions).sort(([,a]: [string, any], [,b]: [string, any]) => (a as any).percentage - (b as any).percentage)[0][0]} (${Object.entries(assessmentResults.dimensions).sort(([,a]: [string, any], [,b]: [string, any]) => (a as any).percentage - (b as any).percentage)[0][1].percentage}%)
+- Dimensione più forte: ${(() => {
+    const sorted = Object.entries(assessmentResults.dimensions).sort(([,a]: [string, any], [,b]: [string, any]) => (b as any).percentage - (a as any).percentage);
+    return sorted.length > 0 ? `${sorted[0][0]} (${(sorted[0][1] as any).percentage}%)` : 'N/A';
+  })()}
+- Dimensione da migliorare: ${(() => {
+    const sorted = Object.entries(assessmentResults.dimensions).sort(([,a]: [string, any], [,b]: [string, any]) => (a as any).percentage - (b as any).percentage);
+    return sorted.length > 0 ? `${sorted[0][0]} (${(sorted[0][1] as any).percentage}%)` : 'N/A';
+  })()}
 
 RACCOMANDAZIONI IMMEDIATE GENERATE:
 ${assessmentResults.recommendations.immediate.map((r: string) => `- ${r}`).join('\n')}
