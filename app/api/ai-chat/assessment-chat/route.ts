@@ -66,7 +66,7 @@ const assessmentChatRequestSchema = z.object({
     id: z.string(),
     type: z.enum(['user', 'assistant']),
     content: z.string(),
-    timestamp: z.date()
+    timestamp: z.union([z.date(), z.string()])
   }))
 })
 
