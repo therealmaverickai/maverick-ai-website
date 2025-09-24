@@ -729,10 +729,17 @@ export function ResultsStep({ results, data }: { results: any; data: Partial<Ass
             <h3 className="text-3xl font-bold text-white mb-4">Maverick AI consultant</h3>
           </div>
 
-          <AssessmentAIChat
-            assessmentData={data}
-            assessmentResults={results}
-          />
+          {results ? (
+            <AssessmentAIChat
+              assessmentData={data || {}}
+              assessmentResults={results}
+            />
+          ) : (
+            <div className="text-center text-white p-8">
+              <div className="animate-spin w-8 h-8 border-2 border-white border-t-transparent rounded-full mx-auto mb-4"></div>
+              <p>Caricamento consulente AI...</p>
+            </div>
+          )}
         </div>
       </div>
 
