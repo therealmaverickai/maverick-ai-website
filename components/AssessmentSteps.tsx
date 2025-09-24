@@ -179,7 +179,7 @@ export function CompanyInfoStep({ data, onChange, emailError, showValidationErro
   )
 }
 
-export function StrategyStep({ data, onChange }: StepProps) {
+export function StrategyStep({ data, onChange, showValidationErrors }: StepProps) {
   return (
     <div className="p-8">
       <div className="mb-8">
@@ -192,13 +192,14 @@ export function StrategyStep({ data, onChange }: StepProps) {
       <div className="space-y-10">
         {/* AI Vision Clarity */}
         <ExecutiveRating
-          value={data.aiVisionClarity || 1}
+          value={data.aiVisionClarity}
           onChange={(value) => onChange('aiVisionClarity', value)}
           min={1}
           max={5}
           leftLabel="Vision poco chiara"
           rightLabel="Vision molto chiara"
           question="Quanto è chiara la vision AI della vostra organizzazione?"
+          showValidationError={showValidationErrors}
         />
 
         {/* Vision Formalized */}
@@ -227,13 +228,14 @@ export function StrategyStep({ data, onChange }: StepProps) {
 
         {/* Competitive Advantage */}
         <ExecutiveRating
-          value={data.competitiveAdvantage || 1}
+          value={data.competitiveAdvantage}
           onChange={(value) => onChange('competitiveAdvantage', value)}
           min={1}
           max={5}
           leftLabel="Poco rilevante"
           rightLabel="Fattore chiave"
           question="Quanto l'AI sarà un fattore di vantaggio competitivo nel vostro settore?"
+          showValidationError={showValidationErrors}
         />
 
         {/* Investment Plans */}
@@ -277,20 +279,21 @@ export function StrategyStep({ data, onChange }: StepProps) {
 
         {/* AI Investment Priority */}
         <ExecutiveRating
-          value={data.aiInvestmentPriority || 1}
+          value={data.aiInvestmentPriority}
           onChange={(value) => onChange('aiInvestmentPriority', value)}
           min={1}
           max={5}
           leftLabel="Bassa priorità"
           rightLabel="Massima priorità"
           question="Che priorità hanno gli investimenti AI rispetto ad altre iniziative tecnologiche?"
+          showValidationError={showValidationErrors}
         />
       </div>
     </div>
   )
 }
 
-export function ImplementationStep({ data, onChange, onArrayChange }: StepProps) {
+export function ImplementationStep({ data, onChange, onArrayChange, showValidationErrors }: StepProps) {
   return (
     <div className="p-8">
       <div className="mb-8">
@@ -365,7 +368,7 @@ export function ImplementationStep({ data, onChange, onArrayChange }: StepProps)
   )
 }
 
-export function OrganizationStep({ data, onChange, onArrayChange }: StepProps) {
+export function OrganizationStep({ data, onChange, onArrayChange, showValidationErrors }: StepProps) {
   return (
     <div className="p-8">
       <div className="mb-8">
@@ -379,23 +382,25 @@ export function OrganizationStep({ data, onChange, onArrayChange }: StepProps) {
         {/* Employee and Management Usage */}
         <div className="grid md:grid-cols-2 gap-8">
           <ExecutiveRating
-            value={data.employeeUsage || 1}
+            value={data.employeeUsage}
             onChange={(value) => onChange('employeeUsage', value)}
             min={1}
             max={5}
             leftLabel="Nessun utilizzo"
             rightLabel="Utilizzo estensivo"
             question="Livello di utilizzo AI da parte dei dipendenti"
+            showValidationError={showValidationErrors}
           />
 
           <ExecutiveRating
-            value={data.managementUsage || 1}
+            value={data.managementUsage}
             onChange={(value) => onChange('managementUsage', value)}
             min={1}
             max={5}
             leftLabel="Nessun utilizzo"
             rightLabel="Utilizzo strategico"
             question="Livello di utilizzo AI da parte del management"
+            showValidationError={showValidationErrors}
           />
         </div>
 
@@ -499,13 +504,14 @@ export function OrganizationStep({ data, onChange, onArrayChange }: StepProps) {
 
         {/* Employee AI Adoption */}
         <ExecutiveRating
-          value={data.employeeAIAdoption || 1}
+          value={data.employeeAIAdoption}
           onChange={(value) => onChange('employeeAIAdoption', value)}
           min={1}
           max={5}
           leftLabel="Molto resistenti"
           rightLabel="Molto entusiasti"
           question="Come rispondono tipicamente i dipendenti all'introduzione di nuovi strumenti AI?"
+          showValidationError={showValidationErrors}
         />
 
         {/* Leadership AI Communication */}
@@ -718,17 +724,13 @@ export function ResultsStep({ results, data }: { results: any; data: Partial<Ass
         </div>
       </div>
 
-      {/* Maverick AI Consultant - Dark Banner */}
+      {/* AI Chat - Full Dark Box */}
       <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 rounded-2xl p-8 mb-12 relative overflow-hidden shadow-xl">
         {/* Background decoration */}
         <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-white/5 to-transparent rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-white/5 to-transparent rounded-full blur-2xl"></div>
 
         <div className="relative z-10">
-          <div className="text-center mb-8">
-            <h3 className="text-3xl font-bold text-white mb-4">Maverick AI consultant</h3>
-          </div>
-
           {results ? (
             <AssessmentAIChat
               assessmentData={data || {}}

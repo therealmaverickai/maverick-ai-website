@@ -199,9 +199,9 @@ export default function AIReadinessAssessmentExecutive({ onAssessmentStart }: { 
       {/* Assessment Content */}
       <div className="bg-white border border-slate-200 rounded-xl shadow-sm">
         {currentStep === 0 && <CompanyInfoStep data={data} onChange={handleInputChange} emailError={emailError} showValidationErrors={showValidationErrors} />}
-        {currentStep === 1 && <StrategyStep data={data} onChange={handleInputChange} />}
-        {currentStep === 2 && <ImplementationStep data={data} onChange={handleInputChange} onArrayChange={handleArrayChange} />}
-        {currentStep === 3 && <OrganizationStep data={data} onChange={handleInputChange} onArrayChange={handleArrayChange} />}
+        {currentStep === 1 && <StrategyStep data={data} onChange={handleInputChange} showValidationErrors={showValidationErrors} />}
+        {currentStep === 2 && <ImplementationStep data={data} onChange={handleInputChange} onArrayChange={handleArrayChange} showValidationErrors={showValidationErrors} />}
+        {currentStep === 3 && <OrganizationStep data={data} onChange={handleInputChange} onArrayChange={handleArrayChange} showValidationErrors={showValidationErrors} />}
         {currentStep === totalAssessmentSteps && <ResultsStep results={results} data={data} />}
 
         {/* Navigation */}

@@ -3,13 +3,14 @@
 import { useState } from 'react'
 
 interface ExecutiveRatingProps {
-  value: number
+  value: number | undefined
   onChange: (value: number) => void
   min: number
   max: number
   leftLabel: string
   rightLabel: string
   question: string
+  showValidationError?: boolean
 }
 
 export default function ExecutiveRating({
@@ -19,7 +20,8 @@ export default function ExecutiveRating({
   max,
   leftLabel,
   rightLabel,
-  question
+  question,
+  showValidationError = false
 }: ExecutiveRatingProps) {
   const [hoveredValue, setHoveredValue] = useState<number | null>(null)
 
@@ -39,18 +41,26 @@ export default function ExecutiveRating({
     <div className="space-y-6">
       {/* Question */}
       <div className="mb-6">
-        <h3 className="text-lg font-semibold text-slate-900 mb-2">{question}</h3>
+        <h3 className="text-lg font-semibold text-slate-900 mb-2">
+          {question}
+          <span className="text-red-500 ml-1">*</span>
+        </h3>
         <div className="flex justify-between text-sm text-slate-500 mb-4">
           <span>{leftLabel}</span>
           <span>{rightLabel}</span>
         </div>
+        {showValidationError && value === undefined && (
+          <div className="text-red-500 text-sm mb-2">
+            Seleziona una valutazione per continuare
+          </div>
+        )}
       </div>
 
       {/* Executive Rating Scale */}
-      <div className="flex justify-between gap-2">
+      <div className={`flex justify-between gap-2 ${showValidationError && value === undefined ? 'ring-2 ring-red-300 rounded-lg p-2' : ''}`}>
         {Array.from({ length: max - min + 1 }, (_, index) => {
           const ratingValue = min + index
-          const isSelected = value === ratingValue
+          const isSelected = value !== undefined && value === ratingValue
           const isHovered = hoveredValue === ratingValue
 
           return (
@@ -78,9 +88,16 @@ export default function ExecutiveRating({
 
       {/* Selected Value Display */}
       <div className="text-center">
-        <span className={`text-sm font-medium ${getValueColor(hoveredValue || value)}`}>
-          {getValueLabel(hoveredValue || value)}
-        </span>
+        {(hoveredValue !== null || value !== undefined) && (
+          <span className={`text-sm font-medium ${getValueColor(hoveredValue || value || min)}`}>
+            {getValueLabel(hoveredValue || value || min)}
+          </span>
+        )}
+        {hoveredValue === null && value === undefined && (
+          <span className="text-sm font-medium text-slate-400">
+            Seleziona una valutazione
+          </span>
+        )}
       </div>
     </div>
   )

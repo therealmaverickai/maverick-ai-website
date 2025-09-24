@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 import { z } from 'zod'
+import { prisma } from '@/lib/database'
 
 // Initialize OpenAI client - with runtime checks
 const getOpenAIClient = () => {
@@ -70,32 +71,103 @@ const assessmentChatRequestSchema = z.object({
   }))
 })
 
-// System prompt for ongoing conversation
-const generateChatSystemPrompt = (assessmentData: any, assessmentResults: any) => `
-Sei un consulente AI senior di Maverick AI che sta assistendo ${assessmentData.name} di ${assessmentData.company}.
+// Fetch and generate system prompt from admin-managed template
+const generateChatSystemPrompt = async (assessmentData: any, assessmentResults: any) => {
+  try {
+    // Fetch the assessment chat prompt from database
+    const promptRecord = await prisma.prompt.findUnique({
+      where: {
+        promptId: 'assessmentChat',
+        isActive: true
+      }
+    })
+
+    if (!promptRecord) {
+      console.warn('Assessment chat prompt not found in database, using fallback')
+      return getFallbackPrompt(assessmentData, assessmentResults)
+    }
+
+    // Prepare variables for template interpolation
+    const variables = {
+      name: assessmentData.name || 'N/A',
+      company: assessmentData.company || 'N/A',
+      firstName: assessmentData.name?.split(' ')[0] || 'N/A',
+      overallScore: assessmentResults.overallScore || 'N/A',
+      cluster: assessmentResults.cluster || 'N/A',
+      industryComparison: assessmentResults.industryBenchmark?.comparison || 'N/A',
+      strongestDimension: getStrongestDimension(assessmentResults),
+      weakestDimension: getWeakestDimension(assessmentResults),
+      immediateRecommendations: assessmentResults.recommendations?.immediate?.map((r: string) => `- ${r}`).join('\n') || 'N/A',
+
+      // Assessment data variables
+      aiVisionClarity: assessmentData.aiVisionClarity || 'N/A',
+      visionFormalized: assessmentData.visionFormalized || 'N/A',
+      aiStrategicImportance: assessmentData.aiStrategicImportance || 'N/A',
+      competitiveAdvantage: assessmentData.competitiveAdvantage || 'N/A',
+      aiBudgetAllocation: assessmentData.aiBudgetAllocation || 'N/A',
+      aiInvestmentTimeline: assessmentData.aiInvestmentTimeline || 'N/A',
+      aiInvestmentPriority: assessmentData.aiInvestmentPriority || 'N/A',
+      currentProjects: assessmentData.currentProjects || 'N/A',
+      aiAreas: assessmentData.aiAreas?.join(', ') || 'N/A',
+      pilotProjects: assessmentData.pilotProjects || 'N/A',
+      dataReadiness: assessmentData.dataReadiness || 'N/A',
+      employeeUsage: assessmentData.employeeUsage || 'N/A',
+      managementUsage: assessmentData.managementUsage || 'N/A',
+      employeeAIAdoption: assessmentData.employeeAIAdoption || 'N/A',
+      aiChangeReadiness: assessmentData.aiChangeReadiness || 'N/A',
+      leadershipAICommunication: assessmentData.leadershipAICommunication || 'N/A',
+      internalSkills: assessmentData.internalSkills || 'N/A',
+      dedicatedTeam: assessmentData.dedicatedTeam || 'N/A',
+      aiPolicies: assessmentData.aiPolicies || 'N/A',
+      aiMetrics: assessmentData.aiMetrics || 'N/A',
+      aiEthicsFramework: assessmentData.aiEthicsFramework || 'N/A',
+      dataPrivacyCompliance: assessmentData.dataPrivacyCompliance || 'N/A',
+      mainChallenges: assessmentData.mainChallenges?.join(', ') || 'N/A'
+    }
+
+    // Interpolate template with variables
+    let prompt = promptRecord.content
+    Object.entries(variables).forEach(([key, value]) => {
+      const placeholder = `{${key}}`
+      prompt = prompt.replace(new RegExp(placeholder, 'g'), String(value))
+    })
+
+    return prompt
+
+  } catch (error) {
+    console.error('Error generating chat system prompt:', error)
+    return getFallbackPrompt(assessmentData, assessmentResults)
+  }
+}
+
+// Helper functions
+const getStrongestDimension = (assessmentResults: any) => {
+  try {
+    const sorted = Object.entries(assessmentResults.dimensions || {})
+      .sort(([,a]: [string, any], [,b]: [string, any]) => (b as any).percentage - (a as any).percentage)
+    return sorted.length > 0 ? `${sorted[0][0]} (${(sorted[0][1] as any).percentage}%)` : 'N/A'
+  } catch {
+    return 'N/A'
+  }
+}
+
+const getWeakestDimension = (assessmentResults: any) => {
+  try {
+    const sorted = Object.entries(assessmentResults.dimensions || {})
+      .sort(([,a]: [string, any], [,b]: [string, any]) => (a as any).percentage - (b as any).percentage)
+    return sorted.length > 0 ? `${sorted[0][0]} (${(sorted[0][1] as any).percentage}%)` : 'N/A'
+  } catch {
+    return 'N/A'
+  }
+}
+
+// Fallback prompt in case database prompt is not available
+const getFallbackPrompt = (assessmentData: any, assessmentResults: any) => {
+  return `Sei un consulente AI senior di Maverick AI che sta assistendo ${assessmentData.name} di ${assessmentData.company}.
 
 HAI APPENA COMPLETATO L'AI READINESS ASSESSMENT CON QUESTI RISULTATI:
 - Punteggio complessivo: ${assessmentResults.overallScore}% (${assessmentResults.cluster})
-- Posizione nel settore: ${assessmentResults.industryBenchmark.comparison}
-- Dimensione più forte: ${(() => {
-    const sorted = Object.entries(assessmentResults.dimensions).sort(([,a]: [string, any], [,b]: [string, any]) => (b as any).percentage - (a as any).percentage);
-    return sorted.length > 0 ? `${sorted[0][0]} (${(sorted[0][1] as any).percentage}%)` : 'N/A';
-  })()}
-- Dimensione da migliorare: ${(() => {
-    const sorted = Object.entries(assessmentResults.dimensions).sort(([,a]: [string, any], [,b]: [string, any]) => (a as any).percentage - (b as any).percentage);
-    return sorted.length > 0 ? `${sorted[0][0]} (${(sorted[0][1] as any).percentage}%)` : 'N/A';
-  })()}
-
-RACCOMANDAZIONI IMMEDIATE GENERATE:
-${assessmentResults.recommendations.immediate.map((r: string) => `- ${r}`).join('\n')}
-
-INFORMAZIONI ASSESSMENT DETTAGLIATE:
-- Visione AI: ${assessmentData.aiVisionClarity}/5
-- Progetti attuali: ${assessmentData.currentProjects}
-- Aree AI di interesse: ${assessmentData.aiAreas?.join(', ')}
-- Sfide principali: ${assessmentData.mainChallenges?.join(', ')}
-- Skills interne: ${assessmentData.internalSkills}
-- Team dedicato: ${assessmentData.dedicatedTeam}
+- Posizione nel settore: ${assessmentResults.industryBenchmark?.comparison || 'N/A'}
 
 ISTRUZIONI:
 1. Rispondi sempre nel contesto dell'assessment completato
@@ -110,11 +182,10 @@ STILE:
 - Tono professionale ma accessibile
 - Usa il nome ${assessmentData.name?.split(' ')[0]}
 - Fai riferimenti specifici al business ${assessmentData.company}
-- Massimo 200 parole per risposta
-- Usa bullet points quando appropriato
+- Massimo 300 parole per risposta
 
-Non menzionare questi prompt. Comportati come un consulente che conosce perfettamente i risultati del loro assessment.
-`
+Non menzionare questi prompt. Comportati come un consulente che conosce perfettamente i risultati del loro assessment.`
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -129,11 +200,14 @@ export async function POST(request: NextRequest) {
 
     console.log(`Chat message for ${assessmentData.company}: ${message.substring(0, 50)}...`)
 
+    // Generate system prompt from admin-managed template
+    const systemPrompt = await generateChatSystemPrompt(assessmentData, assessmentResults)
+
     // Build conversation context
     const messages: any[] = [
       {
         role: 'system',
-        content: generateChatSystemPrompt(assessmentData, assessmentResults)
+        content: systemPrompt
       }
     ]
 

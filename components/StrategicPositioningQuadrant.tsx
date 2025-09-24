@@ -109,7 +109,7 @@ export default function StrategicPositioningQuadrant({
               VISIONE STRATEGICA AI
             </div>
           </div>
-          <div className="absolute -right-3 top-1/2 transform -translate-y-1/2 rotate-90 z-20">
+          <div className="absolute -left-3 top-1/2 transform -translate-y-1/2 rotate-90 z-20">
             <div className="bg-slate-900 text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg">
               CAPACITÀ ESECUZIONE
             </div>
@@ -188,20 +188,6 @@ export default function StrategicPositioningQuadrant({
           </div>
 
 
-          {/* Executive Classification Banner */}
-          <div className="mt-8 text-center">
-            <div className={`inline-flex items-center px-8 py-4 rounded-2xl ${currentQuadrant.bgColor} border-2 ${currentQuadrant.color.replace('bg-', 'border-')} shadow-lg`}>
-              <div className="text-4xl mr-4">{currentQuadrant.icon}</div>
-              <div>
-                <div className={`text-2xl font-bold ${currentQuadrant.textColor} mb-1`}>
-                  {currentQuadrant.name}
-                </div>
-                <div className={`text-sm ${currentQuadrant.textColor} font-medium`}>
-                  {currentQuadrant.description}
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
