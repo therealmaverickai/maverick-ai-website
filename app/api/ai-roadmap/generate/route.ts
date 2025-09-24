@@ -22,8 +22,8 @@ function replaceTemplate(template: string, data: AssessmentData): string {
   let result = template
 
   // Handle conditional blocks like {{#website}}...{{/website}}
-  result = result.replace(/\{\{#(\w+)\}\}(.*?)\{\{\/\1\}\}/gs, (match, key, content) => {
-    return data[key] ? content : ''
+  result = result.replace(/\{\{#(\w+)\}\}(.*?)\{\{\/\1\}\}/g, (match, key, content) => {
+    return data[key as keyof AssessmentData] ? content : ''
   })
 
   // Handle simple replacements like {{company}}

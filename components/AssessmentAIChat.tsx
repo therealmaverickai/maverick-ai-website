@@ -28,7 +28,7 @@ export default function AssessmentAIChat({ assessmentData, assessmentResults }: 
   }
 
   const generateFallbackAnalysis = () => {
-    const score = assessmentResults.overallScore || assessmentResults.score || 0
+    const score = assessmentResults.overallScore || 0
     const cluster = assessmentResults.cluster
     const dimensions = assessmentResults.dimensions
 
@@ -93,7 +93,7 @@ export default function AssessmentAIChat({ assessmentData, assessmentResults }: 
   }
 
   const generateFallbackResponse = (userQuestion: string) => {
-    const score = assessmentResults.overallScore || assessmentResults.score || 0
+    const score = assessmentResults.overallScore || 0
     const cluster = assessmentResults.cluster
     const lowerQuestion = userQuestion.toLowerCase()
 
@@ -140,7 +140,7 @@ export default function AssessmentAIChat({ assessmentData, assessmentResults }: 
     const welcomeMessage: Message = {
       id: Date.now().toString(),
       type: 'assistant',
-      content: `Ciao ${assessmentData.name?.split(' ')[0]}! 👋\n\nHo analizzato i risultati del tuo AI Readiness Assessment per ${assessmentData.company}.\n\n📊 **Il tuo profilo AI**: ${assessmentResults.cluster} (${assessmentResults.overallScore || assessmentResults.score}%)\n🏆 **Posizione nel settore**: ${assessmentResults.industryBenchmark?.comparison || 'Media di settore'}\n\nSono qui per rispondere a qualsiasi domanda sui tuoi risultati e aiutarti a pianificare i prossimi passi. Cosa vorresti approfondire?`,
+      content: `Ciao ${assessmentData.name?.split(' ')[0]}! 👋\n\nHo analizzato i risultati del tuo AI Readiness Assessment per ${assessmentData.company}.\n\n📊 **Il tuo profilo AI**: ${assessmentResults.cluster} (${assessmentResults.overallScore}%)\n🏆 **Posizione nel settore**: ${assessmentResults.industryBenchmark?.comparison || 'Media di settore'}\n\nSono qui per rispondere a qualsiasi domanda sui tuoi risultati e aiutarti a pianificare i prossimi passi. Cosa vorresti approfondire?`,
       timestamp: new Date()
     }
 

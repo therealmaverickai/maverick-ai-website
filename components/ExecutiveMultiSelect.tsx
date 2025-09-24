@@ -51,7 +51,7 @@ export default function ExecutiveMultiSelect({
             <button
               key={option}
               onClick={() => !isDisabled && handleToggle(option)}
-              disabled={isDisabled}
+              disabled={Boolean(isDisabled)}
               className={`
                 w-full text-left p-4 rounded-lg border-2 transition-all duration-200
                 ${isSelected
