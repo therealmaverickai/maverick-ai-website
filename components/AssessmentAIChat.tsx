@@ -195,6 +195,19 @@ export default function AssessmentAIChat({ assessmentData, assessmentResults }: 
   const sendMessage = async () => {
     if (!inputValue.trim() || isLoading) return
 
+    // Validate props before making API call
+    if (!assessmentData || !assessmentResults) {
+      console.error('AssessmentAIChat: Missing required props', { assessmentData, assessmentResults })
+      const errorMessage: Message = {
+        id: Date.now().toString(),
+        type: 'assistant',
+        content: 'Errore: Dati dell\'assessment non disponibili. Riprova più tardi.',
+        timestamp: new Date()
+      }
+      setMessages(prev => [...prev, errorMessage])
+      return
+    }
+
     const userMessage: Message = {
       id: Date.now().toString(),
       type: 'user',
@@ -207,21 +220,38 @@ export default function AssessmentAIChat({ assessmentData, assessmentResults }: 
     setIsLoading(true)
 
     try {
+      const requestData = {
+        assessmentData,
+        assessmentResults,
+        message: userMessage.content,
+        conversationHistory: messages
+      }
+
+      console.log('AssessmentAIChat: Sending request to API', {
+        hasAssessmentData: !!assessmentData,
+        hasAssessmentResults: !!assessmentResults,
+        message: userMessage.content,
+        conversationHistoryLength: messages.length,
+        assessmentDataKeys: assessmentData ? Object.keys(assessmentData) : [],
+        assessmentResultsKeys: assessmentResults ? Object.keys(assessmentResults) : []
+      })
+
       const response = await fetch('/api/ai-chat/assessment-chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          assessmentData,
-          assessmentResults,
-          message: userMessage.content,
-          conversationHistory: messages
-        }),
+        body: JSON.stringify(requestData),
       })
 
       if (!response.ok) {
-        throw new Error('Failed to get AI response')
+        const errorData = await response.text()
+        console.error('AssessmentAIChat API Error:', {
+          status: response.status,
+          statusText: response.statusText,
+          response: errorData
+        })
+        throw new Error(`API Error: ${response.status} ${response.statusText}`)
       }
 
       const data = await response.json()
@@ -236,6 +266,7 @@ export default function AssessmentAIChat({ assessmentData, assessmentResults }: 
       setMessages(prev => [...prev, assistantMessage])
 
     } catch (error) {
+      console.error('AssessmentAIChat Error:', error)
       console.log('AI chat service unavailable, providing general guidance')
       const fallbackResponse = generateFallbackResponse(userMessage.content)
       const assistantMessage: Message = {
