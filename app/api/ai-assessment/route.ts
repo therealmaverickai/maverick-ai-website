@@ -37,7 +37,21 @@ const assessmentSchema = z.object({
   dedicatedTeam: z.enum(['si', 'no', 'previsto_a_breve']).optional(),
   aiPolicies: z.enum(['si', 'no', 'parzialmente', 'non_lo_so']).optional(),
   aiMetrics: z.enum(['si', 'no', 'in_sviluppo']).optional(),
-  
+
+  // Investment Planning Questions
+  aiBudgetAllocation: z.enum(['sotto_5', '5_15', '15_30', 'oltre_30', 'non_definito']).optional(),
+  aiInvestmentTimeline: z.enum(['6_mesi', '12_mesi', '18_mesi', 'oltre_24_mesi', 'continuo']).optional(),
+  aiInvestmentPriority: z.number().min(1).max(5).optional().default(1),
+
+  // Organizational Culture Questions
+  aiChangeReadiness: z.enum(['resistente', 'cauto', 'adattivo', 'proattivo']).optional(),
+  employeeAIAdoption: z.number().min(1).max(5).optional().default(1),
+  leadershipAICommunication: z.enum(['mai', 'occasionalmente', 'regolarmente', 'strategicamente']).optional(),
+
+  // AI Ethics and Privacy Questions
+  aiEthicsFramework: z.enum(['si', 'parzialmente', 'no', 'in_sviluppo']).optional(),
+  dataPrivacyCompliance: z.enum(['completo', 'parziale', 'minimo', 'non_implementato']).optional(),
+
   // Custom prompt (optional)
   customPrompt: z.string().optional(),
   
