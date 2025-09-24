@@ -402,7 +402,7 @@ export default function AIReadinessAssessment() {
                     required
                     value={data.name || ''}
                     onChange={(e) => handleInputChange('name', e.target.value)}
-                    className="w-full px-4 py-4 sm:py-3 text-base border-2 border-transparent bg-white rounded-xl shadow-sm focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all duration-200 hover:shadow-md touch-manipulation"
+                    className="w-full px-4 py-4 text-base border-2 border-transparent bg-white rounded-xl shadow-sm focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all duration-200 hover:shadow-md"
                     placeholder="Mario Rossi"
                   />
                 </div>
@@ -418,7 +418,7 @@ export default function AIReadinessAssessment() {
                     title="Inserisci un indirizzo email valido"
                     value={data.email || ''}
                     onChange={(e) => handleInputChange('email', e.target.value)}
-                    className={`w-full px-4 py-4 sm:py-3 text-base border-2 rounded-xl shadow-sm transition-all duration-200 hover:shadow-md touch-manipulation ${
+                    className={`w-full px-4 py-4 text-base border-2 rounded-xl shadow-sm transition-all duration-200 hover:shadow-md ${
                       emailError 
                         ? 'border-red-500 bg-red-50 focus:ring-4 focus:ring-red-500/10' 
                         : 'border-transparent bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10'
@@ -526,7 +526,7 @@ export default function AIReadinessAssessment() {
                       <button
                         type="button"
                         onClick={() => setIsAccordionOpen(!isAccordionOpen)}
-                        className="w-full px-4 py-4 sm:py-3 bg-gray-50 text-left flex items-center justify-between hover:bg-gray-100 transition-colors touch-manipulation min-h-[44px]"
+                        className="w-full px-4 py-3 bg-gray-50 text-left flex items-center justify-between hover:bg-gray-100 transition-colors"
                       >
                         <span className="text-sm font-medium text-gray-700">Dettagli sul trattamento dei dati</span>
                         <svg
@@ -1681,7 +1681,7 @@ export default function AIReadinessAssessment() {
   }
 
   return (
-    <div id="assessment-container" className="bg-white/90 backdrop-blur-sm rounded-2xl md:rounded-3xl shadow-2xl border border-white/20 p-4 sm:p-6 md:p-8 lg:p-10 relative overflow-hidden touch-manipulation">
+    <div id="assessment-container" className="bg-white/90 backdrop-blur-sm rounded-2xl md:rounded-3xl shadow-2xl border border-white/20 p-4 sm:p-6 md:p-8 lg:p-10 relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 right-0 -translate-y-4 translate-x-4">
         <div className="w-32 h-32 bg-gradient-to-br from-blue-100/50 to-purple-100/50 rounded-full blur-3xl"></div>
@@ -1775,7 +1775,7 @@ export default function AIReadinessAssessment() {
           <button
             onClick={prevStep}
             disabled={currentStep === 0}
-            className={`w-full md:w-auto px-6 py-4 md:py-3 text-base md:text-sm rounded-lg font-semibold transition-colors touch-manipulation min-h-[44px] ${
+            className={`w-full md:w-auto px-6 py-4 md:py-3 text-base md:text-sm rounded-lg font-semibold transition-colors ${
               currentStep === 0
                 ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                 : 'bg-gray-200 text-navy-700 hover:bg-gray-300'
@@ -1788,7 +1788,7 @@ export default function AIReadinessAssessment() {
             <button
               onClick={handleSubmit}
               disabled={isSubmitting || !isCurrentStepValid()}
-              className={`btn-primary w-full md:w-auto px-8 py-4 md:py-3 text-base md:text-sm touch-manipulation min-h-[44px] ${!isCurrentStepValid() ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`btn-primary w-full md:w-auto px-8 py-4 md:py-3 text-base md:text-sm ${!isCurrentStepValid() ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               {isSubmitting ? (
                 <span className="flex items-center justify-center">
@@ -1807,7 +1807,7 @@ export default function AIReadinessAssessment() {
             <button
               onClick={nextStep}
               disabled={!isCurrentStepValid()}
-              className={`btn-primary w-full md:w-auto px-8 py-4 md:py-3 text-base md:text-sm touch-manipulation min-h-[44px] ${!isCurrentStepValid() ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`btn-primary w-full md:w-auto px-8 py-4 md:py-3 text-base md:text-sm ${!isCurrentStepValid() ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               Avanti →
             </button>
