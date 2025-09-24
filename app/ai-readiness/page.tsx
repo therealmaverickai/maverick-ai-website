@@ -1,83 +1,70 @@
+'use client'
+
+import { useState } from 'react'
 import Header from '@/components/Header'
 import Breadcrumb from '@/components/Breadcrumb'
-import AIReadinessAssessment from '@/components/AIReadinessAssessment'
+import AIReadinessAssessmentExecutive from '@/components/AIReadinessAssessmentExecutive'
 import Footer from '@/components/Footer'
 
-export const metadata = {
-  title: 'AI Readiness Assessment - Maverick AI | Valuta la tua preparazione AI',
-  description: 'Valuta il livello di preparazione della tua azienda per l\'implementazione dell\'Intelligenza Artificiale con il nostro assessment gratuito. Test AI personalizzato per aziende italiane.',
-  keywords: 'AI readiness, assessment AI, preparazione intelligenza artificiale, valutazione AI aziende, test AI gratuito, consulenza AI',
-  openGraph: {
-    title: 'AI Readiness Assessment - Maverick AI',
-    description: 'Valuta il livello di preparazione della tua azienda per l\'implementazione dell\'Intelligenza Artificiale con il nostro assessment gratuito.',
-    url: 'https://www.maverickai.it/ai-readiness',
-    siteName: 'Maverick AI',
-    images: [
-      {
-        url: '/logo.png',
-        width: 1200,
-        height: 630,
-        alt: 'AI Readiness Assessment - Maverick AI',
-      },
-    ],
-    locale: 'it_IT',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'AI Readiness Assessment - Maverick AI',
-    description: 'Valuta il livello di preparazione della tua azienda per l\'implementazione dell\'Intelligenza Artificiale con il nostro assessment gratuito.',
-    images: ['/logo.png'],
-  },
-  alternates: {
-    canonical: '/ai-readiness',
-  },
-}
-
 export default function AIReadinessPage() {
+  const [assessmentStarted, setAssessmentStarted] = useState(false)
   return (
     <main id="main-content" className="min-h-screen">
       <Header />
       <Breadcrumb />
 
-      {/* Interactive Assessment Section */}
-      <section className="section-padding bg-gradient-to-br from-blue-50 via-white to-purple-50">
-        <div className="container-width">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mb-8">
-              <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+      {/* Executive Assessment Section */}
+      <section className="bg-gray-50">
+        <div className="max-w-6xl mx-auto px-6 py-16">
+          {/* Executive Header */}
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-slate-900 rounded-2xl mb-8 shadow-lg">
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
             </div>
-            <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-6">
-              AI Readiness Assessment
+            <h1 className="text-4xl font-bold text-slate-900 mb-4">
+              Strategic AI Readiness Assessment
             </h1>
-            <p className="text-xl sm:text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed">
-              Scopri il <span className="font-semibold text-blue-600">livello di maturità AI</span> della tua azienda in pochi minuti
+            <p className="text-xl text-slate-600 max-w-3xl mx-auto mb-8">
+              Valutiamo la maturità AI della sua organizzazione attraverso un framework strategico multidimensionale
             </p>
-            <div className="flex flex-wrap justify-center gap-4 mt-8 text-sm text-gray-600">
-              <div className="flex items-center gap-2">
-                <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>5 minuti</span>
+
+            {/* Executive Value Proposition - Hide when assessment starts */}
+            {!assessmentStarted && (
+              <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12 transition-all duration-500">
+                <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+                  <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
+                    <svg className="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <h3 className="font-semibold text-slate-900 mb-2">Efficiente</h3>
+                  <p className="text-sm text-slate-600">Completamento in meno di 5 minuti</p>
+                </div>
+                <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+                  <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
+                    <svg className="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                  </div>
+                  <h3 className="font-semibold text-slate-900 mb-2">Benchmarking</h3>
+                  <p className="text-sm text-slate-600">Confronto con standard di settore</p>
+                </div>
+                <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+                  <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
+                    <svg className="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
+                  </div>
+                  <h3 className="font-semibold text-slate-900 mb-2">Strategico</h3>
+                  <p className="text-sm text-slate-600">Raccomandazioni executive-level</p>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>Gratuito</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>Report personalizzato</span>
-              </div>
-            </div>
+            )}
           </div>
-          
-          <AIReadinessAssessment />
+
+          <AIReadinessAssessmentExecutive onAssessmentStart={setAssessmentStarted} />
         </div>
       </section>
 

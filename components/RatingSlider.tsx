@@ -126,16 +126,16 @@ export default function RatingSlider({
   const colorIntensity = getColorIntensity(value)
 
   return (
-    <div className="space-y-4">
-      {/* Labels above the slider */}
-      <div className="flex justify-between text-xs md:text-sm text-gray-600 mb-2">
-        <span className="text-left font-medium flex-1 pr-2">{leftLabel}</span>
-        <span className="text-right font-medium flex-1 pl-2">{rightLabel}</span>
+    <div className="space-y-6">
+      {/* Executive Labels */}
+      <div className="flex justify-between text-sm text-slate-600">
+        <span className="font-medium flex-1 pr-4">{leftLabel}</span>
+        <span className="font-medium flex-1 pl-4 text-right">{rightLabel}</span>
       </div>
 
-      <div 
+      <div
         ref={sliderRef}
-        className="relative py-12 md:py-10 px-4 touch-pan-x"
+        className="relative py-8 px-6 touch-pan-x"
         onMouseEnter={() => !isMobile && setIsHovering(true)}
         onMouseLeave={() => !isMobile && setIsHovering(false)}
         onTouchStart={handleTouchStart}
@@ -146,27 +146,27 @@ export default function RatingSlider({
         onMouseUp={handleMouseUp}
         style={{ touchAction: 'pan-x' }}
       >
-        {/* Track - Mobile Optimized */}
-        <div className={`relative ${isMobile ? 'h-4' : 'h-3 md:h-2'} bg-gray-100 rounded-full shadow-inner`}>
+        {/* Executive Track */}
+        <div className={`relative ${isMobile ? 'h-3' : 'h-2'} bg-slate-200 rounded-full`}>
           {/* Progress */}
-          <div 
-            className="h-full bg-gradient-to-r from-accent-400 to-accent-600 transition-all duration-500 ease-out rounded-full shadow-sm"
+          <div
+            className="h-full bg-gradient-to-r from-slate-700 to-slate-900 transition-all duration-500 ease-out rounded-full"
             style={{ width: `${percentage}%` }}
           />
-          
-          {/* Thumb with Value - Mobile Optimized */}
-          <div 
-            className={`absolute top-1/2 -translate-y-1/2 ${isMobile ? 'w-12 h-12' : 'w-10 h-10 md:w-8 md:h-8'} bg-accent-500 rounded-full shadow-lg cursor-pointer transform transition-all duration-200 flex items-center justify-center ${
-              isDragging ? 'scale-125 shadow-xl ring-4 ring-accent-200' : isHovering && !isMobile ? 'scale-110 shadow-lg' : ''
+
+          {/* Executive Thumb with Value */}
+          <div
+            className={`absolute top-1/2 -translate-y-1/2 ${isMobile ? 'w-14 h-14' : 'w-12 h-12'} bg-white border-2 border-slate-300 rounded-2xl shadow-lg cursor-pointer transform transition-all duration-200 flex items-center justify-center ${
+              isDragging ? 'scale-110 shadow-xl border-slate-400' : isHovering && !isMobile ? 'scale-105 shadow-lg border-slate-400' : ''
             } ${isMobile ? 'select-none' : ''}`}
-            style={{ 
-              left: `calc(${percentage}% - ${isMobile ? '24px' : '20px'})`,
+            style={{
+              left: `calc(${percentage}% - ${isMobile ? '28px' : '24px'})`,
               zIndex: 10,
-              minWidth: isMobile ? '44px' : 'auto',
-              minHeight: isMobile ? '44px' : 'auto'
+              minWidth: isMobile ? '56px' : '48px',
+              minHeight: isMobile ? '56px' : '48px'
             }}
           >
-            <span className={`text-white font-semibold ${isMobile ? 'text-base' : 'text-sm'}`}>
+            <span className={`text-slate-800 font-semibold ${isMobile ? 'text-lg' : 'text-base'}`}>
               {value}
             </span>
           </div>

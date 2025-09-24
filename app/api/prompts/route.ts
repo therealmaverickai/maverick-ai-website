@@ -122,7 +122,7 @@ Scrivi un executive summary in italiano di massimo 200 parole che includa:
 1. **Situazione Attuale**: Una valutazione concisa dello stato corrente di maturità AI dell'azienda
 2. **Punti di Forza**: 2-3 aree in cui l'azienda eccelle o mostra potenziale
 3. **Aree di Miglioramento**: 2-3 priorità strategiche per accelerare l'adozione AI
-4. **Raccomandazione Strategica**: Una raccomandazione specifica e actionable per i prossimi passi. 
+4. **Raccomandazione Strategica**: Una raccomandazione specifica e actionable per i prossimi passi.
 
 Il tono deve essere:
 - Professionale e consulenziale come se fossi un consulente super esperto
@@ -133,6 +133,76 @@ Il tono deve essere:
 Non utilizzare bullet points, scrivi in formato narrativo professionale.
 `,
     description: 'AI Readiness Assessment analysis prompt with dynamic placeholders'
+  },
+  strategicRoadmap: {
+    name: 'Strategic Roadmap Generation Prompt',
+    content: `
+Come senior partner di strategia di McKinsey con 25+ anni in trasformazione AI ed esperienza in Fortune 500, genera una roadmap strategica AI personalizzata per l'azienda "{{company}}" basata sui risultati del loro AI Readiness Assessment.
+
+PROFILO AZIENDA:
+- Nome: {{name}}
+- Ruolo: {{role}}
+- Azienda: {{company}}
+- Score overall: {{overallScore}}%
+- Cluster: {{cluster}}
+{{#website}}- Sito web: {{website}}{{/website}}
+
+RISULTATI ASSESSMENT COMPLETI:
+- Budget AI: {{aiBudgetAllocation}}
+- Timeline investimenti: {{aiInvestmentTimeline}}
+- Priorità investimenti AI (1-5): {{aiInvestmentPriority}}
+- Progetti AI attuali: {{currentProjects}}
+- Ambiti AI: {{aiAreas}}
+- Progetti pilota: {{pilotProjects}}
+- Competenze interne: {{internalSkills}}
+- Formazione AI: {{trainingInitiatives}}
+- Team dedicato: {{dedicatedTeam}}
+- Readiness cambiamento: {{aiChangeReadiness}}
+- Adozione dipendenti (1-5): {{employeeAIAdoption}}
+- Comunicazione leadership: {{leadershipAICommunication}}
+- Framework etico: {{aiEthicsFramework}}
+- Compliance privacy: {{dataPrivacyCompliance}}
+- Trasparenza AI: {{aiTransparency}}
+- Dati strutturati: {{dataReadiness}}
+- Policy AI: {{aiPolicies}}
+- Metriche AI: {{aiMetrics}}
+
+RICHIESTA:
+Genera una roadmap strategica strutturata in 3 fasi temporali con azioni specifiche e misurabili. Ogni fase deve includere 3-4 azioni concrete con timeline specifiche.
+
+FORMATO RICHIESTO (JSON):
+{
+  "immediate": [
+    "Azione specifica 1 con deadline precisa",
+    "Azione specifica 2 con deliverable misurabile",
+    "Azione specifica 3 con owner definito"
+  ],
+  "shortTerm": [
+    "Obiettivo a 3-6 mesi con KPI specifici",
+    "Iniziativa con budget stimato",
+    "Milestone con metriche di successo"
+  ],
+  "longTerm": [
+    "Visione strategica a 6-18 mesi",
+    "Obiettivo di trasformazione misurabile",
+    "Target competitivo specifico"
+  ]
+}
+
+LINEE GUIDA:
+- Usa il cluster ({{cluster}}) per calibrare l'ambizione delle azioni
+- Considera il budget disponibile ({{aiBudgetAllocation}}) per realistà economica
+- Adapta la timeline agli investimenti pianificati ({{aiInvestmentTimeline}})
+- Includi sempre ROI stimato o KPI misurabili
+- Sii specifico: "Implementare chatbot customer service con 30% riduzione ticket in Q1" vs "Migliorare customer service"
+- Per aziende con score basso: focus su fondamenta e quick wins
+- Per aziende mature: focus su scale e innovazione avanzata
+
+Personalizza completamente per il settore di {{company}}, il ruolo di {{name}}, e il livello di maturità rilevato.
+
+Rispondi SOLO con il JSON richiesto, nessun altro testo.
+`,
+    description: 'Strategic AI roadmap generation with McKinsey-level strategic thinking and specific actionable steps'
   }
 }
 
