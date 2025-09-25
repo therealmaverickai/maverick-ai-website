@@ -794,7 +794,7 @@ export function ResultsStep({ results, data }: { results: any; data: Partial<Ass
               <div className="inline-flex items-center bg-slate-50 rounded-xl px-8 py-6 border border-slate-200">
                 <div className="relative">
                   <div className="w-12 h-12 border-4 border-slate-200 border-t-slate-900 rounded-full animate-spin"></div>
-                  <div className="absolute inset-0 w-12 h-12 border-4 border-transparent border-r-blue-500 rounded-full animate-spin" style={{animationDirection: 'reverse', animationDuration: '2s'}}></div>
+                  <div className="absolute inset-0 w-12 h-12 border-4 border-transparent border-r-blue-500 rounded-full animate-spin" style={{animationDirection: 'reverse' as const, animationDuration: '2s'}}></div>
                 </div>
                 <div className="ml-6 text-left">
                   <div className="flex items-center text-slate-900 font-bold text-lg mb-2">
