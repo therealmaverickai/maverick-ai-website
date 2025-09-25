@@ -7,7 +7,7 @@ import ExecutiveSelect from './ExecutiveSelect'
 import ExecutiveMultiSelect from './ExecutiveMultiSelect'
 import ExecutiveResultsChart from './ExecutiveResultsChart'
 import AssessmentAIChat from './AssessmentAIChat'
-import StrategicPositioningQuadrant from './StrategicPositioningQuadrant'
+// import StrategicPositioningQuadrant from './StrategicPositioningQuadrant' // DISABLED
 
 const AI_AREAS = [
   'Automazione processi',
@@ -745,7 +745,8 @@ export function ResultsStep({ results, data }: { results: any; data: Partial<Ass
         </div>
       </div>
 
-      {/* Strategic Positioning Quadrant */}
+      {/* Strategic Positioning Quadrant - DISABLED */}
+      {/*
       <div className="mb-12">
         <StrategicPositioningQuadrant
           strategyScore={Math.round((results.dimensions.strategy.percentage + results.dimensions.governance.percentage) / 2)}
@@ -754,122 +755,260 @@ export function ResultsStep({ results, data }: { results: any; data: Partial<Ass
           overallScore={results.overallScore}
         />
       </div>
+      */
 
 
-      {/* Recommendations */}
-      <div className="mb-12 bg-slate-50 rounded-2xl p-8">
-        <div className="text-center mb-8">
-          <h3 className="text-2xl font-bold text-slate-900 mb-2">🎯 Roadmap strategica</h3>
-          <p className="text-slate-600 max-w-2xl mx-auto">
-            Piano d'azione personalizzato basato sui vostri risultati per accelerare l'adozione AI
-          </p>
+      {/* Executive Strategic Roadmap */}
+      <div className="mb-12 bg-white rounded-2xl border-2 border-slate-200 shadow-lg overflow-hidden">
+        {/* Executive Header */}
+        <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white p-8">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mr-4">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold mb-1">Strategic AI Implementation Roadmap</h3>
+                <p className="text-slate-300">Piano esecutivo personalizzato per la trasformazione AI</p>
+              </div>
+            </div>
+            {aiRoadmap && (
+              <div className="bg-white/10 backdrop-blur rounded-lg px-4 py-2">
+                <div className="flex items-center text-sm font-medium">
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  AI-Powered Analysis
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* AI-Generated Roadmap or Loading State */}
-        {isGeneratingRoadmap ? (
-          <div className="text-center py-12">
-            <div className="flex items-center justify-center mb-6">
-              <div className="w-12 h-12 border-4 border-slate-200 border-t-blue-500 rounded-full animate-spin"></div>
-              <div className="ml-4">
-                <div className="flex items-center text-blue-600 font-semibold mb-1">
-                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                  Generazione roadmap AI in corso...
+        <div className="p-8">
+          {/* AI-Generated Roadmap Loading State */}
+          {isGeneratingRoadmap ? (
+            <div className="text-center py-16">
+              <div className="inline-flex items-center bg-slate-50 rounded-xl px-8 py-6 border border-slate-200">
+                <div className="relative">
+                  <div className="w-12 h-12 border-4 border-slate-200 border-t-slate-900 rounded-full animate-spin"></div>
+                  <div className="absolute inset-0 w-12 h-12 border-4 border-transparent border-r-blue-500 rounded-full animate-spin" style={{animationDirection: 'reverse', animationDuration: '2s'}}></div>
                 </div>
-                <p className="text-slate-600 text-sm">Il nostro AI sta analizzando i vostri dati per creare una strategia personalizzata</p>
+                <div className="ml-6 text-left">
+                  <div className="flex items-center text-slate-900 font-bold text-lg mb-2">
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Elaborazione strategica AI in corso
+                  </div>
+                  <p className="text-slate-600">Il nostro sistema esperto sta creando una roadmap personalizzata basata sui vostri risultati</p>
+                </div>
+              </div>
+            </div>
+          ) : roadmapError ? (
+            <div className="bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-200 rounded-xl p-6 mb-8">
+              <div className="flex items-start">
+                <div className="w-10 h-10 bg-amber-500 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L3.732 16c-.77.833.192 2.5 1.732 2.5z" />
+                  </svg>
+                </div>
+                <div>
+                  <div className="font-bold text-amber-900 mb-2">Sistema di generazione temporaneamente non disponibile</div>
+                  <p className="text-amber-800">{roadmapError}</p>
+                  <p className="text-amber-700 text-sm mt-2">Verrà utilizzata la roadmap standardizzata basata sul vostro cluster AI</p>
+                </div>
+              </div>
+            </div>
+          ) : null}
+
+          {/* Executive Timeline Overview */}
+          <div className="mb-10">
+            <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
+              <h4 className="font-bold text-slate-900 mb-4 flex items-center">
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Panoramica Timeline Strategica
+              </h4>
+              <div className="grid md:grid-cols-3 gap-4">
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                  <div className="text-red-600 font-bold text-sm mb-1">FASE 1 • IMMEDIATA</div>
+                  <div className="text-slate-900 font-semibold">0-30 giorni</div>
+                  <div className="text-slate-600 text-sm">Quick wins e fondamenta</div>
+                </div>
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <div className="text-blue-600 font-bold text-sm mb-1">FASE 2 • SVILUPPO</div>
+                  <div className="text-slate-900 font-semibold">3-6 mesi</div>
+                  <div className="text-slate-600 text-sm">Implementazione e scala</div>
+                </div>
+                <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+                  <div className="text-emerald-600 font-bold text-sm mb-1">FASE 3 • LEADERSHIP</div>
+                  <div className="text-slate-900 font-semibold">6-18 mesi</div>
+                  <div className="text-slate-600 text-sm">Eccellenza e innovazione</div>
+                </div>
               </div>
             </div>
           </div>
-        ) : roadmapError ? (
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 mb-6">
-            <div className="flex items-center text-amber-800 mb-2">
-              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L3.732 16c-.77.833.192 2.5 1.732 2.5z" />
-              </svg>
-              Attenzione
+
+          {/* Executive Roadmap Phases */}
+          <div className="space-y-8">
+            {/* Phase 1: Immediate Actions - Executive Priority */}
+            <div className="bg-white border-2 border-red-200 rounded-xl overflow-hidden shadow-sm">
+              <div className="bg-gradient-to-r from-red-600 to-red-700 text-white p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center mr-4">
+                      <span className="text-xl font-bold">1</span>
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-bold mb-1">Azioni Immediate</h4>
+                      <p className="text-red-100">Priorità critica • 0-30 giorni • ROI immediato</p>
+                    </div>
+                  </div>
+                  <div className="bg-white/20 backdrop-blur rounded-lg px-4 py-2">
+                    <div className="text-sm font-medium">Alta Priorità</div>
+                  </div>
+                </div>
+              </div>
+              <div className="p-6">
+                <div className="space-y-4">
+                  {(aiRoadmap?.immediate || results.recommendations.immediate).map((rec: string, index: number) => (
+                    <div key={index} className="flex items-start bg-slate-50 rounded-lg p-4 hover:bg-slate-100 transition-colors">
+                      <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center mr-4 mt-0.5 flex-shrink-0">
+                        <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-semibold text-slate-900 mb-1">{rec}</div>
+                        <div className="flex items-center text-xs text-slate-500">
+                          <span className="bg-red-100 text-red-700 px-2 py-1 rounded mr-2">CRITICO</span>
+                          <span>Impatto: Alto • Complessità: Bassa</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-            <p className="text-amber-700 text-sm">{roadmapError}</p>
-          </div>
-        ) : null}
 
-        <div className="space-y-6">
-          {/* AI-Generated Immediate Actions */}
-          <div className="bg-gradient-to-r from-red-50 to-red-100 rounded-xl p-6 border border-red-200">
-            <h4 className="font-bold text-slate-900 mb-4 flex items-center">
-              <div className="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center mr-3">
-                <span className="text-white font-bold text-sm">1</span>
+            {/* Phase 2: Short Term Development */}
+            <div className="bg-white border-2 border-blue-200 rounded-xl overflow-hidden shadow-sm">
+              <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center mr-4">
+                      <span className="text-xl font-bold">2</span>
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-bold mb-1">Sviluppo Strategico</h4>
+                      <p className="text-blue-100">Implementazione strutturale • 3-6 mesi • ROI sostanziale</p>
+                    </div>
+                  </div>
+                  <div className="bg-white/20 backdrop-blur rounded-lg px-4 py-2">
+                    <div className="text-sm font-medium">Media Priorità</div>
+                  </div>
+                </div>
               </div>
-              Azioni immediate
-              {aiRoadmap && (
-                <span className="ml-3 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                  <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                  AI generated
-                </span>
-              )}
-            </h4>
-            <ul className="space-y-3">
-              {(aiRoadmap?.immediate || results.recommendations.immediate).map((rec: string, index: number) => (
-                <li key={index} className="text-slate-800 flex items-start">
-                  <div className="w-2 h-2 bg-red-400 rounded-full mr-3 mt-2 flex-shrink-0"></div>
-                  <span className="font-medium">{rec}</span>
-                </li>
-              ))}
-            </ul>
+              <div className="p-6">
+                <div className="space-y-4">
+                  {(aiRoadmap?.shortTerm || results.recommendations.shortTerm).map((rec: string, index: number) => (
+                    <div key={index} className="flex items-start bg-slate-50 rounded-lg p-4 hover:bg-slate-100 transition-colors">
+                      <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center mr-4 mt-0.5 flex-shrink-0">
+                        <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                        </svg>
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-semibold text-slate-900 mb-1">{rec}</div>
+                        <div className="flex items-center text-xs text-slate-500">
+                          <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded mr-2">STRUTTURALE</span>
+                          <span>Impatto: Alto • Complessità: Media</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Phase 3: Long Term Vision */}
+            <div className="bg-white border-2 border-emerald-200 rounded-xl overflow-hidden shadow-sm">
+              <div className="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center mr-4">
+                      <span className="text-xl font-bold">3</span>
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-bold mb-1">Eccellenza AI</h4>
+                      <p className="text-emerald-100">Leadership competitiva • 6-18 mesi • ROI trasformativo</p>
+                    </div>
+                  </div>
+                  <div className="bg-white/20 backdrop-blur rounded-lg px-4 py-2">
+                    <div className="text-sm font-medium">Strategica</div>
+                  </div>
+                </div>
+              </div>
+              <div className="p-6">
+                <div className="space-y-4">
+                  {(aiRoadmap?.longTerm || results.recommendations.longTerm).map((rec: string, index: number) => (
+                    <div key={index} className="flex items-start bg-slate-50 rounded-lg p-4 hover:bg-slate-100 transition-colors">
+                      <div className="w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center mr-4 mt-0.5 flex-shrink-0">
+                        <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                        </svg>
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-semibold text-slate-900 mb-1">{rec}</div>
+                        <div className="flex items-center text-xs text-slate-500">
+                          <span className="bg-emerald-100 text-emerald-700 px-2 py-1 rounded mr-2">STRATEGICO</span>
+                          <span>Impatto: Trasformativo • Complessità: Alta</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* AI-Generated Short Term Goals */}
-          <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200">
-            <h4 className="font-bold text-slate-900 mb-4 flex items-center">
-              <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center mr-3">
-                <span className="text-white font-bold text-sm">2</span>
+          {/* Executive Success Metrics */}
+          <div className="mt-10 bg-gradient-to-r from-slate-50 to-slate-100 rounded-xl p-8 border-2 border-slate-200">
+            <h4 className="font-bold text-slate-900 mb-6 flex items-center text-lg">
+              <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center mr-3">
+                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
               </div>
-              Obiettivi a breve termine (3-6 mesi)
-              {aiRoadmap && (
-                <span className="ml-3 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                  <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                  AI generated
-                </span>
-              )}
+              Metriche di Successo e ROI
             </h4>
-            <ul className="space-y-3">
-              {(aiRoadmap?.shortTerm || results.recommendations.shortTerm).map((rec: string, index: number) => (
-                <li key={index} className="text-slate-800 flex items-start">
-                  <div className="w-2 h-2 bg-blue-400 rounded-full mr-3 mt-2 flex-shrink-0"></div>
-                  <span className="font-medium">{rec}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* AI-Generated Long Term Vision */}
-          <div className="bg-gradient-to-r from-green-50 to-green-100 rounded-xl p-6 border border-green-200">
-            <h4 className="font-bold text-slate-900 mb-4 flex items-center">
-              <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center mr-3">
-                <span className="text-white font-bold text-sm">3</span>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="bg-white rounded-lg p-6 border border-slate-200">
+                <div className="text-2xl font-bold text-emerald-600 mb-2">
+                  {results.roiProjection?.expectedRoi || 250}%
+                </div>
+                <div className="font-semibold text-slate-900 mb-1">ROI Previsto</div>
+                <div className="text-sm text-slate-600">Ritorno investimento in {results.roiProjection?.timeframe || '12 mesi'}</div>
               </div>
-              Visione a lungo termine (6-18 mesi)
-              {aiRoadmap && (
-                <span className="ml-3 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                  <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                  AI generated
-                </span>
-              )}
-            </h4>
-            <ul className="space-y-3">
-              {(aiRoadmap?.longTerm || results.recommendations.longTerm).map((rec: string, index: number) => (
-                <li key={index} className="text-slate-800 flex items-start">
-                  <div className="w-2 h-2 bg-green-400 rounded-full mr-3 mt-2 flex-shrink-0"></div>
-                  <span className="font-medium">{rec}</span>
-                </li>
-              ))}
-            </ul>
+              <div className="bg-white rounded-lg p-6 border border-slate-200">
+                <div className="text-2xl font-bold text-blue-600 mb-2">
+                  {results.roiProjection?.paybackPeriod || '6-8 mesi'}
+                </div>
+                <div className="font-semibold text-slate-900 mb-1">Payback Period</div>
+                <div className="text-sm text-slate-600">Tempo recupero investimento</div>
+              </div>
+              <div className="bg-white rounded-lg p-6 border border-slate-200">
+                <div className="text-2xl font-bold text-purple-600 mb-2">
+                  {results.roiProjection?.investmentRange || '€25-75k'}
+                </div>
+                <div className="font-semibold text-slate-900 mb-1">Investment Range</div>
+                <div className="text-sm text-slate-600">Budget stimato implementazione</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
