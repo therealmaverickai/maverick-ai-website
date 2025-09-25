@@ -10,6 +10,10 @@ export interface AssessmentData {
   website: string
   privacyConsent: boolean
 
+  // Progressive Lead Capture
+  phone?: string
+  marketingConsent?: boolean
+
   // Assessment Questions
   aiVisionClarity: number
   visionFormalized: 'si' | 'no' | 'in_parte'

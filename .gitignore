@@ -41,3 +41,4 @@ prisma/dev.db*
 *.log
 
 .vercel
+.env*.local
