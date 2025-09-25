@@ -749,7 +749,7 @@ export function ResultsStep({ results, data }: { results: any; data: Partial<Ass
       <div className="mb-12">
         <StrategicPositioningQuadrant
           strategyScore={Math.round((results.dimensions.strategy.percentage + results.dimensions.governance.percentage) / 2)}
-          executionScore={Math.round((results.dimensions.technology.percentage + results.dimensions.people.percentage) / 2)}
+          executionScore={Math.round((results.dimensions.technology.percentage + results.dimensions.people.percentage + results.dimensions.data.percentage) / 3)}
           companyName={data.company || 'La Vostra Azienda'}
           overallScore={results.overallScore}
         />
