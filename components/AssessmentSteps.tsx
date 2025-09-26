@@ -7,7 +7,8 @@ import ExecutiveSelect from './ExecutiveSelect'
 import ExecutiveMultiSelect from './ExecutiveMultiSelect'
 import ExecutiveResultsChart from './ExecutiveResultsChart'
 import AssessmentAIChat from './AssessmentAIChat'
-// import StrategicPositioningQuadrant from './StrategicPositioningQuadrant' // DISABLED
+import StrategicPositioningQuadrant from './StrategicPositioningQuadrant'
+import AIUnlockBanner from './AIUnlockBanner'
 
 const AI_AREAS = [
   'Automazione processi',
@@ -119,6 +120,109 @@ export function CompanyInfoStep({ data, onChange, emailError, showValidationErro
               className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-colors"
               placeholder="Nome della tua azienda"
             />
+          </div>
+        </div>
+
+        {/* Industry and Company Size Row */}
+        <div className="grid md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-2">
+              Settore di Attività *
+            </label>
+            <select
+              value={data.industry || ''}
+              onChange={(e) => onChange('industry', e.target.value)}
+              className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-colors"
+            >
+              <option value="">Seleziona il settore</option>
+              <optgroup label="Servizi Professionali">
+                <option value="Consulenza Strategica">Consulenza Strategica</option>
+                <option value="Consulenza IT">Consulenza IT</option>
+                <option value="Servizi Legali">Servizi Legali</option>
+                <option value="Servizi Contabili">Servizi Contabili</option>
+                <option value="Servizi Marketing">Servizi Marketing</option>
+                <option value="Architettura e Ingegneria">Architettura e Ingegneria</option>
+              </optgroup>
+              <optgroup label="Tecnologia">
+                <option value="Software Development">Software Development</option>
+                <option value="Cybersecurity">Cybersecurity</option>
+                <option value="Cloud Services">Cloud Services</option>
+                <option value="AI/ML">AI/ML</option>
+                <option value="IoT">IoT</option>
+                <option value="Fintech">Fintech</option>
+                <option value="Healthtech">Healthtech</option>
+              </optgroup>
+              <optgroup label="Manifatturiero">
+                <option value="Automotive">Automotive</option>
+                <option value="Farmaceutico">Farmaceutico</option>
+                <option value="Alimentare">Alimentare</option>
+                <option value="Tessile">Tessile</option>
+                <option value="Chimico">Chimico</option>
+                <option value="Meccanico">Meccanico</option>
+                <option value="Elettronico">Elettronico</option>
+              </optgroup>
+              <optgroup label="Servizi Finanziari">
+                <option value="Banche">Banche</option>
+                <option value="Assicurazioni">Assicurazioni</option>
+                <option value="Investimenti">Investimenti</option>
+                <option value="Private Equity">Private Equity</option>
+                <option value="Venture Capital">Venture Capital</option>
+              </optgroup>
+              <optgroup label="Retail e E-commerce">
+                <option value="Retail Tradizionale">Retail Tradizionale</option>
+                <option value="E-commerce">E-commerce</option>
+                <option value="Fashion">Fashion</option>
+                <option value="Luxury">Luxury</option>
+                <option value="Food & Beverage">Food & Beverage</option>
+              </optgroup>
+              <optgroup label="Sanità">
+                <option value="Ospedali">Ospedali</option>
+                <option value="Cliniche Private">Cliniche Private</option>
+                <option value="Dispositivi Medici">Dispositivi Medici</option>
+                <option value="Biotecnologie">Biotecnologie</option>
+              </optgroup>
+              <optgroup label="Servizi">
+                <option value="Logistica">Logistica</option>
+                <option value="Trasporti">Trasporti</option>
+                <option value="Turismo">Turismo</option>
+                <option value="Hospitality">Hospitality</option>
+                <option value="Utilities">Utilities</option>
+                <option value="Telecomunicazioni">Telecomunicazioni</option>
+              </optgroup>
+              <optgroup label="Pubblico">
+                <option value="PA Centrale">PA Centrale</option>
+                <option value="PA Locale">PA Locale</option>
+                <option value="Sanità Pubblica">Sanità Pubblica</option>
+                <option value="Università">Università</option>
+                <option value="Enti di Ricerca">Enti di Ricerca</option>
+              </optgroup>
+              <optgroup label="Altri">
+                <option value="Energia">Energia</option>
+                <option value="Real Estate">Real Estate</option>
+                <option value="Media">Media</option>
+                <option value="Editoria">Editoria</option>
+                <option value="Non Profit">Non Profit</option>
+                <option value="Altro">Altro</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-2">
+              Dimensione Aziendale *
+            </label>
+            <select
+              value={data.companySize || ''}
+              onChange={(e) => onChange('companySize', e.target.value)}
+              className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-colors"
+            >
+              <option value="">Seleziona la dimensione</option>
+              <option value="micro">Micro impresa (fino a €2M di fatturato, 1-10 dipendenti)</option>
+              <option value="piccola">Piccola impresa (€2M - €10M di fatturato, 11-50 dipendenti)</option>
+              <option value="media">Media impresa (€10M - €50M di fatturato, 51-250 dipendenti)</option>
+              <option value="grande">Grande impresa (€50M - €500M di fatturato, 251-1000 dipendenti)</option>
+              <option value="enterprise">Enterprise (oltre €500M di fatturato, oltre 1000 dipendenti)</option>
+            </select>
           </div>
         </div>
 
@@ -563,6 +667,10 @@ export function ResultsStep({ results, data }: { results: any; data: Partial<Ass
   const [aiRoadmap, setAiRoadmap] = useState<any>(null)
   const [isGeneratingRoadmap, setIsGeneratingRoadmap] = useState(false)
   const [roadmapError, setRoadmapError] = useState<string | null>(null)
+  const [aiUseCases, setAiUseCases] = useState<any>(null)
+  const [isGeneratingUseCases, setIsGeneratingUseCases] = useState(false)
+  const [useCasesError, setUseCasesError] = useState<string | null>(null)
+  const [scrollProgress, setScrollProgress] = useState(0)
 
   // Generate AI roadmap when component loads
   const generateAIRoadmap = async () => {
@@ -598,13 +706,63 @@ export function ResultsStep({ results, data }: { results: any; data: Partial<Ass
     }
   }
 
-  // Generate roadmap on component mount
+  // Generate AI use cases when component loads
+  const generateAIUseCases = async () => {
+    if (!results || !data || isGeneratingUseCases) return
+
+    setIsGeneratingUseCases(true)
+    setUseCasesError(null)
+
+    try {
+      const response = await fetch('/api/ai-usecases/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          assessmentData: data,
+          assessmentResults: results
+        })
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        setAiUseCases(result.useCases)
+        console.log('AI use cases generated successfully')
+      } else {
+        throw new Error(result.error || 'Failed to generate use cases')
+      }
+    } catch (error) {
+      console.error('Error generating AI use cases:', error)
+      setUseCasesError('Impossibile generare i use case AI. Riprova più tardi.')
+      // Could add fallback use cases here if needed
+    } finally {
+      setIsGeneratingUseCases(false)
+    }
+  }
+
+  // Generate roadmap and use cases on component mount
   useEffect(() => {
     if (results && data && !aiRoadmap && !isGeneratingRoadmap) {
       generateAIRoadmap()
     }
+    if (results && data && !aiUseCases && !isGeneratingUseCases) {
+      generateAIUseCases()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [results, data])
+
+  // Scroll progress tracking
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight
+      const progress = Math.min(Math.max((scrollTop / docHeight) * 100, 0), 100)
+      setScrollProgress(progress)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const handleConsultationRequest = async () => {
     setRequestingConsultation(true)
@@ -652,102 +810,226 @@ export function ResultsStep({ results, data }: { results: any; data: Partial<Ass
   }
 
   return (
-    <div className="p-8">
-      <div className="text-center mb-10">
-        <h2 className="text-3xl font-bold text-slate-900 mb-4">Risultati assessment AI</h2>
-        <p className="text-slate-600 max-w-2xl mx-auto">
-          Ecco la valutazione completa della maturità AI della vostra organizzazione
-        </p>
+    <div className="pt-8 relative">
+      {/* Enhanced Scroll Progress Indicator */}
+      <div className="hidden lg:block fixed right-6 top-1/2 transform -translate-y-1/2 z-30">
+        <div className="bg-slate-900/95 backdrop-blur-sm rounded-2xl px-4 py-6 shadow-2xl border border-slate-700">
+          <div className="flex flex-col items-center">
+            {/* Scroll Progress Circle */}
+            <div className="relative w-12 h-12 mb-4">
+              <svg className="w-12 h-12 transform -rotate-90" viewBox="0 0 36 36">
+                <path
+                  className="text-slate-600"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  fill="transparent"
+                  d="M18 2.0845a 15.9155 15.9155 0 0 1 0 31.831a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+                <path
+                  className="text-white"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  fill="transparent"
+                  strokeDasharray={`${scrollProgress}, 100`}
+                  style={{
+                    transition: 'stroke-dasharray 0.3s ease-out'
+                  }}
+                  d="M18 2.0845a 15.9155 15.9155 0 0 1 0 31.831a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-xs font-bold text-white">
+                  {Math.round(scrollProgress)}%
+                </span>
+              </div>
+            </div>
+
+            {/* Scroll Status Text */}
+            <div className="text-center">
+              {scrollProgress < 20 ? (
+                <>
+                  <div className="text-xs font-bold text-white mb-1">SCORRI</div>
+                  <div className="text-xs text-slate-300 leading-tight">
+                    Per vedere<br/>tutti i risultati
+                  </div>
+                </>
+              ) : scrollProgress < 80 ? (
+                <>
+                  <div className="text-xs font-bold text-white mb-1">CONTINUA</div>
+                  <div className="text-xs text-slate-300 leading-tight">
+                    Altri contenuti<br/>più in basso
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="text-xs font-bold text-emerald-400 mb-1">COMPLETO</div>
+                  <div className="text-xs text-slate-300 leading-tight">
+                    Hai visto<br/>tutto!
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Animated Arrow (only show if not at bottom) */}
+            {scrollProgress < 95 && (
+              <div className="mt-3 animate-bounce">
+                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m0 0l7-7" />
+                </svg>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
-      {/* Overall Score Circle - Moved above cluster badge */}
-      <div className="text-center mb-8">
-        <div className="inline-flex flex-col items-center">
-          <div className="relative w-32 h-32 mb-6">
-            {/* Background circle */}
-            <svg className="w-32 h-32 transform -rotate-90" viewBox="0 0 36 36">
-              <path
-                className="text-slate-200"
-                stroke="currentColor"
-                strokeWidth="3"
-                fill="transparent"
-                d="M18 2.0845
-                  a 15.9155 15.9155 0 0 1 0 31.831
-                  a 15.9155 15.9155 0 0 1 0 -31.831"
-              />
-              {/* Progress circle */}
-              <path
-                className={getScoreColor(results.overallScore).replace('text-', 'text-')}
-                stroke="currentColor"
-                strokeWidth="3"
-                strokeLinecap="round"
-                fill="transparent"
-                strokeDasharray={`${results.overallScore}, 100`}
-                style={{
-                  transition: 'stroke-dasharray 2s ease-in-out',
-                  transitionDelay: '0.5s'
-                }}
-                d="M18 2.0845
-                  a 15.9155 15.9155 0 0 1 0 31.831
-                  a 15.9155 15.9155 0 0 1 0 -31.831"
-              />
-            </svg>
-            {/* Score text */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center">
-                <div className={`text-3xl font-bold ${getScoreColor(results.overallScore)}`}>
-                  {results.overallScore}%
+      {/* Hero Section - Executive Style */}
+      <div className="bg-white rounded-2xl border-2 border-slate-200 shadow-lg overflow-hidden mb-12 mx-8">
+        {/* Executive Header */}
+        <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white p-8">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mr-4">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold mb-1">Risultati AI Readiness Assessment</h2>
+                <p className="text-slate-300">Analisi dell'AI Readiness di {data.company}</p>
+              </div>
+            </div>
+            <div className="bg-white/10 backdrop-blur rounded-lg px-4 py-2">
+              <div className="flex items-center text-sm font-medium">
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                AI-Powered Analysis
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Assessment Results Content */}
+        <div className="p-12">
+          <div className="grid md:grid-cols-3 gap-12 mb-12">
+            {/* Left Column - Score and Classification (1/3 width) */}
+            <div className="flex flex-col items-center justify-center">
+              {/* Overall Score Circle */}
+              <div className="relative w-32 h-32 mb-6">
+                {/* Background circle */}
+                <svg className="w-32 h-32 transform -rotate-90" viewBox="0 0 36 36">
+                  <path
+                    className="text-slate-200"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    fill="transparent"
+                    d="M18 2.0845
+                      a 15.9155 15.9155 0 0 1 0 31.831
+                      a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                  {/* Progress circle */}
+                  <path
+                    className={getScoreColor(results.overallScore).replace('text-', 'text-')}
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    fill="transparent"
+                    strokeDasharray={`${results.overallScore}, 100`}
+                    style={{
+                      transition: 'stroke-dasharray 2s ease-in-out',
+                      transitionDelay: '0.5s'
+                    }}
+                    d="M18 2.0845
+                      a 15.9155 15.9155 0 0 1 0 31.831
+                      a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                </svg>
+                {/* Score text */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className={`text-3xl font-bold ${getScoreColor(results.overallScore)}`}>
+                      {results.overallScore}%
+                    </div>
+                    <div className="text-xs text-slate-500 font-medium">OVERALL</div>
+                  </div>
                 </div>
-                <div className="text-xs text-slate-500 font-medium">OVERALL</div>
+              </div>
+
+              {/* Cluster Badge and Industry Benchmark */}
+              <div className="flex flex-col items-center space-y-3">
+                <div className={`inline-flex items-center px-6 py-3 rounded-xl border-2 ${getScoreBgColor(results.overallScore)}`}>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-slate-900">
+                      {results.cluster}
+                    </div>
+                  </div>
+                </div>
+                <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${getBenchmarkColor(results.industryBenchmark.comparison)}`}>
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                  </svg>
+                  {results.industryBenchmark.percentile}° percentile • {results.industryBenchmark.comparison}
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column - AI Executive Summary (2/3 width) */}
+            <div className="md:col-span-2 bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl p-6 border border-slate-200">
+
+              {results.aiSummary ? (
+                <div className="text-slate-700 text-sm leading-relaxed space-y-3">
+                  {results.aiSummary.split('\n').map((paragraph: string, index: number) => {
+                    if (paragraph.trim()) {
+                      // Check if it's a markdown-style heading
+                      if (paragraph.startsWith('**') && paragraph.endsWith('**')) {
+                        return (
+                          <h4 key={index} className="font-bold text-slate-900 text-base mt-4 mb-2">
+                            {paragraph.replace(/\*\*/g, '')}
+                          </h4>
+                        )
+                      }
+                      // Check if it's a bullet point
+                      if (paragraph.startsWith('•') || paragraph.startsWith('-')) {
+                        return (
+                          <div key={index} className="flex items-start">
+                            <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                            <span>{paragraph.replace(/^[•-]\s*/, '')}</span>
+                          </div>
+                        )
+                      }
+                      return <p key={index}>{paragraph}</p>
+                    }
+                    return null
+                  })}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <div className="inline-flex items-center bg-white rounded-lg px-4 py-3 border border-slate-200">
+                    <div className="w-6 h-6 border-2 border-slate-300 border-t-blue-500 rounded-full animate-spin mr-3"></div>
+                    <span className="text-slate-600 text-sm">Generazione executive summary in corso...</span>
+                  </div>
+                </div>
+              )}
+
+              <div className="mt-4 pt-4 border-t border-slate-200">
+                <p className="text-xs text-slate-500 italic">
+                  Analisi personalizzata generata da Maverick AI basata sui risultati del vostro assessment
+                </p>
               </div>
             </div>
           </div>
 
-          {/* Industry Benchmark */}
-          <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${getBenchmarkColor(results.industryBenchmark.comparison)}`}>
-            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-            </svg>
-            {results.industryBenchmark.percentile}° percentile • {results.industryBenchmark.comparison}
+          {/* AI Unlock Banner */}
+          <div className="mx-8">
+            <AIUnlockBanner data={data} results={results} />
           </div>
+
         </div>
       </div>
 
-      {/* Cluster Badge */}
-      <div className="text-center mb-12">
-        <div className={`inline-flex items-center px-6 py-3 rounded-xl border-2 ${getScoreBgColor(results.overallScore)}`}>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-slate-900 mb-1">
-              {results.cluster}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* AI Chat - Full Dark Box */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 rounded-2xl p-8 mb-12 relative overflow-hidden shadow-xl">
-        {/* Background decoration */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-white/5 to-transparent rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-white/5 to-transparent rounded-full blur-2xl"></div>
-
-        <div className="relative z-10">
-          {results ? (
-            <AssessmentAIChat
-              assessmentData={data || {}}
-              assessmentResults={results}
-            />
-          ) : (
-            <div className="text-center text-white p-8">
-              <div className="animate-spin w-8 h-8 border-2 border-white border-t-transparent rounded-full mx-auto mb-4"></div>
-              <p>Caricamento consulente AI...</p>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Strategic Positioning Quadrant - DISABLED */}
-      {/*
-      <div className="mb-12">
+      {/* Strategic Positioning Quadrant - Full Width */}
+      <div className="mb-12 px-8">
         <StrategicPositioningQuadrant
           strategyScore={Math.round((results.dimensions.strategy.percentage + results.dimensions.governance.percentage) / 2)}
           executionScore={Math.round((results.dimensions.technology.percentage + results.dimensions.people.percentage + results.dimensions.data.percentage) / 3)}
@@ -755,11 +1037,161 @@ export function ResultsStep({ results, data }: { results: any; data: Partial<Ass
           overallScore={results.overallScore}
         />
       </div>
-      */
 
+      {/* Use Case AI Module */}
+      <div className="mb-12 bg-white rounded-2xl border-2 border-slate-200 shadow-lg overflow-hidden mx-8">
+        {/* Executive Header */}
+        <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white p-8">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mr-4">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold mb-1">Use case AI</h3>
+                <p className="text-slate-300">Esplora i principali use case AI per {data.company}</p>
+              </div>
+            </div>
+            <div className="bg-white/10 backdrop-blur rounded-lg px-4 py-2">
+              <div className="flex items-center text-sm font-medium">
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                AI-Powered Analysis
+              </div>
+            </div>
+          </div>
+        </div>
 
-      {/* Executive Strategic Roadmap */}
-      <div className="mb-12 bg-white rounded-2xl border-2 border-slate-200 shadow-lg overflow-hidden">
+        {/* Use Cases Content */}
+        <div className="p-8">
+          {/* Loading State */}
+          {isGeneratingUseCases ? (
+            <div className="text-center py-12">
+              <div className="inline-flex items-center text-slate-600">
+                <svg className="animate-spin -ml-1 mr-3 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span className="text-lg font-medium">Generazione use case AI personalizzati...</span>
+              </div>
+              <p className="text-slate-500 mt-2 text-sm">Analizziamo i risultati del vostro assessment per identificare i migliori use case AI</p>
+            </div>
+          ) : useCasesError ? (
+            <div className="text-center py-8">
+              <div className="text-red-600 bg-red-50 rounded-xl p-6">
+                <svg className="w-8 h-8 mx-auto mb-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+                <p className="font-medium">{useCasesError}</p>
+                <button
+                  onClick={generateAIUseCases}
+                  className="mt-4 bg-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-700 transition-colors"
+                >
+                  Riprova
+                </button>
+              </div>
+            </div>
+          ) : aiUseCases && aiUseCases.length > 0 ? (
+            <div className="space-y-6">
+              {/* Introduction */}
+              <div className="text-center mb-8">
+                <h4 className="text-2xl font-bold text-slate-900 mb-3">Use Case AI Prioritizzati</h4>
+                <p className="text-slate-600 text-sm">Basati sui risultati del vostro assessment e ottimizzati per {data.company}</p>
+              </div>
+
+              {/* Use Cases Grid */}
+              <div className="grid gap-6 md:grid-cols-2">
+                {aiUseCases.map((useCase: any, index: number) => (
+                  <div key={index} className="bg-slate-50 rounded-xl border border-slate-200 p-6 hover:shadow-md transition-shadow">
+                    {/* Use Case Header */}
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex-1">
+                        <div className="flex items-center mb-2">
+                          <div className="w-8 h-8 bg-slate-900 text-white rounded-lg flex items-center justify-center text-sm font-bold mr-3">
+                            {index + 1}
+                          </div>
+                          <h5 className="font-bold text-slate-900 text-lg">{useCase.title}</h5>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                            useCase.complexity === 'Bassa' ? 'bg-emerald-100 text-emerald-700' :
+                            useCase.complexity === 'Media' ? 'bg-amber-100 text-amber-700' :
+                            'bg-red-100 text-red-700'
+                          }`}>
+                            Complessità {useCase.complexity}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Description */}
+                    <div className="mb-4">
+                      <p className="text-slate-700 text-sm leading-relaxed">{useCase.description}</p>
+                    </div>
+
+                    {/* Impact & ROI */}
+                    <div className="space-y-3">
+                      <div className="bg-white rounded-lg p-4 border border-slate-200">
+                        <h6 className="font-semibold text-slate-900 text-sm mb-2 flex items-center">
+                          <svg className="w-4 h-4 mr-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                          </svg>
+                          Impatto Atteso
+                        </h6>
+                        <p className="text-slate-600 text-sm">{useCase.impact}</p>
+                      </div>
+                      <div className="bg-white rounded-lg p-4 border border-slate-200">
+                        <h6 className="font-semibold text-slate-900 text-sm mb-2 flex items-center">
+                          <svg className="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                          </svg>
+                          ROI e Timeline
+                        </h6>
+                        <p className="text-slate-600 text-sm">{useCase.roi}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA Section */}
+              <div className="bg-slate-900 rounded-xl p-8 text-center text-white mt-8">
+                <h5 className="text-xl font-bold mb-4">Vuoi approfondire questi use case?</h5>
+                <p className="text-slate-300 mb-6 max-w-2xl mx-auto">
+                  I nostri esperti possono aiutarti a valutare la fattibilità e a pianificare l'implementazione di questi use case specifici per {data.company}.
+                </p>
+                <a
+                  href="https://calendar.app.google/qRHonaahhRhqZqSu8"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center bg-white text-slate-900 px-6 py-3 rounded-lg font-semibold hover:bg-slate-100 transition-colors"
+                >
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  Discuti gli Use Case
+                </a>
+              </div>
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <div className="text-slate-500">
+                <svg className="w-12 h-12 mx-auto mb-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+                <p className="font-medium mb-2">Nessun use case disponibile</p>
+                <p className="text-sm">Completa l'assessment per vedere i use case AI personalizzati</p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Executive Strategic Roadmap - Compact Version */}
+      <div className="mb-12 bg-white rounded-2xl border-2 border-slate-200 shadow-lg overflow-hidden mx-8">
         {/* Executive Header */}
         <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white p-8">
           <div className="flex items-center justify-between">
@@ -770,8 +1202,8 @@ export function ResultsStep({ results, data }: { results: any; data: Partial<Ass
                 </svg>
               </div>
               <div>
-                <h3 className="text-2xl font-bold mb-1">Strategic AI Implementation Roadmap</h3>
-                <p className="text-slate-300">Piano esecutivo personalizzato per la trasformazione AI</p>
+                <h3 className="text-2xl font-bold mb-1">Roadmap di adozione AI</h3>
+                <p className="text-slate-300">Roadmap personalizzata per l'adozione AI in {data.company}</p>
               </div>
             </div>
             {aiRoadmap && (
@@ -824,263 +1256,149 @@ export function ResultsStep({ results, data }: { results: any; data: Partial<Ass
             </div>
           ) : null}
 
-          {/* Executive Timeline Overview */}
-          <div className="mb-10">
-            <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
-              <h4 className="font-bold text-slate-900 mb-4 flex items-center">
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                Panoramica Timeline Strategica
-              </h4>
-              <div className="grid md:grid-cols-3 gap-4">
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                  <div className="text-red-600 font-bold text-sm mb-1">FASE 1 • IMMEDIATA</div>
-                  <div className="text-slate-900 font-semibold">0-30 giorni</div>
-                  <div className="text-slate-600 text-sm">Quick wins e fondamenta</div>
+          {/* Clean Timeline Overview */}
+          <div className="mb-8">
+            <div className="text-center mb-6">
+              <h4 className="text-2xl font-bold text-slate-900 mb-3">Timeline</h4>
+              <p className="text-slate-600 text-sm">Il vostro percorso verso l'eccellenza AI</p>
+            </div>
+            <div className="bg-slate-50 rounded-xl border border-slate-200 p-6">
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <span className="text-white font-bold">1</span>
+                  </div>
+                  <div className="text-red-600 font-semibold text-xs mb-1">FASE 1</div>
+                  <div className="text-slate-900 font-bold text-lg">0-30 giorni</div>
+                  <div className="text-slate-600 text-sm">Quick Wins</div>
                 </div>
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <div className="text-blue-600 font-bold text-sm mb-1">FASE 2 • SVILUPPO</div>
-                  <div className="text-slate-900 font-semibold">3-6 mesi</div>
-                  <div className="text-slate-600 text-sm">Implementazione e scala</div>
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <span className="text-white font-bold">2</span>
+                  </div>
+                  <div className="text-blue-600 font-semibold text-xs mb-1">FASE 2</div>
+                  <div className="text-slate-900 font-bold text-lg">3-6 mesi</div>
+                  <div className="text-slate-600 text-sm">Implementazione</div>
                 </div>
-                <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
-                  <div className="text-emerald-600 font-bold text-sm mb-1">FASE 3 • LEADERSHIP</div>
-                  <div className="text-slate-900 font-semibold">6-18 mesi</div>
-                  <div className="text-slate-600 text-sm">Eccellenza e innovazione</div>
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <span className="text-white font-bold">3</span>
+                  </div>
+                  <div className="text-emerald-600 font-semibold text-xs mb-1">FASE 3</div>
+                  <div className="text-slate-900 font-bold text-lg">6-18 mesi</div>
+                  <div className="text-slate-600 text-sm">Leadership</div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Executive Roadmap Phases */}
-          <div className="space-y-8">
-            {/* Phase 1: Immediate Actions - Executive Priority */}
-            <div className="bg-white border-2 border-red-200 rounded-xl overflow-hidden shadow-sm">
-              <div className="bg-gradient-to-r from-red-600 to-red-700 text-white p-6">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center mr-4">
-                      <span className="text-xl font-bold">1</span>
-                    </div>
-                    <div>
-                      <h4 className="text-xl font-bold mb-1">Azioni Immediate</h4>
-                      <p className="text-red-100">Priorità critica • 0-30 giorni • ROI immediato</p>
-                    </div>
-                  </div>
-                  <div className="bg-white/20 backdrop-blur rounded-lg px-4 py-2">
-                    <div className="text-sm font-medium">Alta Priorità</div>
-                  </div>
+          {/* Clean Roadmap Phases */}
+          <div className="space-y-4">
+            {/* Phase 1: Immediate Actions */}
+            <div className="bg-white border border-slate-200 rounded-xl p-6">
+              <div className="flex items-start">
+                <div className="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                  <span className="text-white font-bold text-sm">1</span>
                 </div>
-              </div>
-              <div className="p-6">
-                <div className="space-y-4">
-                  {(aiRoadmap?.immediate || results.recommendations.immediate).map((rec: string, index: number) => (
-                    <div key={index} className="flex items-start bg-slate-50 rounded-lg p-4 hover:bg-slate-100 transition-colors">
-                      <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center mr-4 mt-0.5 flex-shrink-0">
-                        <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
+                <div className="flex-1">
+                  <div className="flex items-center mb-3">
+                    <h4 className="font-bold text-slate-900 text-lg">Azioni immediate</h4>
+                    <span className="ml-3 text-xs font-medium text-red-600 bg-red-50 px-2 py-1 rounded-full">0-3 mesi</span>
+                  </div>
+                  <p className="text-slate-600 text-sm mb-4">Quick wins operativi con ROI immediato</p>
+                  <div className="space-y-2">
+                    {(aiRoadmap?.immediate || results.recommendations.immediate).slice(0, 3).map((rec: string, index: number) => (
+                      <div key={index} className="flex items-start text-sm text-slate-700">
+                        <div className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                        <span>{rec}</span>
                       </div>
-                      <div className="flex-1">
-                        <div className="font-semibold text-slate-900 mb-1">{rec}</div>
-                        <div className="flex items-center text-xs text-slate-500">
-                          <span className="bg-red-100 text-red-700 px-2 py-1 rounded mr-2">CRITICO</span>
-                          <span>Impatto: Alto • Complessità: Bassa</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Phase 2: Short Term Development */}
-            <div className="bg-white border-2 border-blue-200 rounded-xl overflow-hidden shadow-sm">
-              <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center mr-4">
-                      <span className="text-xl font-bold">2</span>
-                    </div>
-                    <div>
-                      <h4 className="text-xl font-bold mb-1">Sviluppo Strategico</h4>
-                      <p className="text-blue-100">Implementazione strutturale • 3-6 mesi • ROI sostanziale</p>
-                    </div>
-                  </div>
-                  <div className="bg-white/20 backdrop-blur rounded-lg px-4 py-2">
-                    <div className="text-sm font-medium">Media Priorità</div>
-                  </div>
+            {/* Phase 2: Medium Term */}
+            <div className="bg-white border border-slate-200 rounded-xl p-6">
+              <div className="flex items-start">
+                <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                  <span className="text-white font-bold text-sm">2</span>
                 </div>
-              </div>
-              <div className="p-6">
-                <div className="space-y-4">
-                  {(aiRoadmap?.shortTerm || results.recommendations.shortTerm).map((rec: string, index: number) => (
-                    <div key={index} className="flex items-start bg-slate-50 rounded-lg p-4 hover:bg-slate-100 transition-colors">
-                      <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center mr-4 mt-0.5 flex-shrink-0">
-                        <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                        </svg>
+                <div className="flex-1">
+                  <div className="flex items-center mb-3">
+                    <h4 className="font-bold text-slate-900 text-lg">Sviluppo strutturale</h4>
+                    <span className="ml-3 text-xs font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded-full">3-18 mesi</span>
+                  </div>
+                  <p className="text-slate-600 text-sm mb-4">Implementazioni di soluzioni in processi core</p>
+                  <div className="space-y-2">
+                    {(aiRoadmap?.shortTerm || results.recommendations.shortTerm).slice(0, 3).map((rec: string, index: number) => (
+                      <div key={index} className="flex items-start text-sm text-slate-700">
+                        <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                        <span>{rec}</span>
                       </div>
-                      <div className="flex-1">
-                        <div className="font-semibold text-slate-900 mb-1">{rec}</div>
-                        <div className="flex items-center text-xs text-slate-500">
-                          <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded mr-2">STRUTTURALE</span>
-                          <span>Impatto: Alto • Complessità: Media</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Phase 3: Long Term Vision */}
-            <div className="bg-white border-2 border-emerald-200 rounded-xl overflow-hidden shadow-sm">
-              <div className="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white p-6">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center mr-4">
-                      <span className="text-xl font-bold">3</span>
-                    </div>
-                    <div>
-                      <h4 className="text-xl font-bold mb-1">Eccellenza AI</h4>
-                      <p className="text-emerald-100">Leadership competitiva • 6-18 mesi • ROI trasformativo</p>
-                    </div>
-                  </div>
-                  <div className="bg-white/20 backdrop-blur rounded-lg px-4 py-2">
-                    <div className="text-sm font-medium">Strategica</div>
-                  </div>
+            {/* Phase 3: Long Term */}
+            <div className="bg-white border border-slate-200 rounded-xl p-6">
+              <div className="flex items-start">
+                <div className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                  <span className="text-white font-bold text-sm">3</span>
                 </div>
-              </div>
-              <div className="p-6">
-                <div className="space-y-4">
-                  {(aiRoadmap?.longTerm || results.recommendations.longTerm).map((rec: string, index: number) => (
-                    <div key={index} className="flex items-start bg-slate-50 rounded-lg p-4 hover:bg-slate-100 transition-colors">
-                      <div className="w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center mr-4 mt-0.5 flex-shrink-0">
-                        <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-                        </svg>
+                <div className="flex-1">
+                  <div className="flex items-center mb-3">
+                    <h4 className="font-bold text-slate-900 text-lg">Visione a lungo termine</h4>
+                    <span className="ml-3 text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">&gt;18 mesi</span>
+                  </div>
+                  <p className="text-slate-600 text-sm mb-4">Trasformazione in una AI-driven company</p>
+                  <div className="space-y-2">
+                    {(aiRoadmap?.longTerm || results.recommendations.longTerm).slice(0, 3).map((rec: string, index: number) => (
+                      <div key={index} className="flex items-start text-sm text-slate-700">
+                        <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                        <span>{rec}</span>
                       </div>
-                      <div className="flex-1">
-                        <div className="font-semibold text-slate-900 mb-1">{rec}</div>
-                        <div className="flex items-center text-xs text-slate-500">
-                          <span className="bg-emerald-100 text-emerald-700 px-2 py-1 rounded mr-2">STRATEGICO</span>
-                          <span>Impatto: Trasformativo • Complessità: Alta</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Executive Success Metrics */}
-          <div className="mt-10 bg-gradient-to-r from-slate-50 to-slate-100 rounded-xl p-8 border-2 border-slate-200">
-            <h4 className="font-bold text-slate-900 mb-6 flex items-center text-lg">
-              <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center mr-3">
-                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-              </div>
-              Metriche di Successo e ROI
-            </h4>
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="bg-white rounded-lg p-6 border border-slate-200">
-                <div className="text-2xl font-bold text-emerald-600 mb-2">
-                  {results.roiProjection?.expectedRoi || 250}%
-                </div>
-                <div className="font-semibold text-slate-900 mb-1">ROI Previsto</div>
-                <div className="text-sm text-slate-600">Ritorno investimento in {results.roiProjection?.timeframe || '12 mesi'}</div>
-              </div>
-              <div className="bg-white rounded-lg p-6 border border-slate-200">
-                <div className="text-2xl font-bold text-blue-600 mb-2">
-                  {results.roiProjection?.paybackPeriod || '6-8 mesi'}
-                </div>
-                <div className="font-semibold text-slate-900 mb-1">Payback Period</div>
-                <div className="text-sm text-slate-600">Tempo recupero investimento</div>
-              </div>
-              <div className="bg-white rounded-lg p-6 border border-slate-200">
-                <div className="text-2xl font-bold text-purple-600 mb-2">
-                  {results.roiProjection?.investmentRange || '€25-75k'}
-                </div>
-                <div className="font-semibold text-slate-900 mb-1">Investment Range</div>
-                <div className="text-sm text-slate-600">Budget stimato implementazione</div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
-
-      {/* Strategic Call to Action */}
-      <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white rounded-2xl p-10 relative overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-white/5 to-transparent rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-white/5 to-transparent rounded-full blur-2xl"></div>
-
-        <div className="relative z-10 text-center">
-          <div className="inline-flex items-center bg-white/10 backdrop-blur text-white px-6 py-3 rounded-full text-sm font-semibold mb-6">
-            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Azione immediata raccomandata
-          </div>
-
-          <h3 className="text-3xl font-bold mb-4">🚀 Trasforma i risultati in azione</h3>
-          <p className="text-slate-200 mb-8 max-w-3xl mx-auto text-lg leading-relaxed">
-            Non lasciare che questa valutazione rimanga solo un documento.
-            <span className="font-semibold text-white"> Trasformala in una roadmap concreta</span> con il supporto dei nostri esperti AI.
+      {/* Clean CTA Section */}
+      <div className="mb-12 bg-slate-900 rounded-2xl shadow-lg mx-8">
+        <div className="p-12 text-center text-white">
+          <h4 className="text-3xl font-bold mb-6">
+            Vuoi implementare questi risultati?
+          </h4>
+          <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+            Prenota una consulenza strategica <strong className="text-white">gratuita</strong> per trasformare
+            l'assessment di <strong className="text-white">{data.company}</strong> in un piano d'azione concreto.
           </p>
 
-          <div className="grid md:grid-cols-3 gap-6 mb-8">
-            <div className="text-center">
-              <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mx-auto mb-3">
-                📋
-              </div>
-              <div className="font-semibold text-white mb-1">Strategia personalizzata</div>
-              <div className="text-slate-300 text-sm">Roadmap specifica per il tuo settore</div>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mx-auto mb-3">
-                ⚡
-              </div>
-              <div className="font-semibold text-white mb-1">Quick wins</div>
-              <div className="text-slate-300 text-sm">Azioni immediate ad alto impatto</div>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mx-auto mb-3">
-                📈
-              </div>
-              <div className="font-semibold text-white mb-1">ROI accelerato</div>
-              <div className="text-slate-300 text-sm">Massimizza il ritorno dell'investimento AI</div>
-            </div>
-          </div>
-
-          <button
-            onClick={handleConsultationRequest}
-            disabled={requestingConsultation}
-            className="bg-white text-slate-900 px-10 py-5 rounded-xl font-bold text-lg hover:bg-slate-100 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl inline-flex items-center"
+          <a
+            href="https://calendar.app.google/qRHonaahhRhqZqSu8"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center bg-white text-slate-900 px-8 py-4 rounded-xl font-bold text-lg hover:bg-slate-100 transition-colors shadow-lg"
           >
-            {requestingConsultation ? (
-              <>
-                <svg className="animate-spin -ml-1 mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                Apertura calendario...
-              </>
-            ) : (
-              <>
-                📅 Prenota consulenza strategica gratuita
-                <svg className="ml-3 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </>
-            )}
-          </button>
+            <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            Prenota una call
+            <svg className="w-4 h-4 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </a>
 
+          <p className="text-slate-400 text-sm mt-4">
+            45 minuti • Analisi personalizzata • Piano d'azione specifico
+          </p>
         </div>
       </div>
 

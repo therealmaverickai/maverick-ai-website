@@ -12,6 +12,10 @@ const assessmentSchema = z.object({
   name: z.string().min(1, 'Nome deve essere specificato'),
   role: z.string().min(1, 'Ruolo deve essere specificato'),
   company: z.string().min(1, 'Società deve essere specificata'),
+  industry: z.string().min(1, 'Settore deve essere specificato'),
+  companySize: z.enum(['micro', 'piccola', 'media', 'grande', 'enterprise'], {
+    errorMap: () => ({ message: 'Dimensione aziendale deve essere specificata' })
+  }),
   website: z.string().optional().or(z.literal('')),
   privacyConsent: z.boolean().refine((val) => val === true, {
     message: 'Il consenso al trattamento dei dati è obbligatorio'
@@ -246,6 +250,10 @@ Contatta il nostro team per una consultazione gratuita dove approfondiremo i ris
             <div class="answer">${data.role}</div>
             <div class="question">Società:</div>
             <div class="answer">${data.company}</div>
+            <div class="question">Settore:</div>
+            <div class="answer">${data.industry}</div>
+            <div class="question">Dimensione aziendale:</div>
+            <div class="answer">${data.companySize}</div>
             ${data.website ? `<div class="question">Sito web:</div><div class="answer">${data.website}</div>` : ''}
           </div>
 

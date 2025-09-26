@@ -7,6 +7,8 @@ export interface AssessmentData {
   name: string
   role: string
   company: string
+  industry: string
+  companySize: 'micro' | 'piccola' | 'media' | 'grande' | 'enterprise'
   website: string
   privacyConsent: boolean
 
@@ -242,35 +244,39 @@ export function calculateEnhancedScore(data: Partial<AssessmentData>): EnhancedA
     }
   }
 
+  // Strategy Dimension (22% weight) - Normalized to 25 points
   const strategyScores = [
-    data.aiVisionClarity || 0,
-    scoreResponse(data.visionFormalized),
-    scoreResponse(data.aiStrategicImportance),
-    data.competitiveAdvantage || 0,
-    scoreResponse(data.investmentPlans),
-    budgetAllocationScore(), // Budget allocation for AI
-    investmentTimelineScore(), // Investment planning timeline
-    data.aiInvestmentPriority || 1 // Strategic priority of AI investments
+    (data.aiVisionClarity || 0) * 0.625, // Scale 1-5 to fit 25-point system
+    scoreResponse(data.visionFormalized) * 0.625,
+    scoreResponse(data.aiStrategicImportance) * 0.625,
+    (data.competitiveAdvantage || 0) * 0.625,
+    scoreResponse(data.investmentPlans) * 0.625,
+    budgetAllocationScore() * 0.625, // Budget allocation for AI
+    investmentTimelineScore() * 0.625, // Investment planning timeline
+    (data.aiInvestmentPriority || 1) * 0.625 // Strategic priority of AI investments
   ]
-  const strategy = calculateDimensionScore(strategyScores, 40, 'strategy')
+  const strategy = calculateDimensionScore(strategyScores, 25, 'strategy')
 
-  // Technology Dimension (25% weight)
+  // Technology Dimension (25% weight) - Normalized to 25 points
   const technologyScores = [
-    calculateProjectScore(data.currentProjects || '0'),
-    scoreResponse(data.pilotProjects),
-    (data.aiAreas?.length || 0) * 1.25, // Normalize to 5-point scale
-    scoreResponse(data.partnerships)
+    calculateProjectScore(data.currentProjects || '0') * 1.25, // Scale up to match 25-point system
+    scoreResponse(data.pilotProjects) * 1.25,
+    Math.min(5, (data.aiAreas?.length || 0) * 1.25) * 1.25, // Cap at 5, then scale
+    scoreResponse(data.partnerships) * 1.25,
+    // Add padding to reach 25 points max
+    2.5 // Base technology readiness points
   ]
-  const technology = calculateDimensionScore(technologyScores, 20, 'technology')
+  const technology = calculateDimensionScore(technologyScores, 25, 'technology')
 
-  // People Dimension (20% weight)
+  // People Dimension (18% weight) - Normalized to 25 points
   const peopleScores = [
-    data.employeeUsage || 0,
-    data.managementUsage || 0,
-    scoreResponse(data.internalSkills),
-    scoreResponse(data.trainingInitiatives)
+    (data.employeeUsage || 0) * 1.25, // Scale 1-5 to fit 25-point system
+    (data.managementUsage || 0) * 1.25,
+    scoreResponse(data.internalSkills) * 1.25,
+    scoreResponse(data.trainingInitiatives) * 1.25,
+    (data.employeeAIAdoption || 1) * 1.25 // Add AI adoption score
   ]
-  const people = calculateDimensionScore(peopleScores, 20, 'people')
+  const people = calculateDimensionScore(peopleScores, 25, 'people')
 
   // Governance Dimension (15% weight) - Enhanced with ethics and privacy
   const ethicsFrameworkScore = () => {
@@ -293,22 +299,26 @@ export function calculateEnhancedScore(data: Partial<AssessmentData>): EnhancedA
     }
   }
 
+  // Governance Dimension (14% weight) - Normalized to 25 points
   const governanceScores = [
-    scoreResponse(data.decisionMakerAwareness),
-    scoreResponse(data.dedicatedTeam),
-    scoreResponse(data.aiPolicies),
-    scoreResponse(data.aiMetrics),
-    ethicsFrameworkScore(), // AI ethics and principles
-    dataPrivacyScore() // Data privacy compliance
+    scoreResponse(data.decisionMakerAwareness) * 0.833, // Scale to fit 25-point system
+    scoreResponse(data.dedicatedTeam) * 0.833,
+    scoreResponse(data.aiPolicies) * 0.833,
+    scoreResponse(data.aiMetrics) * 0.833,
+    ethicsFrameworkScore() * 0.833, // AI ethics and principles
+    dataPrivacyScore() * 0.833 // Data privacy compliance
   ]
-  const governance = calculateDimensionScore(governanceScores, 30, 'governance')
+  const governance = calculateDimensionScore(governanceScores, 25, 'governance')
 
-  // Data Dimension (15% weight)
+  // Data Dimension (13% weight) - Normalized to 25 points
   const dataScores = [
-    scoreResponse(data.dataReadiness) * 2, // Double weight for data readiness
-    (data.mainChallenges?.includes('Mancanza di competenze') ? 2 : 4) // Reverse scoring for data challenges
+    scoreResponse(data.dataReadiness) * 5, // Scale up for 25-point system
+    (data.mainChallenges?.includes('Necessità di investimenti ingenti') ? 3 : 5) * 2.5, // Investment readiness
+    (data.mainChallenges?.includes('Questioni di sicurezza e privacy') ? 2 : 5) * 2.5, // Security/privacy readiness
+    (data.currentProjects !== '0' ? 5 : 2) * 2.5, // Data utilization readiness
+    2.5 // Base data infrastructure score
   ]
-  const data_dimension = calculateDimensionScore(dataScores, 10, 'data')
+  const data_dimension = calculateDimensionScore(dataScores, 25, 'data')
 
   // Culture & Experience Dimension (10% weight) - Direct culture assessment
   const changeReadinessScore = () => {
@@ -338,13 +348,15 @@ export function calculateEnhancedScore(data: Partial<AssessmentData>): EnhancedA
     return Math.min(5, Math.round((projectScore + usageAvg) / 2))
   }
 
+  // Culture & Experience Dimension (10% weight) - Normalized to 25 points
   const cultureScores = [
-    changeReadinessScore(), // Organizational readiness for AI change
-    data.employeeAIAdoption || 2, // Employee adoption of AI tools
-    leadershipCommunicationScore(), // Leadership AI communication
-    experienceScore() // Overall AI experience level
+    changeReadinessScore() * 1.25, // Organizational readiness for AI change
+    (data.employeeAIAdoption || 2) * 1.25, // Employee adoption of AI tools
+    leadershipCommunicationScore() * 1.25, // Leadership AI communication
+    experienceScore() * 1.25, // Overall AI experience level
+    2.5 // Base culture readiness score
   ]
-  const culture = calculateDimensionScore(cultureScores, 20, 'culture')
+  const culture = calculateDimensionScore(cultureScores, 25, 'culture')
 
   // Calculate weighted overall score (adjusted weights for new dimension)
   const overallScore = Math.round(

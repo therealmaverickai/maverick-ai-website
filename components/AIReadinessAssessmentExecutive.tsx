@@ -5,10 +5,9 @@ import { calculateEnhancedScore, type AssessmentData } from '@/lib/assessmentSco
 import { useGoogleAnalytics } from './GoogleAnalytics'
 import ExecutiveProgress from './ExecutiveProgress'
 import { CompanyInfoStep, StrategyStep, ImplementationStep, OrganizationStep, ResultsStep } from './AssessmentSteps'
-import AIUnlockStep from './AIUnlockStep'
 
 
-export default function AIReadinessAssessmentExecutive({ onAssessmentStart }: { onAssessmentStart?: (started: boolean) => void }) {
+export default function AIReadinessAssessmentExecutive({ onAssessmentStart, onStepChange }: { onAssessmentStart?: (started: boolean) => void, onStepChange?: (step: number, totalSteps: number) => void }) {
   const [currentStep, setCurrentStep] = useState(0)
   const [data, setData] = useState<Partial<AssessmentData>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -46,13 +45,6 @@ export default function AIReadinessAssessmentExecutive({ onAssessmentStart }: { 
       icon: '🏢',
       completed: false,
       current: currentStep === 3
-    },
-    {
-      name: 'Sblocca Consulente AI',
-      description: 'Accesso al consulente personalizzato',
-      icon: '🤖',
-      completed: false,
-      current: currentStep === 4
     }
   ]
 
@@ -113,7 +105,9 @@ export default function AIReadinessAssessmentExecutive({ onAssessmentStart }: { 
 
     if (currentStep < totalAssessmentSteps - 1) {
       trackEvent('assessment_step_completed', 'executive_assessment', `step_${currentStep + 1}`, currentStep + 1)
-      setCurrentStep(currentStep + 1)
+      const newStep = currentStep + 1
+      setCurrentStep(newStep)
+      onStepChange?.(newStep, totalAssessmentSteps)
 
       // Smooth scroll to top
       setTimeout(() => {
@@ -128,7 +122,9 @@ export default function AIReadinessAssessmentExecutive({ onAssessmentStart }: { 
   const prevStep = () => {
     if (currentStep > 0) {
       setShowValidationErrors(false)
-      setCurrentStep(currentStep - 1)
+      const newStep = currentStep - 1
+      setCurrentStep(newStep)
+      onStepChange?.(newStep, totalAssessmentSteps)
     }
   }
 
@@ -158,8 +154,16 @@ export default function AIReadinessAssessmentExecutive({ onAssessmentStart }: { 
       })
 
       if (response.ok) {
-        setResults(result)
-        setCurrentStep(currentStep + 1) // Move to results step
+        const apiResponse = await response.json()
+        // Merge the local results with the AI summary from API
+        const enhancedResults = {
+          ...result,
+          aiSummary: apiResponse.assessment?.aiSummary || ''
+        }
+        setResults(enhancedResults)
+        const resultsStep = currentStep + 1
+        setCurrentStep(resultsStep) // Move to results step
+        onStepChange?.(resultsStep, totalAssessmentSteps)
 
         // Scroll to top when results are shown
         setTimeout(() => {
@@ -177,32 +181,23 @@ export default function AIReadinessAssessmentExecutive({ onAssessmentStart }: { 
     }
   }
 
-  const validatePhone = (phone: string) => {
-    if (!phone) return false
-    // Italian phone number validation (basic)
-    const phoneRegex = /^(\+39\s?)?((3[0-9]{2}|0[0-9]{2,3})\s?[0-9]{6,7}|[0-9]{10})$/
-    return phoneRegex.test(phone.replace(/\s/g, ''))
-  }
-
   const canProceed = () => {
     switch (currentStep) {
       case 0: // Company Info
-        return data.name && data.email && data.company && data.role && data.privacyConsent && !emailError
+        return data.name && data.email && data.company && data.industry && data.companySize && data.role && data.privacyConsent && !emailError
       case 1: // Strategy (Enhanced with investment planning)
         return data.aiVisionClarity && data.visionFormalized && data.aiStrategicImportance && data.competitiveAdvantage && data.aiBudgetAllocation && data.aiInvestmentTimeline && data.aiInvestmentPriority
       case 2: // Implementation
         return data.currentProjects && data.pilotProjects && data.dataReadiness
       case 3: // Organization (Enhanced with culture, ethics & privacy)
         return data.internalSkills && data.decisionMakerAwareness && data.aiChangeReadiness && data.employeeAIAdoption && data.leadershipAICommunication && data.aiEthicsFramework && data.dataPrivacyCompliance
-      case 4: // AI Unlock Step
-        return validatePhone(data.phone || '') && data.marketingConsent
       default:
         return false
     }
   }
 
   return (
-    <div className="max-w-4xl mx-auto" id="assessment-container">
+    <div className="max-w-7xl mx-auto" id="assessment-container">
       {/* Executive Progress */}
       {/* Show progress only during assessment steps, not on results */}
       {currentStep < totalAssessmentSteps && (
@@ -214,83 +209,46 @@ export default function AIReadinessAssessmentExecutive({ onAssessmentStart }: { 
       )}
 
       {/* Assessment Content */}
-      {currentStep === 4 ? (
-        <AIUnlockStep data={data} onChange={handleInputChange} showValidationErrors={showValidationErrors} />
-      ) : (
-        <div className="bg-white border border-slate-200 rounded-xl shadow-sm">
-          {currentStep === 0 && <CompanyInfoStep data={data} onChange={handleInputChange} emailError={emailError} showValidationErrors={showValidationErrors} />}
-          {currentStep === 1 && <StrategyStep data={data} onChange={handleInputChange} showValidationErrors={showValidationErrors} />}
-          {currentStep === 2 && <ImplementationStep data={data} onChange={handleInputChange} onArrayChange={handleArrayChange} showValidationErrors={showValidationErrors} />}
-          {currentStep === 3 && <OrganizationStep data={data} onChange={handleInputChange} onArrayChange={handleArrayChange} showValidationErrors={showValidationErrors} />}
-          {currentStep === totalAssessmentSteps && <ResultsStep results={results} data={data} />}
+      <div className="bg-white border border-slate-200 rounded-xl shadow-sm">
+        {currentStep === 0 && <CompanyInfoStep data={data} onChange={handleInputChange} emailError={emailError} showValidationErrors={showValidationErrors} />}
+        {currentStep === 1 && <StrategyStep data={data} onChange={handleInputChange} showValidationErrors={showValidationErrors} />}
+        {currentStep === 2 && <ImplementationStep data={data} onChange={handleInputChange} onArrayChange={handleArrayChange} showValidationErrors={showValidationErrors} />}
+        {currentStep === 3 && <OrganizationStep data={data} onChange={handleInputChange} onArrayChange={handleArrayChange} showValidationErrors={showValidationErrors} />}
+        {currentStep === totalAssessmentSteps && <ResultsStep results={results} data={data} />}
 
-          {/* Navigation */}
-          {currentStep < totalAssessmentSteps && (
-            <div className="px-8 py-6 border-t border-slate-100 flex justify-between">
-              <button
-                onClick={prevStep}
-                disabled={currentStep === 0}
-                className="px-6 py-3 text-slate-600 bg-slate-100 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-200 transition-colors"
-              >
-                Indietro
-              </button>
-
-              <button
-                onClick={nextStep}
-                disabled={!canProceed() || isSubmitting}
-                className="px-8 py-3 bg-slate-900 text-white rounded-lg font-medium hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center"
-              >
-                {isSubmitting ? (
-                  <>
-                    <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Elaborazione...
-                  </>
-                ) : currentStep === 3 ? (
-                  'Continua al Consulente AI'
-                ) : currentStep === totalAssessmentSteps - 1 ? (
-                  'Sblocca Consulente AI'
-                ) : (
-                  'Continua'
-                )}
-              </button>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* AIUnlockStep Navigation */}
-      {currentStep === 4 && (
-        <div className="mt-6 flex justify-center">
-          <div className="flex space-x-4">
+        {/* Navigation */}
+        {currentStep < totalAssessmentSteps && (
+          <div className="px-8 py-6 border-t border-slate-100 flex justify-between">
             <button
               onClick={prevStep}
-              className="px-6 py-3 bg-white/20 backdrop-blur text-white border-2 border-white/30 rounded-lg font-medium hover:bg-white/30 transition-all"
+              disabled={currentStep === 0}
+              className="px-6 py-3 text-slate-600 bg-slate-100 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-200 transition-colors"
             >
               Indietro
             </button>
+
             <button
               onClick={nextStep}
               disabled={!canProceed() || isSubmitting}
-              className="px-8 py-3 bg-white text-slate-900 rounded-lg font-bold hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center"
+              className="px-8 py-3 bg-slate-900 text-white rounded-lg font-medium hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center"
             >
               {isSubmitting ? (
                 <>
-                  <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-slate-900" fill="none" viewBox="0 0 24 24">
+                  <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
                   Elaborazione...
                 </>
+              ) : currentStep === totalAssessmentSteps - 1 ? (
+                'Calcola Assessment'
               ) : (
-                'Sblocca Consulente AI'
+                'Continua'
               )}
             </button>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   )
 }
