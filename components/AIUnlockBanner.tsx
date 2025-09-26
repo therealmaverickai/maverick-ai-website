@@ -38,7 +38,7 @@ export default function AIUnlockBanner({ data, results }: AIUnlockBannerProps) {
       const updatedData = { ...data, phone: phone.trim() }
 
       // Save phone number and data to Supabase
-      const saveResponse = await fetch('/api/ai-chat/save-access', {
+      const saveResponse = await fetch('/api/ai-chat/save-access-sql', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
